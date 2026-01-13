@@ -17,7 +17,7 @@ help:
 serve:
 	@echo "Starting development server on http://localhost:$(PORT)"
 	@echo "Press Ctrl+C to stop"
-	@cd src && python3 -m http.server $(PORT) || echo "Python3 not available. Try make serve-node"
+	@python3 -m http.server $(PORT) || echo "Python3 not available. Try make serve-node"
 
 # Alternative serve option using Node.js
 serve-node:
@@ -27,4 +27,4 @@ serve-node:
 		echo "npx not found. Please install Node.js"; \
 		exit 1; \
 	fi
-	@cd src && npx http-server -p $(PORT) || echo "http-server not available. Install with: npm install -g http-server"
+	@npx http-server -p $(PORT) || echo "http-server not available. Install with: npm install -g http-server"
