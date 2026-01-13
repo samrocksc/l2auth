@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OAuth 2.0 - Learn to Auth!</title>
+    <link rel="stylesheet" href="styles/main.css" />
+    <script type="module" src="components/theme-toggle.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>Learn to Auth!</h1>
+      <theme-toggle></theme-toggle>
+    </header>
+
+    <nav>
+      <div class="tabs-container">
+        <a href="index.html" class="tab-button">Home</a>
+        <a href="basic-auth.html" class="tab-button">Basic Auth</a>
+        <a href="jwt.html" class="tab-button">JWT</a>
+        <a href="oauth2.html" class="tab-button active">OAuth 2.0</a>
+        <a href="oidc.html" class="tab-button">OIDC</a>
+      </div>
+    </nav>
+
+    <main>
+      <div class="content-container">
+        <section>
+          <h2>OAuth 2.0</h2>
+          <p>
+            OAuth 2.0 is an authorization framework that allows third-party
+            applications to obtain limited access to HTTP services.
+          </p>
+
+          <h3>Key Roles</h3>
+          <ul>
+            <li><strong>Resource Owner</strong>: User who authorizes access</li>
+            <li><strong>Client</strong>: Application requesting access</li>
+            <li>
+              <strong>Resource Server</strong>: API server hosting protected
+              resources
+            </li>
+            <li>
+              <strong>Authorization Server</strong>: Server that authenticates
+              resource owner and issues tokens
+            </li>
+          </ul>
+
+          <h3>Authorization Code Flow</h3>
+          <div class="diagram">
+            Browser → Client App → Authorization Server → Browser → Client App →
+            Resource Server
+          </div>
+
+          <ol>
+            <li>User accesses client application</li>
+            <li>Client redirects to authorization server</li>
+            <li>User authenticates and grants permission</li>
+            <li>Authorization server returns authorization code</li>
+            <li>Client exchanges code for access token</li>
+            <li>Client accesses protected resources using access token</li>
+          </ol>
+
+          <h3>Access Token Example</h3>
+          <div class="code-block">
+            Authorization: Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3
+          </div>
+
+          <h3>Grant Types</h3>
+          <ul>
+            <li>
+              <strong>Authorization Code</strong>: Standard flow for web apps
+            </li>
+            <li>
+              <strong>Implicit</strong>: Simplified flow for SPAs (deprecated)
+            </li>
+            <li>
+              <strong>Client Credentials</strong>: Machine-to-machine
+              communication
+            </li>
+            <li>
+              <strong>Resource Owner Password</strong>: Direct credential
+              exchange
+            </li>
+          </ul>
+
+          <button class="try-me-btn" data-try-me-out="authorization-endpoint">
+            Try Me Out: Authorization Endpoint
+          </button>
+          <button class="try-me-btn" data-try-me-out="token-endpoint">
+            Try Me Out: Token Endpoint
+          </button>
+
+          <h3>Pros & Cons</h3>
+          <ul>
+            <li>✅ Standardized protocol</li>
+            <li>✅ Delegated access without sharing passwords</li>
+            <li>✅ Multiple grant types for different use cases</li>
+            <li>❌ Complex implementation</li>
+            <li>❌ Redirect-based flows vulnerable to interception</li>
+          </ul>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <p>L2Auth Newb</p>
+    </footer>
+
+    <script src="scripts/main.js"></script>
+  </body>
+</html>

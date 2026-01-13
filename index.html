@@ -3,14 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Auth Systems Primer</title>
+    <title>Learn to Auth!</title>
     <link rel="stylesheet" href="styles/main.css" />
-    <script type="module" src="components/tabs-component.js"></script>
     <script type="module" src="components/theme-toggle.js"></script>
-    <script
-      type="module"
-      src="https://cdn.skypack.dev/@vanillawc/wc-markdown"
-    ></script>
   </head>
   <body>
     <header>
@@ -19,266 +14,44 @@
     </header>
 
     <nav>
-      <tabs-component></tabs-component>
+      <div class="tabs-container">
+        <a href="index.html" class="tab-button active">Home</a>
+        <a href="basic-auth.html" class="tab-button">Basic Auth</a>
+        <a href="jwt.html" class="tab-button">JWT</a>
+        <a href="oauth2.html" class="tab-button">OAuth 2.0</a>
+        <a href="oidc.html" class="tab-button">OIDC</a>
+      </div>
     </nav>
 
     <main>
       <div class="content-container">
-        <section id="basic-auth" class="tab-content active">
-          <h2>Basic Authentication</h2>
+        <section>
+          <h2>Welcome to Learn to Auth!</h2>
           <p>
-            Basic authentication transmits credentials as username and password
-            encoded with Base64. While simple to implement, it should always be
-            used over HTTPS as the credentials are easily decoded.
+            This educational resource provides comprehensive guides on various authentication systems. 
+            Select a topic from the navigation above to get started.
           </p>
-
-          <h3>How It Works</h3>
-          <ol>
-            <li>User provides username and password</li>
-            <li>Credentials are Base64 encoded (not encrypted!)</li>
-            <li>Browser sends Authorization header with credentials</li>
-            <li>Server decodes and validates credentials</li>
-          </ol>
-
-          <h3>Authorization Header Example</h3>
-          <div class="code-block">
-            Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
-          </div>
-
-          <h3>Pros & Cons</h3>
+          
+          <h3>Available Topics:</h3>
           <ul>
-            <li>✅ Simple to implement</li>
-            <li>✅ Widely supported</li>
-            <li>❌ Credentials sent with every request</li>
-            <li>❌ Not encrypted (only encoded)</li>
-            <li>❌ No expiration mechanism</li>
+            <li><a href="basic-auth.html">Basic Authentication</a> - Simple username/password authentication</li>
+            <li><a href="jwt.html">JWT (JSON Web Tokens)</a> - Token-based authentication system</li>
+            <li><a href="oauth2.html">OAuth 2.0</a> - Authorization framework for third-party access</li>
+            <li><a href="oidc.html">OpenID Connect</a> - Identity layer built on OAuth 2.0</li>
           </ul>
-        </section>
-
-        <section id="jwt" class="tab-content">
-          <h2>JWT (JSON Web Tokens)</h2>
+          
+          <h3>About This Resource</h3>
           <p>
-            JWTs are compact, URL-safe tokens that contain claims about an
-            entity. They're commonly used for stateless authentication.
+            This guide aims to demystify modern authentication systems by explaining how each works,
+            their pros and cons, and when to use them. The information is presented in a beginner-friendly
+            manner with technical examples and diagrams.
           </p>
-
-          <h3>Token Structure</h3>
-          <p>
-            JWTs consist of three parts separated by dots:
-            Header.Payload.Signature
-          </p>
-
-          <div class="code-block">
-            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-          </div>
-
-          <h3>Authentication Flow</h3>
-          <ol>
-            <li>User authenticates with username/password</li>
-            <li>Server creates and signs JWT</li>
-            <li>Client stores JWT (usually in localStorage)</li>
-            <li>
-              Client sends JWT in Authorization header for subsequent requests
-            </li>
-            <li>Server verifies JWT signature and extracts user info</li>
-          </ol>
-
-          <h3>Authorization Header Example</h3>
-          <div class="code-block">
-            Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-          </div>
-
-          <h3>Pros & Cons</h3>
-          <ul>
-            <li>✅ Stateless (no server-side session storage)</li>
-            <li>✅ Compact and self-contained</li>
-            <li>✅ Works well with REST APIs</li>
-            <li>❌ Tokens can't be easily invalidated</li>
-            <li>❌ Larger payload size than session IDs</li>
-            <li>❌ Sensitive data exposure risk if not handled carefully</li>
-          </ul>
-        </section>
-
-        <section id="oauth2" class="tab-content">
-          <h2>OAuth 2.0</h2>
-          <p>
-            OAuth 2.0 is an authorization framework that allows third-party
-            applications to obtain limited access to HTTP services.
-          </p>
-
-          <h3>Key Roles</h3>
-          <ul>
-            <li><strong>Resource Owner</strong>: User who authorizes access</li>
-            <li><strong>Client</strong>: Application requesting access</li>
-            <li>
-              <strong>Resource Server</strong>: API server hosting protected
-              resources
-            </li>
-            <li>
-              <strong>Authorization Server</strong>: Server that authenticates
-              resource owner and issues tokens
-            </li>
-          </ul>
-
-          <h3>Authorization Code Flow</h3>
-          <div class="diagram">
-            Browser → Client App → Authorization Server → Browser → Client App →
-            Resource Server
-          </div>
-
-          <ol>
-            <li>User accesses client application</li>
-            <li>Client redirects to authorization server</li>
-            <li>User authenticates and grants permission</li>
-            <li>Authorization server returns authorization code</li>
-            <li>Client exchanges code for access token</li>
-            <li>Client accesses protected resources using access token</li>
-          </ol>
-
-          <h3>Access Token Example</h3>
-          <div class="code-block">
-            Authorization: Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3
-          </div>
-
-          <h3>Grant Types</h3>
-          <ul>
-            <li>
-              <strong>Authorization Code</strong>: Standard flow for web apps
-            </li>
-            <li>
-              <strong>Implicit</strong>: Simplified flow for SPAs (deprecated)
-            </li>
-            <li>
-              <strong>Client Credentials</strong>: Machine-to-machine
-              communication
-            </li>
-            <li>
-              <strong>Resource Owner Password</strong>: Direct credential
-              exchange
-            </li>
-          </ul>
-
-          <button class="try-me-btn" data-try-me-out="authorization-endpoint">
-            Try Me Out: Authorization Endpoint
-          </button>
-          <button class="try-me-btn" data-try-me-out="token-endpoint">
-            Try Me Out: Token Endpoint
-          </button>
-
-          <h3>Pros & Cons</h3>
-          <ul>
-            <li>✅ Standardized protocol</li>
-            <li>✅ Delegated access without sharing passwords</li>
-            <li>✅ Multiple grant types for different use cases</li>
-            <li>❌ Complex implementation</li>
-            <li>❌ Redirect-based flows vulnerable to interception</li>
-          </ul>
-        </section>
-
-        <section id="oidc" class="tab-content">
-          <h2>OpenID Connect (OIDC)</h2>
-          <p>
-            OIDC is an identity layer built on top of OAuth 2.0, providing
-            authentication capabilities in addition to OAuth's authorization.
-          </p>
-
-          <div class="diagram">
-            OAuth 2.0 (Authorization) + Identity Layer = OIDC (Authentication)
-          </div>
-
-          <h3>Key Differences from OAuth 2.0</h3>
-          <table>
-            <tr>
-              <th>OAuth 2.0</th>
-              <th>OIDC</th>
-            </tr>
-            <tr>
-              <td>Authorization framework</td>
-              <td>Authentication protocol</td>
-            </tr>
-            <tr>
-              <td>Gives "access token"</td>
-              <td>Gives "ID token" (JWT)</td>
-            </tr>
-            <tr>
-              <td>No user info</td>
-              <td>Provides user identity information</td>
-            </tr>
-          </table>
-
-          <h3>ID Token Structure</h3>
-          <div class="code-block">
-            { "iss": "https://server.example.com", "sub": "24400320", "aud":
-            "s6BhdRkqt3", "nonce": "n-0S6_WzA2Mj", "exp": 1311281970, "iat":
-            1311280970, "auth_time": 1311280969, "acr":
-            "urn:mace:incommon:iap:silver" }
-          </div>
-
-          <h3>Authentication Flow</h3>
-          <ol>
-            <li>User initiates authentication</li>
-            <li>Client app redirects to OIDC provider</li>
-            <li>User authenticates with provider</li>
-            <li>Provider returns ID token and optionally access token</li>
-            <li>Client validates ID token</li>
-            <li>Client uses claims from ID token to authenticate user</li>
-          </ol>
-
-          <h3>UserInfo Endpoint</h3>
-          <p>
-            OIDC adds a UserInfo endpoint to retrieve additional user
-            information:
-          </p>
-          <div class="code-block">
-            GET /userinfo HTTP/1.1 Host: server.example.com Authorization:
-            Bearer SlAV32hkKG
-          </div>
-
-          <button class="try-me-btn" data-try-me-out="authorization-endpoint">
-            Try Me Out: Authorization Endpoint
-          </button>
-          <button class="try-me-btn" data-try-me-out="token-endpoint">
-            Try Me Out: Token Endpoint
-          </button>
-          <button class="try-me-btn" data-try-me-out="userinfo-endpoint">
-            Try Me Out: UserInfo Endpoint
-          </button>
-          <button class="try-me-btn" data-try-me-out="discovery-document">
-            Try Me Out: Discovery Document
-          </button>
-          <button class="try-me-btn" data-try-me-out="jwks-endpoint">
-            Try Me Out: JWKS Endpoint
-          </button>
-
-          <h3>Pros & Cons</h3>
-          <ul>
-            <li>✅ Standardized authentication</li>
-            <li>✅ Built on proven OAuth 2.0 foundation</li>
-            <li>✅ Provides identity information</li>
-            <li>✅ Supports multiple signing algorithms</li>
-            <li>❌ Adds complexity over standard OAuth</li>
-          </ul>
         </section>
       </div>
     </main>
 
-    <!-- Markdown modal container -->
-    <div id="markdown-modal" class="modal-overlay" style="display: none">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2 id="modal-title">Endpoint Information</h2>
-          <button class="close-button" id="close-modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <wc-markdown id="markdown-content" highlight></wc-markdown>
-        </div>
-      </div>
-    </div>
-
     <footer>
       <p>L2Auth Newb</p>
     </footer>
-
-    <script src="scripts/main.js"></script>
   </body>
 </html>
