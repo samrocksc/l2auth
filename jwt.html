@@ -6,88 +6,79 @@
         <title>JWT - Learn to Auth!</title>
         <link rel="stylesheet" href="styles/main.css" />
         <script type="module" src="components/theme-toggle.js"></script>
+        <script type="module" src="components/tabs-component.js"></script>
     </head>
     <body>
-        <header>
-            <h1>Learn to Auth!</h1>
-            <theme-toggle></theme-toggle>
-        </header>
+        <div class="main-wrapper">
+            <header>
+                <h1>Learn to Auth!</h1>
+                <theme-toggle></theme-toggle>
+            </header>
 
-        <nav>
-            <div class="tabs-container">
-                <a href="index.html" class="tab-button">Home</a>
-                <a href="basic-auth.html" class="tab-button">Basic Auth</a>
-                <a href="jwt.html" class="tab-button active">JWT</a>
-                <a href="oauth2.html" class="tab-button">OAuth 2.0</a>
-                <a href="oidc.html" class="tab-button">OIDC</a>
-            </div>
-        </nav>
+            <nav>
+                <tabs-component></tabs-component>
+            </nav>
 
-        <main>
-            <div class="content-container">
-                <section>
-                    <h2>JWT (JSON Web Tokens)</h2>
-                    <p>
-                        JWTs are compact, URL-safe tokens that contain claims
-                        about an entity. They're commonly used for stateless
-                        authentication.
-                    </p>
+            <main>
+                <div class="content-container">
+                    <section>
+                        <h2>JWT (JSON Web Tokens)</h2>
+                        <p>
+                            JWTs are compact, URL-safe tokens that contain
+                            claims about an entity. They're commonly used for
+                            stateless authentication.
+                        </p>
 
-                    <h3>Token Structure</h3>
-                    <p>
-                        JWTs consist of three parts separated by dots:
-                        Header.Payload.Signature
-                    </p>
+                        <h3>Token Structure</h3>
+                        <p>
+                            JWTs consist of three parts separated by dots:
+                            Header.Payload.Signature
+                        </p>
 
-                    <div class="code-block">
-                        eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-                    </div>
+                        <div class="code-block">
+                            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                        </div>
 
-                    <h3>Authentication Flow</h3>
-                    <ol>
-                        <li>User authenticates with username/password</li>
-                        <li>Server creates and signs JWT</li>
-                        <li>Client stores JWT (usually in localStorage)</li>
-                        <li>
-                            Client sends JWT in Authorization header for
-                            subsequent requests
-                        </li>
-                        <li>
-                            Server verifies JWT signature and extracts user info
-                        </li>
-                    </ol>
+                        <h3>Authentication Flow</h3>
+                        <ol>
+                            <li>User authenticates with username/password</li>
+                            <li>Server creates and signs JWT</li>
+                            <li>Client stores JWT (usually in localStorage)</li>
+                            <li>
+                                Client sends JWT in Authorization header for
+                                subsequent requests
+                            </li>
+                            <li>
+                                Server verifies JWT signature and extracts user
+                                info
+                            </li>
+                        </ol>
 
-                    <h3>Authorization Header Example</h3>
-                    <div class="code-block">
-                        Authorization: Bearer
-                        eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-                    </div>
+                        <h3>Authorization Header Example</h3>
+                        <div class="code-block">
+                            Authorization: Bearer
+                            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                        </div>
 
-                    <h3>Pros & Cons</h3>
-                    <ul>
-                        <li>✅ Stateless (no server-side session storage)</li>
-                        <li>✅ Compact and self-contained</li>
-                        <li>✅ Works well with REST APIs</li>
-                        <li>❌ Tokens can't be easily invalidated</li>
-                        <li>❌ Larger payload size than session IDs</li>
-                        <li>
-                            ❌ Sensitive data exposure risk if not handled
-                            carefully
-                        </li>
-                    </ul>
-                </section>
-            </div>
-        </main>
+                        <h3>Pros & Cons</h3>
+                        <ul>
+                            <li>
+                                ✅ Stateless (no server-side session storage)
+                            </li>
+                            <li>✅ Compact and self-contained</li>
+                            <li>✅ Works well with REST APIs</li>
+                            <li>❌ Tokens can't be easily invalidated</li>
+                            <li>❌ Larger payload size than session IDs</li>
+                            <li>
+                                ❌ Sensitive data exposure risk if not handled
+                                carefully
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </main>
 
-        <footer>
-            <p>
-                <a
-                    href="https://github.com/samrocksc/l2auth"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    >L2Auth on GitHub</a
-                >
-            </p>
-        </footer>
+            <site-footer></site-footer>
+        </div>
     </body>
 </html>

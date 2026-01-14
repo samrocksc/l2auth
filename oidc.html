@@ -6,140 +6,134 @@
         <title>OpenID Connect - Learn to Auth!</title>
         <link rel="stylesheet" href="styles/main.css" />
         <script type="module" src="components/theme-toggle.js"></script>
+        <script type="module" src="components/tabs-component.js"></script>
     </head>
     <body>
-        <header>
-            <h1>Learn to Auth!</h1>
-            <theme-toggle></theme-toggle>
-        </header>
+        <div class="main-wrapper">
+            <header>
+                <h1>Learn to Auth!</h1>
+                <theme-toggle></theme-toggle>
+            </header>
 
-        <nav>
-            <div class="tabs-container">
-                <a href="index.html" class="tab-button">Home</a>
-                <a href="basic-auth.html" class="tab-button">Basic Auth</a>
-                <a href="jwt.html" class="tab-button">JWT</a>
-                <a href="oauth2.html" class="tab-button">OAuth 2.0</a>
-                <a href="oidc.html" class="tab-button active">OIDC</a>
-            </div>
-        </nav>
+            <nav>
+                <tabs-component></tabs-component>
+            </nav>
 
-        <main>
-            <div class="content-container">
-                <section>
-                    <h2>OpenID Connect (OIDC)</h2>
-                    <p>
-                        OIDC is an identity layer built on top of OAuth 2.0,
-                        providing authentication capabilities in addition to
-                        OAuth's authorization.
-                    </p>
+            <main>
+                <div class="content-container">
+                    <section>
+                        <h2>OpenID Connect (OIDC)</h2>
+                        <p>
+                            OIDC is an identity layer built on top of OAuth 2.0,
+                            providing authentication capabilities in addition to
+                            OAuth's authorization.
+                        </p>
 
-                    <div class="diagram">
-                        OAuth 2.0 (Authorization) + Identity Layer = OIDC
-                        (Authentication)
-                    </div>
+                        <div class="diagram">
+                            OAuth 2.0 (Authorization) + Identity Layer = OIDC
+                            (Authentication)
+                        </div>
 
-                    <h3>Key Differences from OAuth 2.0</h3>
-                    <table>
-                        <tr>
-                            <th>OAuth 2.0</th>
-                            <th>OIDC</th>
-                        </tr>
-                        <tr>
-                            <td>Authorization framework</td>
-                            <td>Authentication protocol</td>
-                        </tr>
-                        <tr>
-                            <td>Gives "access token"</td>
-                            <td>Gives "ID token" (JWT)</td>
-                        </tr>
-                        <tr>
-                            <td>No user info</td>
-                            <td>Provides user identity information</td>
-                        </tr>
-                    </table>
+                        <h3>Key Differences from OAuth 2.0</h3>
+                        <table>
+                            <tr>
+                                <th>OAuth 2.0</th>
+                                <th>OIDC</th>
+                            </tr>
+                            <tr>
+                                <td>Authorization framework</td>
+                                <td>Authentication protocol</td>
+                            </tr>
+                            <tr>
+                                <td>Gives "access token"</td>
+                                <td>Gives "ID token" (JWT)</td>
+                            </tr>
+                            <tr>
+                                <td>No user info</td>
+                                <td>Provides user identity information</td>
+                            </tr>
+                        </table>
 
-                    <h3>ID Token Structure</h3>
-                    <div class="code-block">
-                        { "iss": "https://server.example.com", "sub":
-                        "24400320", "aud": "s6BhdRkqt3", "nonce":
-                        "n-0S6_WzA2Mj", "exp": 1311281970, "iat": 1311280970,
-                        "auth_time": 1311280969, "acr":
-                        "urn:mace:incommon:iap:silver" }
-                    </div>
+                        <h3>ID Token Structure</h3>
+                        <div class="code-block">
+                            { "iss": "https://server.example.com", "sub":
+                            "24400320", "aud": "s6BhdRkqt3", "nonce":
+                            "n-0S6_WzA2Mj", "exp": 1311281970, "iat":
+                            1311280970, "auth_time": 1311280969, "acr":
+                            "urn:mace:incommon:iap:silver" }
+                        </div>
 
-                    <h3>Authentication Flow</h3>
-                    <ol>
-                        <li>User initiates authentication</li>
-                        <li>Client app redirects to OIDC provider</li>
-                        <li>User authenticates with provider</li>
-                        <li>
-                            Provider returns ID token and optionally access
-                            token
-                        </li>
-                        <li>Client validates ID token</li>
-                        <li>
-                            Client uses claims from ID token to authenticate
-                            user
-                        </li>
-                    </ol>
+                        <h3>Authentication Flow</h3>
+                        <ol>
+                            <li>User initiates authentication</li>
+                            <li>Client app redirects to OIDC provider</li>
+                            <li>User authenticates with provider</li>
+                            <li>
+                                Provider returns ID token and optionally access
+                                token
+                            </li>
+                            <li>Client validates ID token</li>
+                            <li>
+                                Client uses claims from ID token to authenticate
+                                user
+                            </li>
+                        </ol>
 
-                    <h3>UserInfo Endpoint</h3>
-                    <p>
-                        OIDC adds a UserInfo endpoint to retrieve additional
-                        user information:
-                    </p>
-                    <div class="code-block">
-                        GET /userinfo HTTP/1.1 Host: server.example.com
-                        Authorization: Bearer SlAV32hkKG
-                    </div>
+                        <h3>UserInfo Endpoint</h3>
+                        <p>
+                            OIDC adds a UserInfo endpoint to retrieve additional
+                            user information:
+                        </p>
+                        <div class="code-block">
+                            GET /userinfo HTTP/1.1 Host: server.example.com
+                            Authorization: Bearer SlAV32hkKG
+                        </div>
 
-                    <button
-                        class="try-me-btn"
-                        data-try-me-out="authorization-endpoint"
-                    >
-                        Try Me Out: Authorization Endpoint
-                    </button>
-                    <button class="try-me-btn" data-try-me-out="token-endpoint">
-                        Try Me Out: Token Endpoint
-                    </button>
-                    <button
-                        class="try-me-btn"
-                        data-try-me-out="userinfo-endpoint"
-                    >
-                        Try Me Out: UserInfo Endpoint
-                    </button>
-                    <button
-                        class="try-me-btn"
-                        data-try-me-out="discovery-document"
-                    >
-                        Try Me Out: Discovery Document
-                    </button>
-                    <button class="try-me-btn" data-try-me-out="jwks-endpoint">
-                        Try Me Out: JWKS Endpoint
-                    </button>
+                        <button
+                            class="try-me-btn"
+                            data-try-me-out="authorization-endpoint"
+                        >
+                            Try Me Out: Authorization Endpoint
+                        </button>
+                        <button
+                            class="try-me-btn"
+                            data-try-me-out="token-endpoint"
+                        >
+                            Try Me Out: Token Endpoint
+                        </button>
+                        <button
+                            class="try-me-btn"
+                            data-try-me-out="userinfo-endpoint"
+                        >
+                            Try Me Out: UserInfo Endpoint
+                        </button>
+                        <button
+                            class="try-me-btn"
+                            data-try-me-out="discovery-document"
+                        >
+                            Try Me Out: Discovery Document
+                        </button>
+                        <button
+                            class="try-me-btn"
+                            data-try-me-out="jwks-endpoint"
+                        >
+                            Try Me Out: JWKS Endpoint
+                        </button>
 
-                    <h3>Pros & Cons</h3>
-                    <ul>
-                        <li>✅ Standardized authentication</li>
-                        <li>✅ Built on proven OAuth 2.0 foundation</li>
-                        <li>✅ Provides identity information</li>
-                        <li>✅ Supports multiple signing algorithms</li>
-                        <li>❌ Adds complexity over standard OAuth</li>
-                    </ul>
-                </section>
-            </div>
-        </main>
+                        <h3>Pros & Cons</h3>
+                        <ul>
+                            <li>✅ Standardized authentication</li>
+                            <li>✅ Built on proven OAuth 2.0 foundation</li>
+                            <li>✅ Provides identity information</li>
+                            <li>✅ Supports multiple signing algorithms</li>
+                            <li>❌ Adds complexity over standard OAuth</li>
+                        </ul>
+                    </section>
+                </div>
+            </main>
 
-        <footer>
-            <p>
-                <a
-                    href="https://github.com/samrocksc/l2auth"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    >L2Auth on GitHub</a
-                >
-            </p>
-        </footer>
+            <site-footer></site-footer>
+        </div>
 
         <script src="scripts/main.js"></script>
     </body>

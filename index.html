@@ -1,58 +1,70 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Learn to Auth!</title>
-    <link rel="stylesheet" href="styles/main.css" />
-    <script type="module" src="components/theme-toggle.js"></script>
-    <script type="module" src="components/footer-component.js"></script>
-  </head>
-  <body>
-    <div class="main-wrapper">
-    <header>
-      <h1>Learn to Auth!</h1>
-      <theme-toggle></theme-toggle>
-    </header>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Learn to Auth!</title>
+        <link rel="stylesheet" href="styles/main.css" />
+        <script type="module" src="components/theme-toggle.js"></script>
+        <script type="module" src="components/footer-component.js"></script>
+        <script type="module" src="components/tabs-component.js"></script>
+    </head>
+    <body>
+        <div class="main-wrapper">
+            <header>
+                <h1>Learn to Auth!</h1>
+                <theme-toggle></theme-toggle>
+            </header>
 
-    <nav>
-      <div class="tabs-container">
-        <a href="index.html" class="tab-button active">Home</a>
-        <a href="basic-auth.html" class="tab-button">Basic Auth</a>
-        <a href="jwt.html" class="tab-button">JWT</a>
-        <a href="oauth2.html" class="tab-button">OAuth 2.0</a>
-        <a href="oidc.html" class="tab-button">OIDC</a>
-      </div>
-    </nav>
+            <nav>
+                <tabs-component></tabs-component>
+            </nav>
 
-    <main>
-      <div class="content-container">
-        <section>
-          <h2>Welcome to Learn to Auth!</h2>
-          <p>
-            This educational resource provides comprehensive guides on various authentication systems. 
-            Select a topic from the navigation above to get started.
-          </p>
-          
-          <h3>Available Topics:</h3>
-          <ul>
-            <li><a href="basic-auth.html">Basic Authentication</a> - Simple username/password authentication</li>
-            <li><a href="jwt.html">JWT (JSON Web Tokens)</a> - Token-based authentication system</li>
-            <li><a href="oauth2.html">OAuth 2.0</a> - Authorization framework for third-party access</li>
-            <li><a href="oidc.html">OpenID Connect</a> - Identity layer built on OAuth 2.0</li>
-          </ul>
-          
-          <h3>About This Resource</h3>
-          <p>
-            This guide aims to demystify modern authentication systems by explaining how each works,
-            their pros and cons, and when to use them. The information is presented in a beginner-friendly
-            manner with technical examples and diagrams.
-          </p>
-        </section>
-      </div>
-    </main>
+            <main>
+                <div class="content-container">
+                    <section>
+                        <h2>Welcome to Learn to Auth!</h2>
+                        <p>
+                            This educational resource provides comprehensive
+                            guides on various authentication systems. Select a
+                            topic from the navigation above to get started.
+                        </p>
 
-    <site-footer></site-footer>
-      </div>
-  </body>
+                        <h3>Available Topics:</h3>
+                        <ul>
+                            <li>
+                                <a href="basic-auth.html"
+                                    >Basic Authentication</a
+                                >
+                                - Simple username/password authentication
+                            </li>
+                            <li>
+                                <a href="jwt.html">JWT (JSON Web Tokens)</a> -
+                                Token-based authentication system
+                            </li>
+                            <li>
+                                <a href="oauth2.html">OAuth 2.0</a> -
+                                Authorization framework for third-party access
+                            </li>
+                            <li>
+                                <a href="oidc.html">OpenID Connect</a> -
+                                Identity layer built on OAuth 2.0
+                            </li>
+                        </ul>
+
+                        <h3>About This Resource</h3>
+                        <p>
+                            This guide aims to demystify modern authentication
+                            systems by explaining how each works, their pros and
+                            cons, and when to use them. The information is
+                            presented in a beginner-friendly manner with
+                            technical examples and diagrams.
+                        </p>
+                    </section>
+                </div>
+            </main>
+
+            <site-footer></site-footer>
+        </div>
+    </body>
 </html>
