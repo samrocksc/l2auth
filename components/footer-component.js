@@ -1,4 +1,8 @@
-import { LitElement, html, css } from 'https://unpkg.com/lit@2.0.0-rc.4/index.js?module';
+import {
+  LitElement,
+  html,
+  css,
+} from "https://unpkg.com/lit@2.0.0-rc.4/index.js?module";
 
 class SiteFooter extends LitElement {
   static get styles() {
@@ -21,10 +25,8 @@ class SiteFooter extends LitElement {
   }
 
   render() {
-    return html`
-      <p>L2Auth Newb</p>
-    `;
+    return html` <p><a href="https://github.com/samrocksc/l2auth" target="_blank" rel="noopener noreferrer">L2Auth on GitHub</a></p> `;
   }
 }
 
-customElements.define('site-footer', SiteFooter);
+customElements.define("site-footer", SiteFooter);

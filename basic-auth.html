@@ -1,65 +1,77 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Basic Authentication - Learn to Auth!</title>
-    <link rel="stylesheet" href="styles/main.css" />
-    <script type="module" src="components/theme-toggle.js"></script>
-  </head>
-  <body>
-    <header>
-      <h1>Learn to Auth!</h1>
-      <theme-toggle></theme-toggle>
-    </header>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Basic Authentication - Learn to Auth!</title>
+        <link rel="stylesheet" href="styles/main.css" />
+        <script type="module" src="components/theme-toggle.js"></script>
+    </head>
+    <body>
+        <header>
+            <h1>Learn to Auth!</h1>
+            <theme-toggle></theme-toggle>
+        </header>
 
-    <nav>
-      <div class="tabs-container">
-        <a href="index.html" class="tab-button">Home</a>
-        <a href="basic-auth.html" class="tab-button active">Basic Auth</a>
-        <a href="jwt.html" class="tab-button">JWT</a>
-        <a href="oauth2.html" class="tab-button">OAuth 2.0</a>
-        <a href="oidc.html" class="tab-button">OIDC</a>
-      </div>
-    </nav>
+        <nav>
+            <div class="tabs-container">
+                <a href="index.html" class="tab-button">Home</a>
+                <a href="basic-auth.html" class="tab-button active"
+                    >Basic Auth</a
+                >
+                <a href="jwt.html" class="tab-button">JWT</a>
+                <a href="oauth2.html" class="tab-button">OAuth 2.0</a>
+                <a href="oidc.html" class="tab-button">OIDC</a>
+            </div>
+        </nav>
 
-    <main>
-      <div class="content-container">
-        <section>
-          <h2>Basic Authentication</h2>
-          <p>
-            Basic authentication transmits credentials as username and password
-            encoded with Base64. While simple to implement, it should always be
-            used over HTTPS as the credentials are easily decoded.
-          </p>
+        <main>
+            <div class="content-container">
+                <section>
+                    <h2>Basic Authentication</h2>
+                    <p>
+                        Basic authentication transmits credentials as username
+                        and password encoded with Base64. While simple to
+                        implement, it should always be used over HTTPS as the
+                        credentials are easily decoded.
+                    </p>
 
-          <h3>How It Works</h3>
-          <ol>
-            <li>User provides username and password</li>
-            <li>Credentials are Base64 encoded (not encrypted!)</li>
-            <li>Browser sends Authorization header with credentials</li>
-            <li>Server decodes and validates credentials</li>
-          </ol>
+                    <h3>How It Works</h3>
+                    <ol>
+                        <li>User provides username and password</li>
+                        <li>Credentials are Base64 encoded (not encrypted!)</li>
+                        <li>
+                            Browser sends Authorization header with credentials
+                        </li>
+                        <li>Server decodes and validates credentials</li>
+                    </ol>
 
-          <h3>Authorization Header Example</h3>
-          <div class="code-block">
-            Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
-          </div>
+                    <h3>Authorization Header Example</h3>
+                    <div class="code-block">
+                        Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+                    </div>
 
-          <h3>Pros & Cons</h3>
-          <ul>
-            <li>✅ Simple to implement</li>
-            <li>✅ Widely supported</li>
-            <li>❌ Credentials sent with every request</li>
-            <li>❌ Not encrypted (only encoded)</li>
-            <li>❌ No expiration mechanism</li>
-          </ul>
-        </section>
-      </div>
-    </main>
+                    <h3>Pros & Cons</h3>
+                    <ul>
+                        <li>✅ Simple to implement</li>
+                        <li>✅ Widely supported</li>
+                        <li>❌ Credentials sent with every request</li>
+                        <li>❌ Not encrypted (only encoded)</li>
+                        <li>❌ No expiration mechanism</li>
+                    </ul>
+                </section>
+            </div>
+        </main>
 
-    <footer>
-      <p>L2Auth Newb</p>
-    </footer>
-  </body>
+        <footer>
+            <p>
+                <a
+                    href="https://github.com/samrocksc/l2auth"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >L2Auth on GitHub</a
+                >
+            </p>
+        </footer>
+    </body>
 </html>
