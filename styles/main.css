@@ -1,335 +1,354 @@
-/* Retro 80s Auth Systems Theme */
-:root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f0f0f0;
-  --text-primary: #000000;
-  --text-secondary: #333333;
-  --accent-color: #ff00ff;
-  --border-color: #cccccc;
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --highlight: #3385cc;
-  --success: #00ff00;
-  --warning: #ffff00;
-  --error: #ff0000;
-}
-
-[data-theme="dark"] {
-  --bg-primary: #111111;
-  --bg-secondary: #222222;
-  --text-primary: #ffffff;
-  --text-secondary: #dddddd;
-  --border-color: #444444;
-}
-
-body {
-  font-family: Courier New, monospace;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  margin: 0;
-  padding: 0;
-  transition: background-color 0.3s, color 0.3s;
-  line-height: 1.6;
-}
-
-header {
-  background-color: var(--bg-secondary);
-  padding: 1rem;
-  border-bottom: 2px solid var(--accent-color);
-  box-shadow: 0 4px 8px var(--shadow-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-h1 {
-  font-size: 2rem;
-  margin: 0;
-  text-shadow: 2px 2px 0 var(--accent-color);
-  color: var(--accent-color);
-}
-
-nav {
-  background-color: var(--bg-secondary);
-  padding: 0.5rem;
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 2px 4px var(--shadow-color);
-}
-
-.content-container {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: var(--bg-secondary);
-  box-shadow: 0 8px 16px var(--shadow-color);
-  min-height: 80vh;
-}
-
-footer {
-  text-align: center;
-  padding: 1rem;
-  background-color: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
-  margin-top: 2rem;
-  box-shadow: 0 -2px 4px var(--shadow-color);
-}
-
-.tab-content {
-  display: none;
-}
-
-.tab-content.active {
-  display: block;
-  animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-button, .tab-button, .try-me-btn {
-  font-family: Courier New, monospace;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  border: 2px solid var(--accent-color);
-  padding: 0.5rem 1rem;
-  margin: 0.25rem;
-  cursor: pointer;
-  box-shadow: 4px 4px 0 var(--shadow-color);
-  transition: all 0.2s;
-}
-
-button:hover, .tab-button:hover, .try-me-btn:hover {
-  background-color: var(--accent-color);
-  color: var(--bg-primary);
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 var(--shadow-color);
-}
-
-.tabs-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.tab-button.active {
-  background-color: var(--accent-color);
-  color: var(--bg-primary);
-  box-shadow: inset 2px 2px 0 var(--shadow-color);
-}
-
-h2 {
-  color: var(--accent-color);
-  text-shadow: 1px 1px 0 var(--shadow-color);
-  border-bottom: 2px solid var(--highlight);
-  padding-bottom: 0.5rem;
-}
-
-h3 {
-  color: var(--highlight);
-  margin-top: 1.5rem;
-}
-
-ul li, ol li {
-  margin-bottom: 0.5rem;
-}
-
-.code-block {
-  background-color: var(--bg-primary);
-  border: 2px solid var(--border-color);
-  padding: 1rem;
-  margin: 1rem 0;
-  font-family: Courier New, monospace;
-  box-shadow: inset 2px 2px 4px var(--shadow-color);
-  overflow-x: auto;
-  white-space: pre-wrap;
-}
-
-.diagram {
-  background-color: var(--bg-primary);
-  border: 2px solid var(--border-color);
-  padding: 1rem;
-  margin: 1rem 0;
-  text-align: center;
-  box-shadow: inset 2px 2px 4px var(--shadow-color);
-  font-style: italic;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1rem 0;
-  background-color: var(--bg-primary);
-  box-shadow: inset 2px 2px 4px var(--shadow-color);
-}
-
-th, td {
-  border: 1px solid var(--border-color);
-  padding: 0.5rem;
-  text-align: left;
-}
-
-th {
-  background-color: var(--accent-color);
-  color: var(--bg-primary);
-}
-
-a {
-  color: var(--accent-color);
-  text-decoration: none;
-  box-shadow: 0 1px 0 var(--accent-color);
-}
-
-a:hover {
-  color: var(--highlight);
-  box-shadow: 0 2px 0 var(--highlight);
-}
-
-.theme-toggle {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: var(--accent-color);
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.3s;
-}
-
-.theme-toggle:hover {
-  background-color: rgba(255, 0, 255, 0.1);
-  transform: rotate(15deg);
-}
-
-/* Try Me Out Modal Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background-color: var(--bg-secondary);
-  border: 2px solid var(--accent-color);
-  border-radius: 8px;
-  box-shadow: 0 4px 8px var(--shadow-color);
-  max-width: 800px;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.modal-header h2 {
-  margin: 0;
-  color: var(--accent-color);
-}
-
-.close-button {
-  background: none;
-  border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  color: var(--accent-color);
-  padding: 0;
-  margin: 0;
-}
-
-.close-button:hover {
-  color: var(--highlight);
-}
-
-.modal-body {
-  padding: 1rem;
-}
-
-/* Override default wc-markdown styles to match our theme */
-wc-markdown {
-  display: block;
-  color: var(--text-primary);
-  font-family: Courier New, monospace;
-}
-
-wc-markdown h1,
-wc-markdown h2,
-wc-markdown h3,
-wc-markdown h4,
-wc-markdown h5 {
-  color: var(--accent-color);
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-wc-markdown p {
-  margin: 0.5rem 0;
-  line-height: 1.6;
-}
-
-wc-markdown code {
-  background-color: var(--bg-primary);
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
-  font-family: Courier New, monospace;
-}
-
-wc-markdown pre {
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  padding: 1rem;
-  overflow-x: auto;
-  margin: 1rem 0;
-}
-
-wc-markdown pre code {
-  background: none;
-  padding: 0;
-}
-
-wc-markdown ul,
-wc-markdown ol {
-  margin: 0.5rem 0;
-  padding-left: 1.5rem;
-}
-
-wc-markdown li {
-  margin: 0.25rem 0;
-}
-
-wc-markdown table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1rem 0;
-  background-color: var(--bg-primary);
-  font-family: Courier New, monospace;
-}
-
-wc-markdown th,
-wc-markdown td {
-  border: 1px solid var(--border-color);
-  padding: 0.5rem;
-  text-align: left;
-}
-
-wc-markdown th {
-  background-color: var(--accent-color);
-  color: var(--bg-primary);
-}
+### /Users/sam/GitHub/personal/l2auth/styles/main.css
+```css
+1: 
+2: /* Retro 80s Auth Systems Theme */
+3: :root {
+4:   --bg-primary: #ffffff;
+5:   --bg-secondary: #f0f0f0;
+6:   --text-primary: #000000;
+7:   --text-secondary: #333333;
+8:   --accent-color: #ff00ff;
+9:   --border-color: #cccccc;
+10:   --shadow-color: rgba(0, 0, 0, 0.3);
+11:   --highlight: #3385cc;
+12:   --success: #00ff00;
+13:   --warning: #ffff00;
+14:   --error: #ff0000;
+15: }
+16: 
+17: [data-theme="dark"] {
+18:   --bg-primary: #111111;
+19:   --bg-secondary: #222222;
+20:   --text-primary: #ffffff;
+21:   --text-secondary: #dddddd;
+22:   --border-color: #444444;
+23: }
+24: 
+25: body {
+26:   font-family: Courier New, monospace;
+27:   background-color: var(--bg-primary);
+28:   color: var(--text-primary);
+29:   margin: 0;
+30:   padding: 0;
+31:   transition: background-color 0.3s, color 0.3s;
+32:   line-height: 1.6;
+33: }
+34: 
+35: .main-wrapper {
+  padding-top: 1rem;
+36:   max-width: 80%;
+37:   margin: 0 auto;
+38:   min-height: 100vh;
+39:   display: flex;
+40:   flex-direction: column;
+41: }
+42: 
+43: @media (max-width: 768px) {
+44:   .main-wrapper {
+45:     max-width: 100%;
+46:   }
+47: }
+48: 
+49: header {
+50:   background-color: var(--bg-secondary);
+51:   padding: 1rem;
+52:   border-bottom: 2px solid var(--accent-color);
+53:   box-shadow: 0 4px 8px var(--shadow-color);
+54:   display: flex;
+55:   justify-content: space-between;
+56:   align-items: center;
+57: }
+58: 
+59: h1 {
+60:   font-size: 2rem;
+61:   margin: 0;
+62:   text-shadow: 2px 2px 0 var(--accent-color);
+63:   color: var(--accent-color);
+64: }
+65: 
+66: nav {
+67:   background-color: var(--bg-secondary);
+68:   padding: 0.5rem;
+69:   border-bottom: 1px solid var(--border-color);
+70:   box-shadow: 0 2px 4px var(--shadow-color);
+71: }
+72: 
+73: .content-container {
+74:   margin: 2rem 0;
+75:   padding: 2rem;
+76:   background-color: var(--bg-secondary);
+77:   box-shadow: 0 8px 16px var(--shadow-color);
+78:   min-height: 60vh;
+79:   flex-grow: 1;
+80: }
+81: 
+82: footer {
+83:   text-align: center;
+84:   padding: 1rem;
+85:   background-color: var(--bg-secondary);
+86:   border-top: 1px solid var(--border-color);
+87:   margin-top: 2rem;
+88:   box-shadow: 0 -2px 4px var(--shadow-color);
+89: }
+90: 
+91: .tab-content {
+92:   display: none;
+93: }
+94: 
+95: .tab-content.active {
+96:   display: block;
+97:   animation: fadeIn 0.3s ease-in;
+98: }
+99: 
+100: @keyframes fadeIn {
+101:   from { opacity: 0; }
+102:   to { opacity: 1; }
+103: }
+104: 
+105: button, .tab-button, .try-me-btn {
+106:   font-family: Courier New, monospace;
+107:   background-color: var(--bg-primary);
+108:   color: var(--text-primary);
+109:   border: 2px solid var(--accent-color);
+110:   padding: 0.5rem 1rem;
+111:   margin: 0.25rem;
+112:   cursor: pointer;
+113:   box-shadow: 4px 4px 0 var(--shadow-color);
+114:   transition: all 0.2s;
+115: }
+116: 
+117: button:hover, .tab-button:hover, .try-me-btn:hover {
+118:   background-color: var(--accent-color);
+119:   color: var(--bg-primary);
+120:   transform: translate(2px, 2px);
+121:   box-shadow: 2px 2px 0 var(--shadow-color);
+122: }
+123: 
+124: .tabs-container {
+125:   display: flex;
+126:   flex-wrap: wrap;
+127:   gap: 0.5rem;
+128: }
+129: 
+130: .tab-button.active {
+131:   background-color: var(--accent-color);
+132:   color: var(--bg-primary);
+133:   box-shadow: inset 2px 2px 0 var(--shadow-color);
+134: }
+135: 
+136: h2 {
+137:   color: var(--accent-color);
+138:   text-shadow: 1px 1px 0 var(--shadow-color);
+139:   border-bottom: 2px solid var(--highlight);
+140:   padding-bottom: 0.5rem;
+141: }
+142: 
+143: h3 {
+144:   color: var(--highlight);
+145:   margin-top: 1.5rem;
+146: }
+147: 
+148: ul li, ol li {
+149:   margin-bottom: 0.5rem;
+150: }
+151: 
+152: .code-block {
+153:   background-color: var(--bg-primary);
+154:   border: 2px solid var(--border-color);
+155:   padding: 1rem;
+156:   margin: 1rem 0;
+157:   font-family: Courier New, monospace;
+158:   box-shadow: inset 2px 2px 4px var(--shadow-color);
+159:   overflow-x: auto;
+160:   white-space: pre-wrap;
+161: }
+162: 
+163: .diagram {
+164:   background-color: var(--bg-primary);
+165:   border: 2px solid var(--border-color);
+166:   padding: 1rem;
+167:   margin: 1rem 0;
+168:   text-align: center;
+169:   box-shadow: inset 2px 2px 4px var(--shadow-color);
+170:   font-style: italic;
+171: }
+172: 
+173: table {
+174:   width: 100%;
+175:   border-collapse: collapse;
+176:   margin: 1rem 0;
+177:   background-color: var(--bg-primary);
+178:   box-shadow: inset 2px 2px 4px var(--shadow-color);
+179: }
+180: 
+181: th, td {
+182:   border: 1px solid var(--border-color);
+183:   padding: 0.5rem;
+184:   text-align: left;
+185: }
+186: 
+187: th {
+188:   background-color: var(--accent-color);
+189:   color: var(--bg-primary);
+190: }
+191: 
+192: a {
+193:   color: var(--accent-color);
+194:   text-decoration: none;
+195:   box-shadow: 0 1px 0 var(--accent-color);
+196: }
+197: 
+198: a:hover {
+199:   color: var(--highlight);
+200:   box-shadow: 0 2px 0 var(--highlight);
+201: }
+202: 
+203: .theme-toggle {
+204:   background: none;
+205:   border: none;
+206:   font-size: 1.5rem;
+207:   cursor: pointer;
+208:   color: var(--accent-color);
+209:   width: 40px;
+210:   height: 40px;
+211:   display: flex;
+212:   align-items: center;
+213:   justify-content: center;
+214:   border-radius: 50%;
+215:   transition: all 0.3s;
+216: }
+217: 
+218: .theme-toggle:hover {
+219:   background-color: rgba(255, 0, 255, 0.1);
+220:   transform: rotate(15deg);
+221: }
+222: 
+223: /* Try Me Out Modal Styles */
+224: .modal-overlay {
+225:   position: fixed;
+226:   top: 0;
+227:   left: 0;
+228:   width: 100%;
+229:   height: 100%;
+230:   background-color: rgba(0, 0, 0, 0.5);
+231:   display: none;
+232:   justify-content: center;
+233:   align-items: center;
+234:   z-index: 1000;
+235: }
+236: 
+237: .modal-content {
+238:   background-color: var(--bg-secondary);
+239:   border: 2px solid var(--accent-color);
+240:   border-radius: 8px;
+241:   box-shadow: 0 4px 8px var(--shadow-color);
+242:   max-width: 800px;
+243:   max-height: 90vh;
+244:   overflow-y: auto;
+245:   position: relative;
+246: }
+247: 
+248: .modal-header {
+249:   display: flex;
+250:   justify-content: space-between;
+251:   align-items: center;
+252:   padding: 1rem;
+253:   border-bottom: 1px solid var(--border-color);
+254: }
+255: 
+256: .modal-header h2 {
+257:   margin: 0;
+258:   color: var(--accent-color);
+259: }
+260: 
+261: .close-button {
+262:   background: none;
+263:   border: none;
+264:   font-size: 2rem;
+265:   cursor: pointer;
+266:   color: var(--accent-color);
+267:   padding: 0;
+268:   margin: 0;
+269: }
+270: 
+271: .close-button:hover {
+272:   color: var(--highlight);
+273: }
+274: 
+275: .modal-body {
+276:   padding: 1rem;
+277: }
+278: 
+279: /* Override default wc-markdown styles to match our theme */
+280: wc-markdown {
+281:   display: block;
+282:   color: var(--text-primary);
+283:   font-family: Courier New, monospace;
+284: }
+285: 
+286: wc-markdown h1,
+287: wc-markdown h2,
+288: wc-markdown h3,
+289: wc-markdown h4,
+290: wc-markdown h5 {
+291:   color: var(--accent-color);
+292:   margin-top: 1rem;
+293:   margin-bottom: 0.5rem;
+294: }
+295: 
+296: wc-markdown p {
+297:   margin: 0.5rem 0;
+298:   line-height: 1.6;
+299: }
+300: 
+301: wc-markdown code {
+302:   background-color: var(--bg-primary);
+303:   padding: 0.2rem 0.4rem;
+304:   border-radius: 4px;
+305:   font-family: Courier New, monospace;
+306: }
+307: 
+308: wc-markdown pre {
+309:   background-color: var(--bg-primary);
+310:   border: 1px solid var(--border-color);
+311:   border-radius: 4px;
+312:   padding: 1rem;
+313:   overflow-x: auto;
+314:   margin: 1rem 0;
+315: }
+316: 
+317: wc-markdown pre code {
+318:   background: none;
+319:   padding: 0;
+320: }
+321: 
+322: wc-markdown ul,
+323: wc-markdown ol {
+324:   margin: 0.5rem 0;
+325:   padding-left: 1.5rem;
+326: }
+327: 
+328: wc-markdown li {
+329:   margin: 0.25rem 0;
+330: }
+331: 
+332: wc-markdown table {
+333:   width: 100%;
+334:   border-collapse: collapse;
+335:   margin: 1rem 0;
+336:   background-color: var(--bg-primary);
+337:   font-family: Courier New, monospace;
+338: }
+339: 
+340: wc-markdown th,
+341: wc-markdown td {
+342:   border: 1px solid var(--border-color);
+343:   padding: 0.5rem;
+344:   text-align: left;
+345: }
+346: 
+347: wc-markdown th {
+348:   background-color: var(--accent-color);
+349:   color: var(--bg-primary);
+350: }
+```
