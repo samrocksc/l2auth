@@ -276,36 +276,36 @@ a:hover {
   padding: 1rem;
 }
 
-/* Override default wc-markdown styles to match our theme */
-wc-markdown {
+/* Override default x-markdown styles to match our theme */
+x-markdown {
   display: block;
   color: var(--text-primary);
   font-family: Courier New, monospace;
 }
 
-wc-markdown h1,
-wc-markdown h2,
-wc-markdown h3,
-wc-markdown h4,
-wc-markdown h5 {
+x-markdown h1,
+x-markdown h2,
+x-markdown h3,
+x-markdown h4,
+x-markdown h5 {
   color: var(--accent-color);
   margin-top: 1rem;
   margin-bottom: 0.5rem;
 }
 
-wc-markdown p {
+x-markdown p {
   margin: 0.5rem 0;
   line-height: 1.6;
 }
 
-wc-markdown code {
+x-markdown code {
   background-color: var(--bg-primary);
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   font-family: Courier New, monospace;
 }
 
-wc-markdown pre {
+x-markdown pre {
   background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
   border-radius: 4px;
@@ -314,22 +314,22 @@ wc-markdown pre {
   margin: 1rem 0;
 }
 
-wc-markdown pre code {
+x-markdown pre code {
   background: none;
   padding: 0;
 }
 
-wc-markdown ul,
-wc-markdown ol {
+x-markdown ul,
+x-markdown ol {
   margin: 0.5rem 0;
   padding-left: 1.5rem;
 }
 
-wc-markdown li {
+x-markdown li {
   margin: 0.25rem 0;
 }
 
-wc-markdown table {
+x-markdown table {
   width: 100%;
   border-collapse: collapse;
   margin: 1rem 0;
@@ -337,14 +337,14 @@ wc-markdown table {
   font-family: Courier New, monospace;
 }
 
-wc-markdown th,
-wc-markdown td {
+x-markdown th,
+x-markdown td {
   border: 1px solid var(--border-color);
   padding: 0.5rem;
   text-align: left;
 }
 
-wc-markdown th {
+x-markdown th {
   background-color: var(--accent-color);
   color: var(--bg-primary);
 }

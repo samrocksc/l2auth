@@ -14,6 +14,10 @@
         <script type="module" src="components/tabs-component.js"></script>
         <script type="module" src="components/footer-component.js"></script>
         <script type="module" src="components/header-component.js"></script>
+        <script
+            type="module"
+            src="https://unpkg.com/wc-markdown@1.0.0/src/markdown.js"
+        ></script>
     </head>
     <body>
         <div class="main-wrapper">
@@ -133,6 +137,22 @@
             </main>
 
             <site-footer></site-footer>
+        </div>
+
+        <!-- Modal for displaying markdown content -->
+        <div class="modal-overlay" id="markdown-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-title">Endpoint Information</h2>
+                    <span id="close-modal" class="close-button">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <x-markdown
+                        id="markdown-content"
+                        sanitize="false"
+                    ></x-markdown>
+                </div>
+            </div>
         </div>
 
         <script src="scripts/main.js"></script>
