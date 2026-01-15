@@ -33,10 +33,10 @@ function initMarkdownModal() {
   const markdownContent = document.getElementById('markdown-content');
   const modalTitle = document.getElementById('modal-title');
 
-  // Debug: Check if x-markdown is available
+  // Debug: Check if wc-markdown is available
   console.log('Markdown content element:', markdownContent);
   if (markdownContent) {
-    console.log('x-markdown custom element defined:', customElements.get('x-markdown'));
+    console.log('wc-markdown custom element defined:', customElements.get('wc-markdown'));
   }
 
   // Close modal when close button is clicked
@@ -63,33 +63,14 @@ function initMarkdownModal() {
         modalTitle.textContent = title;
         console.log('Loading markdown file:', `/assets/markdown/${endpointType}.md`);
 
-        // Test if the file is accessible
-        fetch(`/assets/markdown/${endpointType}.md`)
-          .then(response => {
-            console.log('Fetch response status:', response.status);
-            if (!response.ok) {
-              console.error('Failed to fetch markdown file:', response.status, response.statusText);
-            }
-            return response.text();
-          })
-          .then(text => {
-            console.log('Successfully fetched markdown content:', text.substring(0, 100) + '...');
-          })
-          .catch(error => {
-            console.error('Error fetching markdown file:', error);
-          });
-
         markdownContent.setAttribute('src', `/assets/markdown/${endpointType}.md`);
 
         // Show modal
         modal.style.display = 'flex';
-
-        // Add error listener for the markdown component
-        // x-markdown doesn't have an onerror property, so we'll rely on console logging
       } catch (error) {
         console.error('Error loading markdown:', error);
         modalTitle.textContent = title;
-        markdownContent.value = '# Error\n\nFailed to load endpoint information.';
+        markdownContent.innerHTML = '# Error\n\nFailed to load endpoint information.';
         modal.style.display = 'flex';
       }
     }

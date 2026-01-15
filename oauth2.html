@@ -16,7 +16,7 @@
         <script type="module" src="components/header-component.js"></script>
         <script
             type="module"
-            src="https://unpkg.com/wc-markdown@1.0.0/src/markdown.js"
+            src="https://cdn.jsdelivr.net/gh/vanillawc/wc-markdown@1/index.js"
         ></script>
     </head>
     <body>
@@ -143,15 +143,14 @@
                     <span id="close-modal" class="close-button">&times;</span>
                 </div>
                 <div class="modal-body">
-                    <x-markdown
+                    <wc-markdown
                         id="markdown-content"
                         sanitize="false"
-                    ></x-markdown>
+                    ></wc-markdown>
                 </div>
             </div>
         </div>
         </div>
-
 
         <script src="scripts/main.js"></script>
     </body>
