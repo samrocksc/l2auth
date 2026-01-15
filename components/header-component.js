@@ -1,6 +1,5 @@
 import { LitElement, html, css } from 'https://unpkg.com/lit@2.0.0-rc.4/index.js?module';
 
-// Note: Dependencies (theme-toggle and tabs-component) need to be imported in the HTML files
 class HeaderComponent extends LitElement {
   static get styles() {
     return css`

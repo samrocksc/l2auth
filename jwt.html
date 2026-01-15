@@ -5,6 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>JWT - Learn to Auth!</title>
         <link rel="stylesheet" href="styles/main.css" />
+        <script>
+            // Apply theme immediately to prevent flicker
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        </script>
         <script type="module" src="components/theme-toggle.js"></script>
         <script type="module" src="components/tabs-component.js"></script>
         <script type="module" src="components/footer-component.js"></script>
