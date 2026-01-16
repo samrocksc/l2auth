@@ -1,4 +1,6 @@
 /* Retro 80s Auth Systems Theme */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 :root {
   --bg-primary: #ffffff;
   --bg-secondary: #f0f0f0;
@@ -11,6 +13,7 @@
   --success: #00ff00;
   --warning: #ffff00;
   --error: #ff0000;
+  --font-primary: 'Press Start 2P', cursive;
 }
 
 [data-theme="dark"] {
@@ -22,13 +25,14 @@
 }
 
 body {
-  font-family: Courier New, monospace;
+  font-family: var(--font-primary);
   background-color: var(--bg-primary);
   color: var(--text-primary);
   margin: 0;
   padding: 0;
   transition: background-color 0.3s, color 0.3s;
   line-height: 1.6;
+  font-size: 12px; /* Adjust base font size for better readability with Press Start 2P */
 }
 
 .main-wrapper {
@@ -57,7 +61,7 @@ header {
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 1.5rem; /* Reduced size for better fit with Press Start 2P */
   margin: 0;
   text-shadow: 2px 2px 0 var(--accent-color);
   color: var(--accent-color);
@@ -103,7 +107,7 @@ footer {
 }
 
 button, .tab-button, .try-me-btn {
-  font-family: Courier New, monospace;
+  font-family: var(--font-primary);
   background-color: var(--bg-primary);
   color: var(--text-primary);
   border: 2px solid var(--accent-color);
@@ -112,6 +116,7 @@ button, .tab-button, .try-me-btn {
   cursor: pointer;
   box-shadow: 4px 4px 0 var(--shadow-color);
   transition: all 0.2s;
+  font-size: 0.8rem; /* Adjust size for Press Start 2P */
 }
 
 button:hover, .tab-button:hover, .try-me-btn:hover {
@@ -125,6 +130,7 @@ button:hover, .tab-button:hover, .try-me-btn:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  font-size: 0.8rem; /* Adjust size for Press Start 2P */
 }
 
 .tab-button.active {
@@ -138,11 +144,13 @@ h2 {
   text-shadow: 1px 1px 0 var(--shadow-color);
   border-bottom: 2px solid var(--highlight);
   padding-bottom: 0.5rem;
+  font-size: 1.2rem; /* Adjust size for Press Start 2P */
 }
 
 h3 {
   color: var(--highlight);
   margin-top: 1.5rem;
+  font-size: 1rem; /* Adjust size for Press Start 2P */
 }
 
 ul li, ol li {
@@ -193,6 +201,10 @@ a {
   color: var(--accent-color);
   text-decoration: none;
   box-shadow: 0 1px 0 var(--accent-color);
+}
+
+a:visited {
+  color: var(--accent-color);
 }
 
 a:hover {
@@ -280,7 +292,8 @@ a:hover {
 x-markdown {
   display: block;
   color: var(--text-primary);
-  font-family: Courier New, monospace;
+  font-family: var(--font-primary);
+  font-size: 0.8rem; /* Adjust size for Press Start 2P */
 }
 
 x-markdown h1,
@@ -291,18 +304,19 @@ x-markdown h5 {
   color: var(--accent-color);
   margin-top: 1rem;
   margin-bottom: 0.5rem;
+  font-size: 1rem; /* Adjust size for Press Start 2P */
 }
 
 x-markdown p {
   margin: 0.5rem 0;
-  line-height: 1.6;
+  line-height: 1.8; /* Increased line height for better readability with Press Start 2P */
 }
 
 x-markdown code {
   background-color: var(--bg-primary);
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
-  font-family: Courier New, monospace;
+  font-family: 'Courier New', monospace; /* Keep monospace for code blocks */
 }
 
 x-markdown pre {
@@ -312,6 +326,7 @@ x-markdown pre {
   padding: 1rem;
   overflow-x: auto;
   margin: 1rem 0;
+  font-family: 'Courier New', monospace; /* Keep monospace for code blocks */
 }
 
 x-markdown pre code {
@@ -334,7 +349,7 @@ x-markdown table {
   border-collapse: collapse;
   margin: 1rem 0;
   background-color: var(--bg-primary);
-  font-family: Courier New, monospace;
+  font-family: 'Courier New', monospace; /* Keep monospace for tables */
 }
 
 x-markdown th,

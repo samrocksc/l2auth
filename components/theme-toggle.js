@@ -15,6 +15,7 @@ class ThemeToggle extends LitElement {
         display: flex;
         align-items: center;
         justify-content: center;
+        font-family: var(--font-primary);
       }
 
       .theme-toggle:hover {

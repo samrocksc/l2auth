@@ -15,11 +15,26 @@ class SiteFooter extends LitElement {
         border-top: 1px solid var(--border-color);
         margin-top: 2rem;
         box-shadow: 0 -2px 4px var(--shadow-color);
+        font-family: var(--font-primary);
+        font-size: 0.8rem;
       }
 
       p {
         margin: 0;
         color: var(--text-primary);
+      }
+
+      a {
+        color: var(--accent-color);
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: var(--highlight);
+      }
+
+      a:visited {
+        color: var(--accent-color); /* Prevent visited link color change */
       }
     `;
   }

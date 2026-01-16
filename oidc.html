@@ -5,6 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>OpenID Connect - Learn to Auth!</title>
         <link rel="stylesheet" href="styles/main.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+        />
         <script>
             // Apply theme immediately to prevent flicker
             const savedTheme = localStorage.getItem("theme") || "light";
@@ -59,13 +65,20 @@
                         </table>
 
                         <h3>ID Token Structure</h3>
-                        <div class="code-block">
-                            { "iss": "https://server.example.com", "sub":
-                            "24400320", "aud": "s6BhdRkqt3", "nonce":
-                            "n-0S6_WzA2Mj", "exp": 1311281970, "iat":
-                            1311280970, "auth_time": 1311280969, "acr":
-                            "urn:mace:incommon:iap:silver" }
-                        </div>
+                        <wc-markdown>
+```json
+{
+  "iss": "https://server.example.com",
+  "sub": "24400320",
+  "aud": "s6BhdRkqt3",
+  "nonce": "n-0S6_WzA2Mj",
+  "exp": 1311281970,
+  "iat": 1311280970,
+  "auth_time": 1311280969,
+  "acr": "urn:mace:incommon:iap:silver"
+}
+```
+                        </wc-markdown>
 
                         <h3>Authentication Flow</h3>
                         <ol>
@@ -88,10 +101,13 @@
                             OIDC adds a UserInfo endpoint to retrieve additional
                             user information:
                         </p>
-                        <div class="code-block">
-                            GET /userinfo HTTP/1.1 Host: server.example.com
-                            Authorization: Bearer SlAV32hkKG
-                        </div>
+                        <wc-markdown>
+```http
+GET /userinfo HTTP/1.1
+Host: server.example.com
+Authorization: Bearer SlAV32hkKG
+```
+                        </wc-markdown>
 
                         <button
                             class="try-me-btn"

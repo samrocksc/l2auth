@@ -10,7 +10,7 @@ class TabsComponent extends LitElement {
       }
 
       .tab-button {
-        font-family: Courier New, monospace;
+        font-family: var(--font-primary);
         background-color: var(--bg-primary);
         color: var(--text-primary);
         border: 2px solid var(--accent-color);
@@ -21,6 +21,7 @@ class TabsComponent extends LitElement {
         transition: all 0.2s;
         text-decoration: none;
         display: inline-block;
+        font-size: 0.8rem;
       }
 
       .tab-button:hover {
@@ -49,6 +50,7 @@ class TabsComponent extends LitElement {
         <a href="jwt.html" class="tab-button ${currentPage === 'jwt.html' ? 'active' : ''}">JWT</a>
         <a href="oauth2.html" class="tab-button ${currentPage === 'oauth2.html' ? 'active' : ''}">OAuth 2.0</a>
         <a href="oidc.html" class="tab-button ${currentPage === 'oidc.html' ? 'active' : ''}">OIDC</a>
+        <a href="concepts/index.html" class="tab-button ${currentPage === 'concepts/index.html' ? 'active' : ''}">Concepts</a>
       </div>
     `;
   }

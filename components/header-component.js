@@ -11,10 +11,13 @@ class HeaderComponent extends LitElement {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        font-family: var(--font-primary);
       }
 
       h1 {
         margin: 0;
+        font-family: var(--font-primary);
+        font-size: 1.2rem;
       }
     `;
   }

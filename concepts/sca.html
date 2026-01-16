@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SCA - Learn to Auth!</title>
+        <link rel="stylesheet" href="../styles/main.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+        />
+        <script>
+            // Apply theme immediately to prevent flicker
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        </script>
+        <script type="module" src="../components/theme-toggle.js"></script>
+        <script type="module" src="../components/tabs-component.js"></script>
+        <script type="module" src="../components/footer-component.js"></script>
+        <script type="module" src="../components/header-component.js"></script>
+    </head>
+    <body>
+        <div class="main-wrapper">
+            <site-header></site-header>
+
+            <main>
+                <div class="content-container">
+                    <section>
+                        <h2>Strong Customer Authentication (SCA)</h2>
+                        <p>
+                            Strong Customer Authentication (SCA) is a regulatory
+                            requirement under the second Payment Services
+                            Directive (PSD2) in the European Economic Area
+                            (EEA). It mandates that electronic payments require
+                            multi-factor authentication to enhance security.
+                        </p>
+
+                        <h3>SCA Requirements</h3>
+                        <p>
+                            SCA requires authentication based on at least two of
+                            the following three elements:
+                        </p>
+                        <ol>
+                            <li>
+                                <strong>Something You Know</strong> - Knowledge
+                                (e.g., password, PIN)
+                            </li>
+                            <li>
+                                <strong>Something You Have</strong> - Possession
+                                (e.g., phone, hardware token)
+                            </li>
+                            <li>
+                                <strong>Something You Are</strong> - Inherence
+                                (e.g., fingerprint, face recognition)
+                            </li>
+                        </ol>
+
+                        <h3>Exemptions</h3>
+                        <p>
+                            Certain transactions may be exempt from SCA
+                            requirements:
+                        </p>
+                        <ul>
+                            <li>Low-value transactions (under €30)</li>
+                            <li>
+                                Trusted beneficiaries (whitelisted merchants)
+                            </li>
+                            <li>
+                                Recurring transactions with the same merchant
+                            </li>
+                            <li>
+                                Transactions deemed low-risk by risk analysis
+                            </li>
+                        </ul>
+
+                        <h3>Implementation Challenges</h3>
+                        <p>
+                            Implementing SCA effectively while maintaining user
+                            experience involves:
+                        </p>
+                        <ul>
+                            <li>Balancing security with convenience</li>
+                            <li>
+                                Ensuring compatibility with existing systems
+                            </li>
+                            <li>
+                                Managing fallback mechanisms for failed
+                                authentication
+                            </li>
+                            <li>
+                                Complying with regional regulations beyond PSD2
+                            </li>
+                        </ul>
+
+                        <h3>Pros & Cons</h3>
+                        <ul>
+                            <li>
+                                ✅ Significantly increases transaction security
+                            </li>
+                            <li>
+                                ✅ Reduces fraud and unauthorized transactions
+                            </li>
+                            <li>✅ Complies with regulatory requirements</li>
+                            <li>
+                                ❌ Can impact user experience during checkout
+                            </li>
+                            <li>
+                                ❌ May increase transaction abandonment rates
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </main>
+
+            <site-footer></site-footer>
+        </div>
+    </body>
+</html>
