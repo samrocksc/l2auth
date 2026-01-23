@@ -18,10 +18,32 @@ class HeaderComponent extends LitElement {
         font-family: var(--font-primary);
       }
 
+      .header-content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .pizza-icon {
+        width: 40px;
+        height: 40px;
+      }
+
       h1 {
         margin: 0;
         font-family: var(--font-primary);
         font-size: 1.2rem;
+      }
+
+      @media (max-width: 768px) {
+        .pizza-icon {
+          width: 30px;
+          height: 30px;
+        }
+
+        h1 {
+          font-size: 1rem;
+        }
       }
     `;
   }
@@ -29,7 +51,10 @@ class HeaderComponent extends LitElement {
   render() {
     return html`
       <header>
-        <h1><a href="index.html" style="text-decoration: none; color: inherit;">Learn to Auth!</a></h1>
+        <div class="header-content">
+          <img src="/assets/pizza-icon.svg" alt="Pizza Icon" class="pizza-icon" />
+          <h1><a href="index.html" style="text-decoration: none; color: inherit;">Learn to Auth!</a></h1>
+        </div>
         <theme-toggle></theme-toggle>
       </header>
 
