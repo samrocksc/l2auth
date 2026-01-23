@@ -302,38 +302,59 @@ a:hover {
   padding: 1rem;
 }
 
-/* Override default x-markdown styles to match our theme */
-x-markdown {
+/* Override default x-markdown and wc-markdown styles to match our theme */
+x-markdown,
+wc-markdown {
   display: block;
   color: var(--text-primary);
   font-family: var(--font-primary);
   font-size: 0.8rem; /* Adjust size for Press Start 2P */
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Ensure wc-markdown handles long words and URLs */
+wc-markdown * {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 x-markdown h1,
 x-markdown h2,
 x-markdown h3,
 x-markdown h4,
-x-markdown h5 {
+x-markdown h5,
+wc-markdown h1,
+wc-markdown h2,
+wc-markdown h3,
+wc-markdown h4,
+wc-markdown h5 {
   color: var(--accent-color);
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   font-size: 1rem; /* Adjust size for Press Start 2P */
 }
 
-x-markdown p {
+x-markdown p,
+wc-markdown p {
   margin: 0.5rem 0;
   line-height: 1.8; /* Increased line height for better readability with Press Start 2P */
 }
 
-x-markdown code {
+x-markdown code,
+wc-markdown code {
   background-color: var(--bg-primary);
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   font-family: "Courier New", monospace; /* Keep monospace for code blocks */
+  word-break: break-word;
 }
 
-x-markdown pre {
+x-markdown pre,
+wc-markdown pre {
   background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
   border-radius: 4px;
@@ -341,39 +362,53 @@ x-markdown pre {
   overflow-x: auto;
   margin: 1rem 0;
   font-family: "Courier New", monospace; /* Keep monospace for code blocks */
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
-x-markdown pre code {
+x-markdown pre code,
+wc-markdown pre code {
   background: none;
   padding: 0;
+  word-break: break-word;
 }
 
 x-markdown ul,
-x-markdown ol {
+x-markdown ol,
+wc-markdown ul,
+wc-markdown ol {
   margin: 0.5rem 0;
   padding-left: 1.5rem;
 }
 
-x-markdown li {
+x-markdown li,
+wc-markdown li {
   margin: 0.25rem 0;
 }
 
-x-markdown table {
+x-markdown table,
+wc-markdown table {
   width: 100%;
   border-collapse: collapse;
   margin: 1rem 0;
   background-color: var(--bg-primary);
   font-family: "Courier New", monospace; /* Keep monospace for tables */
+  table-layout: fixed;
 }
 
 x-markdown th,
-x-markdown td {
+x-markdown td,
+wc-markdown th,
+wc-markdown td {
   border: 1px solid var(--border-color);
   padding: 0.5rem;
   text-align: left;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
-x-markdown th {
+x-markdown th,
+wc-markdown th {
   background-color: var(--accent-color);
   color: var(--bg-primary);
 }

@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Concepts - Learn to Auth!</title>
+        <title>AuthN vs AuthZ - Learn to Auth!</title>
         <link rel="stylesheet" href="../styles/main.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,41 +20,31 @@
         <script type="module" src="../components/tabs-component.js"></script>
         <script type="module" src="../components/footer-component.js"></script>
         <script type="module" src="../components/header-component.js"></script>
+        <script
+            type="module"
+            src="https://cdn.jsdelivr.net/gh/vanillawc/wc-markdown@1/index.js"
+        ></script>
     </head>
     <body>
         <div class="main-wrapper">
             <site-header></site-header>
 
-            <main>
-                <div class="content-container">
-                    <section>
-                        <h2>Authentication Concepts</h2>
-                        <p>
-                            This section covers important concepts and
-                            principles related to authentication and security.
-                        </p>
 
-                        <h3>Available Concepts:</h3>
-                        <ul>
-                            <li>
-                                <a href="sca.html"
-                                    >Strong Customer Authentication (SCA)</a
-                                >
-                                - Regulatory requirements for secure
-                                authentication
-                            </li>
-                            <li>
-                                <a href="auth-n-z.html"
-                                    >Authentication vs Authorization</a
-                                >
-                                - Understanding AuthN and AuthZ concepts
-                            </li>
-                        </ul>
+
+                                                <!-- biome-ignore format -->
+                        <wc-markdown
+                            style="
+                                word-wrap: break-word;
+                                overflow-wrap: break-word;
+                            "
+                        >
+Authorization and and authentication are two similar concepts; however they can be confused sometimes.
+
+A simplified understanding would be:
+- Authentication (AuthN): "Who are you?" (verifying identity)
+- Authorization (AuthZ): "What are you allowed to do?" (verifying permissions)
+                        </wc-markdown>
                     </section>
                 </div>
             </main>
-
             <site-footer></site-footer>
-        </div>
-    </body>
-</html>

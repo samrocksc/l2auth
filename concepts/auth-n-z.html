@@ -1,0 +1,109 @@
+<!-- biome-ignore format file -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>AuthN vs AuthZ - Learn to Auth!</title>
+        <link rel="stylesheet" href="../styles/main.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+        />
+        <script>
+            // Apply theme immediately to prevent flicker
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        </script>
+        <script type="module" src="../components/theme-toggle.js"></script>
+        <script type="module" src="../components/tabs-component.js"></script>
+        <script type="module" src="../components/footer-component.js"></script>
+        <script type="module" src="../components/header-component.js"></script>
+        <script
+            type="module"
+            src="https://cdn.jsdelivr.net/gh/vanillawc/wc-markdown@1/index.js"
+        ></script>
+    </head>
+    <body>
+        <div class="main-wrapper">
+            <site-header></site-header>
+
+            <main>
+                <div class="content-container">
+                    <section>
+                        <h2>Authorization vs. Authentication</h2>
+
+                        <!-- biome-ignore format -->
+                        <wc-markdown
+                            style="
+                                word-wrap: break-word;
+                                overflow-wrap: break-word;
+                            "
+                        >
+Authorization and and authentication are two similar concepts; however they can be confused sometimes.
+
+A simplified understanding would be:
+- Authentication (AuthN): "Who are you?" (verifying identity)
+- Authorization (AuthZ): "What are you allowed to do?" (verifying permissions)
+
+## Authentication
+Authorization is the process of determining what an authenticated user is allowed to do or access.
+
+This occurs with the `/auth` endpoint:
+```http
+GET https://{your_domain}.auth0.com/authorize?
+    response_type=code
+    &client_id={your_client_id}
+    &redirect_uri={your_callback_url}
+    &scope=openid%20profile%20email%20read:data%20write:data
+    &state={random_string}
+    &audience={your_api_identifier}
+```
+
+### Breakdown of the parameters:
+| Parameter | Description |
+|-----------|-------------|
+| `response_type=code` | Using Authorization Code flow |
+| `client_id` | Your application's client ID |
+| `redirect_uri` | Where to send the user after authentication |
+| `scope` | Defines the permissions being requested (authorization) |
+| `openid` | Request an ID token (for authentication) |
+| `profile` | Request basic profile info |
+| `email` | Request email address |
+| `read:data` | Custom API permission (authorization) |
+| `write:data` | Custom API permission (authorization) |
+| `state` | CSRF protection |
+| `audience` | The API identifier you want to access |
+
+It's important to understand that the scope in this situation is going to be telling the authenticator what access you would like access to, and it will check if you have access before giving back a code to exchange for a token.
+
+Speaking of the token.....let's move on:
+
+## Authorization
+Authorization is what an **authenticated user** is allowed to do.  
+
+Once you have authorized with the IDP(in this case Auth0), you will then need to exchange that code for a token, which will then be put in headers, or maybe Bearer to be able to communicate with the website:
+
+```http
+POST https://{your_domain}.auth0.com/oauth/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code
+&client_id={your_client_id}
+&client_secret={your_client_secret}
+&code={authorization_code}
+&redirect_uri={your_callback_url}
+```
+
+The response token is the _authorizer_
+                        </wc-markdown>
+                    </section>
+                </div>
+            </main>
+
+            <site-footer></site-footer>
+        </div>
+    </body>
+</html>
