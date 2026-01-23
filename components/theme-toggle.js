@@ -1,5 +1,8 @@
-import { LitElement, html, css } from 'https://unpkg.com/lit@2.0.0-rc.4/index.js?module';
-import { ref, createRef } from 'https://unpkg.com/lit@2.0.0-rc.4/directives/ref.js?module';
+import {
+  css,
+  html,
+  LitElement,
+} from 'https://unpkg.com/lit@2.0.0-rc.4/index.js?module';
 
 class ThemeToggle extends LitElement {
   static get styles() {
@@ -26,7 +29,7 @@ class ThemeToggle extends LitElement {
   }
   static get properties() {
     return {
-      theme: { type: String }
+      theme: { type: String },
     };
   }
 

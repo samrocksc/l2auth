@@ -74,6 +74,33 @@ No build step is required. The project uses modern browser features directly:
 
 Simply edit the HTML, CSS, or JS files and refresh your browser to see changes.
 
+### Code Quality
+
+This project uses [Biome](https://biomejs.dev/) for code formatting and linting. The configuration is optimized for web components and modern JavaScript development.
+
+To use Biome, you need Node.js installed:
+
+1. Install Biome:
+   ```bash
+   npm install -g @biomejs/biome
+   ```
+
+2. Format code:
+   ```bash
+   biome format --write .
+   ```
+
+3. Lint code:
+   ```bash
+   biome lint .
+   ```
+
+Alternatively, use the Makefile commands:
+```bash
+make format  # Format all files
+make lint    # Lint all files
+```
+
 ### Customization
 
 To modify themes:

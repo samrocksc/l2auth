@@ -1,8 +1,8 @@
 import {
-  LitElement,
-  html,
   css,
-} from "https://unpkg.com/lit@2.0.0-rc.4/index.js?module";
+  html,
+  LitElement,
+} from 'https://unpkg.com/lit@2.0.0-rc.4/index.js?module';
 
 class SiteFooter extends LitElement {
   static get styles() {
@@ -44,4 +44,4 @@ class SiteFooter extends LitElement {
   }
 }
 
-customElements.define("site-footer", SiteFooter);
+customElements.define('site-footer', SiteFooter);

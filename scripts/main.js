@@ -17,11 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
 // Service worker registration for offline support (optional)
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(registration => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((registration) => {
         console.log('SW registered: ', registration);
       })
-      .catch(registrationError => {
+      .catch((registrationError) => {
         console.log('SW registration failed: ', registrationError);
       });
   });
@@ -36,7 +37,10 @@ function initMarkdownModal() {
   // Debug: Check if wc-markdown is available
   console.log('Markdown content element:', markdownContent);
   if (markdownContent) {
-    console.log('wc-markdown custom element defined:', customElements.get('wc-markdown'));
+    console.log(
+      'wc-markdown custom element defined:',
+      customElements.get('wc-markdown')
+    );
   }
 
   // Close modal when close button is clicked
@@ -61,16 +65,23 @@ function initMarkdownModal() {
       try {
         // Set modal title and content
         modalTitle.textContent = title;
-        console.log('Loading markdown file:', `/assets/markdown/${endpointType}.md`);
+        console.log(
+          'Loading markdown file:',
+          `/assets/markdown/${endpointType}.md`
+        );
 
-        markdownContent.setAttribute('src', `/assets/markdown/${endpointType}.md`);
+        markdownContent.setAttribute(
+          'src',
+          `/assets/markdown/${endpointType}.md`
+        );
 
         // Show modal
         modal.style.display = 'flex';
       } catch (error) {
         console.error('Error loading markdown:', error);
         modalTitle.textContent = title;
-        markdownContent.innerHTML = '# Error\n\nFailed to load endpoint information.';
+        markdownContent.innerHTML =
+          '# Error\n\nFailed to load endpoint information.';
         modal.style.display = 'flex';
       }
     }

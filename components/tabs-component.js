@@ -1,4 +1,8 @@
-import { LitElement, html, css } from 'https://unpkg.com/lit@2.0.0-rc.4/index.js?module';
+import {
+  css,
+  html,
+  LitElement,
+} from 'https://unpkg.com/lit@2.0.0-rc.4/index.js?module';
 
 class TabsComponent extends LitElement {
   static get styles() {
@@ -41,7 +45,8 @@ class TabsComponent extends LitElement {
 
   render() {
     // Determine the current page for active state
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const currentPage =
+      window.location.pathname.split('/').pop() || 'index.html';
 
     // Determine if we're currently in the concepts directory
     const isInConceptsDir = window.location.pathname.includes('/concepts/');

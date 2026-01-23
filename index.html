@@ -1,79 +1,86 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Learn to Auth!</title>
-        <link rel="stylesheet" href="styles/main.css" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-            rel="stylesheet"
-        />
-        <script>
-            // Apply theme immediately to prevent flicker
-            const savedTheme = localStorage.getItem("theme") || "light";
-            document.documentElement.setAttribute("data-theme", savedTheme);
-        </script>
-        <script type="module" src="components/theme-toggle.js"></script>
-        <script type="module" src="components/footer-component.js"></script>
-        <script type="module" src="components/tabs-component.js"></script>
-        <script type="module" src="components/header-component.js"></script>
-    </head>
-    <body>
-        <div class="main-wrapper">
-            <site-header></site-header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn to Auth!</title>
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      // Apply theme immediately to prevent flicker
+      const savedTheme = localStorage.getItem("theme") || "light";
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    </script>
+    <script type="module" src="components/theme-toggle.js"></script>
+    <script type="module" src="components/footer-component.js"></script>
+    <script type="module" src="components/tabs-component.js"></script>
+    <script type="module" src="components/header-component.js"></script>
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <site-header></site-header>
 
-            <main>
-                <div class="content-container">
-                    <section>
-                        <h2>Welcome to Learn to Auth!</h2>
-                        <p>
-                            This educational resource provides comprehensive
-                            guides on various authentication systems. Select a
-                            topic from the navigation above to get started.
-                        </p>
+      <main>
+        <div class="content-container">
+          <section>
+            <h2>Welcome to Learn to Auth!</h2>
+            <p>
+              I wanted to build a resource that breaks down all of the various
+              different methods of authentication that are out there. Many web
+              developers will utilize these concepts 100+ times a day without
+              thinking about how they actually work. I wanted to uncover the
+              mysteries of authentication and provide somewhat comprehensive
+              explanation for each method. My goal here is to build
+              progressively in how things work as I learn how to integrate it.
+            </p>
 
-                        <h3>Available Topics:</h3>
-                        <ul>
-                            <li>
-                                <a href="basic-auth.html"
-                                    >Basic Authentication</a
-                                >
-                                - Simple username/password authentication
-                            </li>
-                            <li>
-                                <a href="jwt.html">JWT (JSON Web Tokens)</a> -
-                                Token-based authentication system
-                            </li>
-                            <li>
-                                <a href="oauth2.html">OAuth 2.0</a> -
-                                Authorization framework for third-party access
-                            </li>
-                            <li>
-                                <a href="oidc.html">OpenID Connect</a> -
-                                Identity layer built on OAuth 2.0
-                            </li>
-                            <li>
-                                <a href="concepts/index.html">Concepts</a> -
-                                Important authentication and security concepts
-                            </li>
-                        </ul>
+            <p>
+              I'll also be introducing concepts from some of the front runners
+              in the authentication space specifically customer identity access
+              management(CIAM).
+            </p>
 
-                        <h3>About This Resource</h3>
-                        <p>
-                            This guide aims to demystify modern authentication
-                            systems by explaining how each works, their pros and
-                            cons, and when to use them. The information is
-                            presented in a beginner-friendly manner with
-                            technical examples and diagrams.
-                        </p>
-                    </section>
-                </div>
-            </main>
+            <h3>Available Topics:</h3>
+            <ul>
+              <li>
+                <a href="basic-auth.html">Basic Authentication</a>
+                - Simple username/password authentication
+              </li>
+              <li>
+                <a href="jwt.html">JWT (JSON Web Tokens)</a> - Token-based
+                authentication system
+              </li>
+              <li>
+                <a href="oauth2.html">OAuth 2.0</a> - Authorization framework
+                for third-party access
+              </li>
+              <li>
+                <a href="oidc.html">OpenID Connect</a> - Identity layer built on
+                OAuth 2.0
+              </li>
+              <li>
+                <a href="concepts/index.html">Concepts</a> - Important
+                authentication and security concepts
+              </li>
+            </ul>
 
-            <site-footer></site-footer>
+            <h3>About This Resource</h3>
+            <p>
+              This guide aims to demystify modern authentication systems by
+              explaining how each works, their pros and cons, and when to use
+              them. The information is presented in a beginner-friendly manner
+              with technical examples and diagrams.
+            </p>
+          </section>
         </div>
-    </body>
+      </main>
+
+      <site-footer></site-footer>
+    </div>
+  </body>
 </html>

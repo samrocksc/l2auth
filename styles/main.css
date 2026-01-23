@@ -1,5 +1,5 @@
 /* Retro 80s Auth Systems Theme */
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
 :root {
   --bg-primary: #ffffff;
@@ -13,7 +13,7 @@
   --success: #00ff00;
   --warning: #ffff00;
   --error: #ff0000;
-  --font-primary: 'Press Start 2P', cursive;
+  --font-primary: "Press Start 2P", cursive;
 }
 
 [data-theme="dark"] {
@@ -30,7 +30,9 @@ body {
   color: var(--text-primary);
   margin: 0;
   padding: 0;
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
   line-height: 1.6;
   font-size: 12px; /* Adjust base font size for better readability with Press Start 2P */
 }
@@ -102,11 +104,17 @@ footer {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-button, .tab-button, .try-me-btn {
+button,
+.tab-button,
+.try-me-btn {
   font-family: var(--font-primary);
   background-color: var(--bg-primary);
   color: var(--text-primary);
@@ -119,7 +127,9 @@ button, .tab-button, .try-me-btn {
   font-size: 0.8rem; /* Adjust size for Press Start 2P */
 }
 
-button:hover, .tab-button:hover, .try-me-btn:hover {
+button:hover,
+.tab-button:hover,
+.try-me-btn:hover {
   background-color: var(--accent-color);
   color: var(--bg-primary);
   transform: translate(2px, 2px);
@@ -153,7 +163,8 @@ h3 {
   font-size: 1rem; /* Adjust size for Press Start 2P */
 }
 
-ul li, ol li {
+ul li,
+ol li {
   margin-bottom: 0.5rem;
 }
 
@@ -162,7 +173,9 @@ ul li, ol li {
   border: 2px solid var(--border-color);
   padding: 1rem;
   margin: 1rem 0;
-  font-family: Courier New, monospace;
+  font-family:
+    Courier New,
+    monospace;
   box-shadow: inset 2px 2px 4px var(--shadow-color);
   overflow-x: auto;
   white-space: pre-wrap;
@@ -186,7 +199,8 @@ table {
   box-shadow: inset 2px 2px 4px var(--shadow-color);
 }
 
-th, td {
+th,
+td {
   border: 1px solid var(--border-color);
   padding: 0.5rem;
   text-align: left;
@@ -316,7 +330,7 @@ x-markdown code {
   background-color: var(--bg-primary);
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
-  font-family: 'Courier New', monospace; /* Keep monospace for code blocks */
+  font-family: "Courier New", monospace; /* Keep monospace for code blocks */
 }
 
 x-markdown pre {
@@ -326,7 +340,7 @@ x-markdown pre {
   padding: 1rem;
   overflow-x: auto;
   margin: 1rem 0;
-  font-family: 'Courier New', monospace; /* Keep monospace for code blocks */
+  font-family: "Courier New", monospace; /* Keep monospace for code blocks */
 }
 
 x-markdown pre code {
@@ -349,7 +363,7 @@ x-markdown table {
   border-collapse: collapse;
   margin: 1rem 0;
   background-color: var(--bg-primary);
-  font-family: 'Courier New', monospace; /* Keep monospace for tables */
+  font-family: "Courier New", monospace; /* Keep monospace for tables */
 }
 
 x-markdown th,
