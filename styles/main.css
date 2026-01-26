@@ -9,6 +9,11 @@
   src: url(https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK0nS.ttf) format('truetype');
 }
 
+/* Ensure smooth transitions to prevent flickering */
+* {
+  transition: none !important;
+}
+
 :root {
   --bg-primary: #ffffff;
   --bg-secondary: #f0f0f0;
@@ -43,10 +48,35 @@ body {
     color 0.3s;
   line-height: 1.6;
   font-size: 12px; /* Adjust base font size for better readability with Press Start 2P */
+
+  /* Prevent scrollbar jitter by always showing scrollbar or making it overlay */
+  overflow-y: scroll; /* Always show vertical scrollbar to prevent layout shifts */
+
+  /* WebKit browsers - make scrollbar overlay content instead of taking space */
+  overflow-y: overlay;
+}
+
+/* WebKit scrollbar styling (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--highlight);
 }
 
 .main-wrapper {
   padding-top: 1rem;
+  padding-bottom: 20px; /* Add bottom padding to prevent content from touching edges */
   max-width: 80%;
   margin: 0 auto;
   min-height: 100vh;
@@ -57,6 +87,7 @@ body {
 @media (max-width: 768px) {
   .main-wrapper {
     max-width: 100%;
+    padding-bottom: 20px; /* Ensure padding on mobile devices too */
   }
 }
 

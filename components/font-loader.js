@@ -9,15 +9,7 @@ class FontLoader extends LitElement {
     return css`
       :host {
         display: block;
-        visibility: hidden;
-      }
-
-      :host(.fonts-loaded) {
-        visibility: visible;
-      }
-
-      :host(.fonts-loading) {
-        visibility: hidden;
+        visibility: visible; /* Always visible by default to prevent flicker */
       }
 
       /* Fallback for when JavaScript is disabled */
@@ -38,14 +30,13 @@ class FontLoader extends LitElement {
   constructor() {
     super();
     this.loaded = false;
-    this.classList.add('fonts-loading');
 
-    // Fallback timeout in case font loading takes too long
+    // Much shorter timeout to prevent noticeable delays
     setTimeout(() => {
       if (!this.loaded) {
         this.onFontsLoaded();
       }
-    }, 3000);
+    }, 500); // Reduced from 3000ms to 500ms
   }
 
   connectedCallback() {
@@ -69,8 +60,7 @@ class FontLoader extends LitElement {
     if (this.loaded) return; // Prevent double execution
 
     this.loaded = true;
-    this.classList.remove('fonts-loading');
-    this.classList.add('fonts-loaded');
+    // No need to change classes since we're always visible now
   }
 
   render() {

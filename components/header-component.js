@@ -16,6 +16,10 @@ class HeaderComponent extends LitElement {
         justify-content: space-between;
         align-items: center;
         font-family: var(--font-primary);
+        /* Add these to prevent flickering */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        will-change: transform;
       }
 
       .header-content {
@@ -27,6 +31,8 @@ class HeaderComponent extends LitElement {
       .pizza-icon {
         width: 40px;
         height: 40px;
+        /* Ensure icon loads quickly */
+        contain: strict;
       }
 
       h1 {
