@@ -8,10 +8,13 @@
         <link rel="icon" type="image/svg+xml" href="/assets/pizza-icon.svg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <link
             href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
             rel="stylesheet"
+            media="print" onload="this.media='all'"
         />
+        <script type="module" src="components/font-loader.js"></script>
         <script>
             // Apply theme immediately to prevent flicker
             const savedTheme = localStorage.getItem("theme") || "light";
@@ -24,51 +27,53 @@
         <script type="module" src="components/header-component.js"></script>
     </head>
     <body>
-        <div class="main-wrapper">
-            <site-header></site-header>
+        <font-loader>
+            <div class="main-wrapper">
+                <site-header></site-header>
 
-            <main>
-                <div class="content-container">
-                    <section>
-                        <h2>Basic Authentication</h2>
-                        <p>
-                            Basic authentication transmits credentials as
-                            username and password encoded with Base64. While
-                            simple to implement, it should always be used over
-                            HTTPS as the credentials are easily decoded.
-                        </p>
+                <main>
+                    <div class="content-container">
+                        <section>
+                            <h2>Basic Authentication</h2>
+                            <p>
+                                Basic authentication transmits credentials as
+                                username and password encoded with Base64. While
+                                simple to implement, it should always be used over
+                                HTTPS as the credentials are easily decoded.
+                            </p>
 
-                        <h3>How It Works</h3>
-                        <ol>
-                            <li>User provides username and password</li>
-                            <li>
-                                Credentials are Base64 encoded (not encrypted!)
-                            </li>
-                            <li>
-                                Browser sends Authorization header with
-                                credentials
-                            </li>
-                            <li>Server decodes and validates credentials</li>
-                        </ol>
+                            <h3>How It Works</h3>
+                            <ol>
+                                <li>User provides username and password</li>
+                                <li>
+                                    Credentials are Base64 encoded (not encrypted!)
+                                </li>
+                                <li>
+                                    Browser sends Authorization header with
+                                    credentials
+                                </li>
+                                <li>Server decodes and validates credentials</li>
+                            </ol>
 
-                        <h3>Authorization Header Example</h3>
-                        <div class="code-block">
-                            Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
-                        </div>
+                            <h3>Authorization Header Example</h3>
+                            <div class="code-block">
+                                Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ=
+                            </div>
 
-                        <h3>Pros & Cons</h3>
-                        <ul>
-                            <li>✅ Simple to implement</li>
-                            <li>✅ Widely supported</li>
-                            <li>❌ Credentials sent with every request</li>
-                            <li>❌ Not encrypted (only encoded)</li>
-                            <li>❌ No expiration mechanism</li>
-                        </ul>
-                    </section>
-                </div>
-            </main>
+                            <h3>Pros & Cons</h3>
+                            <ul>
+                                <li>✅ Simple to implement</li>
+                                <li>✅ Widely supported</li>
+                                <li>❌ Credentials sent with every request</li>
+                                <li>❌ Not encrypted (only encoded)</li>
+                                <li>❌ No expiration mechanism</li>
+                            </ul>
+                        </section>
+                    </div>
+                </main>
 
-            <site-footer></site-footer>
-        </div>
+                <site-footer></site-footer>
+            </div>
+        </font-loader>
     </body>
 </html>

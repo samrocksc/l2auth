@@ -1,5 +1,13 @@
 /* Retro 80s Auth Systems Theme */
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+/* Font loading strategy to prevent FOUC */
+@font-face {
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK0nS.ttf) format('truetype');
+}
 
 :root {
   --bg-primary: #ffffff;

@@ -3,15 +3,17 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>JWT - Learn to Auth!</title>
         <title>JWT (JSON Web Tokens) - Learn to Auth!</title>
         <link rel="stylesheet" href="styles/main.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <link
             href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
             rel="stylesheet"
+            media="print" onload="this.media='all'"
         />
+        <script type="module" src="components/font-loader.js"></script>
         <script>
             // Apply theme immediately to prevent flicker
             const savedTheme = localStorage.getItem("theme") || "light";
@@ -23,69 +25,71 @@
         <script type="module" src="components/header-component.js"></script>
     </head>
     <body>
-        <div class="main-wrapper">
-            <site-header></site-header>
+        <font-loader>
+            <div class="main-wrapper">
+                <site-header></site-header>
 
-            <main>
-                <div class="content-container">
-                    <section>
-                        <h2>JWT (JSON Web Tokens)</h2>
-                        <p>
-                            JWTs are compact, URL-safe tokens that contain
-                            claims about an entity. They're commonly used for
-                            stateless authentication.
-                        </p>
+                <main>
+                    <div class="content-container">
+                        <section>
+                            <h2>JWT (JSON Web Tokens)</h2>
+                            <p>
+                                JWTs are compact, URL-safe tokens that contain
+                                claims about an entity. They're commonly used for
+                                stateless authentication.
+                            </p>
 
-                        <h3>Token Structure</h3>
-                        <p>
-                            JWTs consist of three parts separated by dots:
-                            Header.Payload.Signature
-                        </p>
+                            <h3>Token Structure</h3>
+                            <p>
+                                JWTs consist of three parts separated by dots:
+                                Header.Payload.Signature
+                            </p>
 
-                        <div class="code-block">
-                            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-                        </div>
+                            <div class="code-block">
+                                eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                            </div>
 
-                        <h3>Authentication Flow</h3>
-                        <ol>
-                            <li>User authenticates with username/password</li>
-                            <li>Server creates and signs JWT</li>
-                            <li>Client stores JWT (usually in localStorage)</li>
-                            <li>
-                                Client sends JWT in Authorization header for
-                                subsequent requests
-                            </li>
-                            <li>
-                                Server verifies JWT signature and extracts user
-                                info
-                            </li>
-                        </ol>
+                            <h3>Authentication Flow</h3>
+                            <ol>
+                                <li>User authenticates with username/password</li>
+                                <li>Server creates and signs JWT</li>
+                                <li>Client stores JWT (usually in localStorage)</li>
+                                <li>
+                                    Client sends JWT in Authorization header for
+                                    subsequent requests
+                                </li>
+                                <li>
+                                    Server verifies JWT signature and extracts user
+                                    info
+                                </li>
+                            </ol>
 
-                        <h3>Authorization Header Example</h3>
-                        <div class="code-block">
-                            Authorization: Bearer
-                            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-                        </div>
+                            <h3>Authorization Header Example</h3>
+                            <div class="code-block">
+                                Authorization: Bearer
+                                eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                            </div>
 
-                        <h3>Pros & Cons</h3>
-                        <ul>
-                            <li>
-                                ✅ Stateless (no server-side session storage)
-                            </li>
-                            <li>✅ Compact and self-contained</li>
-                            <li>✅ Works well with REST APIs</li>
-                            <li>❌ Tokens can't be easily invalidated</li>
-                            <li>❌ Larger payload size than session IDs</li>
-                            <li>
-                                ❌ Sensitive data exposure risk if not handled
-                                carefully
-                            </li>
-                        </ul>
-                    </section>
-                </div>
-            </main>
+                            <h3>Pros & Cons</h3>
+                            <ul>
+                                <li>
+                                    ✅ Stateless (no server-side session storage)
+                                </li>
+                                <li>✅ Compact and self-contained</li>
+                                <li>✅ Works well with REST APIs</li>
+                                <li>❌ Tokens can't be easily invalidated</li>
+                                <li>❌ Larger payload size than session IDs</li>
+                                <li>
+                                    ❌ Sensitive data exposure risk if not handled
+                                    carefully
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+                </main>
 
-            <site-footer></site-footer>
-        </div>
+                <site-footer></site-footer>
+            </div>
+        </font-loader>
     </body>
 </html>

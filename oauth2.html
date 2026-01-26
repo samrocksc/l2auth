@@ -7,10 +7,13 @@
         <link rel="stylesheet" href="styles/main.css" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <link
             href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
             rel="stylesheet"
+            media="print" onload="this.media='all'"
         />
+        <script type="module" src="components/font-loader.js"></script>
         <script>
             // Apply theme immediately to prevent flicker
             const savedTheme = localStorage.getItem("theme") || "light";
@@ -26,121 +29,138 @@
         ></script>
     </head>
     <body>
-        <div class="main-wrapper">
-            <site-header></site-header>
+        <font-loader>
+            <div class="main-wrapper">
+                <site-header></site-header>
 
-            <main>
-                <div class="content-container">
-                    <section>
-                        <h2>OAuth 2.0</h2>
-                        <p>
-                            OAuth 2.0 is an authorization framework that allows
-                            third-party applications to obtain limited access to
-                            HTTP services.
-                        </p>
+                <main>
+                    <div class="content-container">
+                        <section>
+                            <h2>OAuth 2.0</h2>
+                            <p>
+                                OAuth 2.0 is an authorization framework that allows
+                                third-party applications to obtain limited access to
+                                HTTP services.
+                            </p>
 
-                        <h3>Key Roles</h3>
-                        <ul>
-                            <li>
-                                <strong>Resource Owner</strong>: User who
-                                authorizes access
-                            </li>
-                            <li>
-                                <strong>Client</strong>: Application requesting
-                                access
-                            </li>
-                            <li>
-                                <strong>Resource Server</strong>: API server
-                                hosting protected resources
-                            </li>
-                            <li>
-                                <strong>Authorization Server</strong>: Server
-                                that authenticates resource owner and issues
-                                tokens
-                            </li>
-                        </ul>
+                            <h3>Key Roles</h3>
+                            <ul>
+                                <li>
+                                    <strong>Resource Owner</strong>: User who
+                                    authorizes access
+                                </li>
+                                <li>
+                                    <strong>Client</strong>: Application requesting
+                                    access
+                                </li>
+                                <li>
+                                    <strong>Resource Server</strong>: API server
+                                    hosting protected resources
+                                </li>
+                                <li>
+                                    <strong>Authorization Server</strong>: Server
+                                    that authenticates resource owner and issues
+                                    tokens
+                                </li>
+                            </ul>
 
-                        <h3>Authorization Code Flow</h3>
-                        <div class="diagram">
-                            Browser → Client App → Authorization Server →
-                            Browser → Client App → Resource Server
-                        </div>
+                            <h3>Authorization Code Flow</h3>
+                            <div class="diagram">
+                                Browser → Client App → Authorization Server →
+                                Browser → Client App → Resource Server
+                            </div>
 
-                        <ol>
-                            <li>User accesses client application</li>
-                            <li>Client redirects to authorization server</li>
-                            <li>User authenticates and grants permission</li>
-                            <li>
-                                Authorization server returns authorization code
-                            </li>
-                            <li>Client exchanges code for access token</li>
-                            <li>
-                                Client accesses protected resources using access
-                                token
-                            </li>
-                        </ol>
+                            <ol>
+                                <li>User accesses client application</li>
+                                <li>Client redirects to authorization server</li>
+                                <li>User authenticates and grants permission</li>
+                                <li>
+                                    Authorization server returns authorization code
+                                </li>
+                                <li>Client exchanges code for access token</li>
+                                <li>
+                                    Client accesses protected resources using access
+                                    token
+                                </li>
+                            </ol>
 
-                        <h3>Access Token Example</h3>
-                        <div class="code-block">
-                            Authorization: Bearer
-                            MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3
-                        </div>
+                            <h3>Access Token Example</h3>
+                            <div class="code-block">
+                                Authorization: Bearer
+                                MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3
+                            </div>
 
-                        <h3>Grant Types</h3>
-                        <ul>
-                            <li>
-                                <strong>Authorization Code</strong>: Standard
-                                flow for web apps
-                            </li>
-                            <li>
-                                <strong>Implicit</strong>: Simplified flow for
-                                SPAs (deprecated)
-                            </li>
-                            <li>
-                                <strong>Client Credentials</strong>:
-                                Machine-to-machine communication
-                            </li>
-                            <li>
-                                <strong>Resource Owner Password</strong>: Direct
-                                credential exchange
-                            </li>
-                        </ul>
+                            <h3>Grant Types</h3>
+                            <ul>
+                                <li>
+                                    <strong>Authorization Code</strong>: Standard
+                                    flow for web apps
+                                </li>
+                                <li>
+                                    <strong>Implicit</strong>: Simplified flow for
+                                    SPAs (deprecated)
+                                </li>
+                                <li>
+                                    <strong>Client Credentials</strong>:
+                                    Machine-to-machine communication
+                                </li>
+                                <li>
+                                    <strong>Resource Owner Password</strong>: Direct
+                                    credential exchange
+                                </li>
+                            </ul>
 
-                        <button
-                            class="try-me-btn"
-                            data-try-me-out="authorization-endpoint"
-                        >
-                            Try Me Out: Authorization Endpoint
-                        </button>
-                        <button
-                            class="try-me-btn"
-                            data-try-me-out="token-endpoint"
-                        >
-                            Try Me Out: Token Endpoint
-                        </button>
+                            <button
+                                class="try-me-btn"
+                                data-try-me-out="authorization-endpoint"
+                            >
+                                Try Me Out: Authorization Endpoint
+                            </button>
+                            <button
+                                class="try-me-btn"
+                                data-try-me-out="token-endpoint"
+                            >
+                                Try Me Out: Token Endpoint
+                            </button>
 
-                        <h3>Pros & Cons</h3>
-                        <ul>
-                            <li>✅ Standardized protocol</li>
-                            <li>
-                                ✅ Delegated access without sharing passwords
-                            </li>
-                            <li>
-                                ✅ Multiple grant types for different use cases
-                            </li>
-                            <li>❌ Complex implementation</li>
-                            <li>
-                                ❌ Redirect-based flows vulnerable to
-                                interception
-                            </li>
-                        </ul>
-                    </section>
+                            <h3>Pros & Cons</h3>
+                            <ul>
+                                <li>✅ Standardized protocol</li>
+                                <li>
+                                    ✅ Delegated access without sharing passwords
+                                </li>
+                                <li>
+                                    ✅ Multiple grant types for different use cases
+                                </li>
+                                <li>❌ Complex implementation</li>
+                                <li>
+                                    ❌ Redirect-based flows vulnerable to
+                                    interception
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+                </main>
+
+                <site-footer></site-footer>
+            </div>
+
+            <!-- Modal for displaying markdown content -->
+            <div class="modal-overlay" id="markdown-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="modal-title">Endpoint Information</h2>
+                        <span id="close-modal" class="close-button">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <wc-markdown
+                            id="markdown-content"
+                            sanitize="false"
+                        ></wc-markdown>
+                    </div>
                 </div>
-            </main>
-
-            <site-footer></site-footer>
-        </div>
-
+            </div>
+        </font-loader>
         <!-- Modal for displaying markdown content -->
         <div class="modal-overlay" id="markdown-modal">
             <div class="modal-content">
@@ -156,7 +176,6 @@
                 </div>
             </div>
         </div>
-
         <script src="scripts/main.js"></script>
     </body>
 </html>
