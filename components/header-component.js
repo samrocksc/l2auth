@@ -1,15 +1,14 @@
 import {
-  css,
-  html,
-  LitElement,
-} from 'https://unpkg.com/lit@2.0.0-rc.4/index.js?module';
+	css,
+	html,
+	LitElement,
+} from "https://unpkg.com/lit@2.0.0-rc.4/index.js?module";
 
 class HeaderComponent extends LitElement {
-  static get styles() {
-    return css`
+	static get styles() {
+		return css`
       :host {
         display: block;
-        /* Fix for potential flickering */
         contain: layout style paint;
       }
 
@@ -41,9 +40,12 @@ class HeaderComponent extends LitElement {
         /* Ensure consistent rendering */
         transform: translateZ(0);
         backface-visibility: hidden;
-        
+
         /* Prevent potential transitions during page loads */
         transition: none;
+
+        /* Ensure header renders immediately without waiting for other components */
+        min-height: 60px;
       }
 
       .header-content {
@@ -83,14 +85,19 @@ class HeaderComponent extends LitElement {
         }
       }
     `;
-  }
+	}
 
-  render() {
-    return html`
+	render() {
+		return html`
       <div class="site-header-container">
         <header>
           <div class="header-content">
-            <img src="/assets/pizza-icon.svg" alt="Pizza Icon" class="pizza-icon" />
+            <img
+              src="/assets/pizza-icon.svg"
+              alt="Pizza Icon"
+              class="pizza-icon"
+              loading="eager"
+            />
             <h1><a href="/">Learn to Auth!</a></h1>
           </div>
           <theme-toggle></theme-toggle>
@@ -101,7 +108,7 @@ class HeaderComponent extends LitElement {
         </nav>
       </div>
     `;
-  }
+	}
 }
 
-customElements.define('site-header', HeaderComponent);
+customElements.define("site-header", HeaderComponent);

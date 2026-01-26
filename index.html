@@ -1,102 +1,145 @@
-### /Users/sam/GitHub/personal/l2auth/index.html
-```html
-1: <!doctype html>
-2: <html lang="en">
-3:     <head>
-4:         <meta charset="UTF-8" />
-5:         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-6:         <title>Learn to Auth!</title>
-7:         <link rel="stylesheet" href="styles/main.css" />
-8:         <link rel="icon" type="image/svg+xml" href="/assets/pizza-icon.svg" />
-9:         <link rel="preconnect" href="https://fonts.googleapis.com" />
-10:         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-11:         <link rel="preload" href="https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK0nS.ttf" as="font" type="font/ttf" crossorigin>
-12:         <link rel="preload" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-13:         <link
-14:             href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-15:             rel="stylesheet"
-16:             media="print" onload="this.media='all'"
-17:         />
-18:         <script type="module" src="components/font-loader.js"></script>
-19:         <script>
-20:             // Apply theme immediately to prevent flicker
-21:             const savedTheme = localStorage.getItem("theme") || "light";
-22:             document.documentElement.setAttribute("data-theme", savedTheme);
-23:         </script>
-24:         <script type="module" src="components/theme-toggle.js"></script>
-25:         <script type="module" src="components/tabs-component.js"></script>
-26:         <script type="module" src="components/footer-component.js"></script>
-27:         <script type="module" src="components/header-component.js"></script>
-28:         <script src="scripts/main.js"></script>
-29:     </head>
-30:     <body>
-31:         <font-loader>
-32:             <div class="main-wrapper">
-33:                 <site-header></site-header>
-34: 
-35:             <main>
-36:                 <div class="content-container">
-37:                     <section>
-38:                         <h2>Welcome to Learn to Auth!</h2>
-39:                         <p>
-40:                             I wanted to build a resource that breaks down all of
-41:                             the various different methods of authentication that
-42:                             are out there. Many web developers will utilize
-43:                             these concepts 100+ times a day without thinking
-44:                             about how they actually work. I wanted to uncover
-45:                             the mysteries of authentication and provide somewhat
-46:                             comprehensive explanation for each method. My goal
-47:                             here is to build progressively in how things work as
-48:                             I learn how to integrate it.
-49:                         </p>
-50: 
-51:                         <p>
-52:                             I'll also be introducing concepts from some of the
-53:                             front runners in the authentication space
-54:                             specifically customer identity access
-55:                             management(CIAM).
-56:                         </p>
-57: 
-58:                         <h3>Available Topics:</h3>
-59:                         <ul>
-60:                             <li>
-61:                                 <a href="basic-auth.html"
-62:                                     >Basic Authentication</a
-63:                                 >
-64:                                 - Simple username/password authentication
-65:                             </li>
-66:                             <li>
-67:                                 <a href="jwt.html">JWT (JSON Web Tokens)</a> -
-68:                                 Token-based authentication system
-69:                             </li>
-70:                             <li>
-71:                                 <a href="oauth2.html">OAuth 2.0</a> -
-72:                                 Authorization framework for third-party access
-73:                             </li>
-74:                             <li>
-75:                                 <a href="oidc.html">OpenID Connect</a> -
-76:                                 Identity layer built on OAuth 2.0
-77:                             </li>
-78:                             <li>
-79:                                 <a href="concepts/index.html">Concepts</a> -
-80:                                 Important authentication and security concepts
-81:                             </li>
-82:                         </ul>
-83: 
-84:                         <h3>About This Resource</h3>
-85:                         <p>
-86:                             This guide aims to demystify modern authentication
-87:                             systems by explaining how each works, their pros and
-88:                             cons, and when to use them. The information is
-89:                             presented in a beginner-friendly manner with
-90:                             technical examples and diagrams.
-91:                         </p>
-92:                     </section>
-93:                 </div>
-94:             </main>
-95: 
-96:             <site-footer></site-footer>
-97:         </font-loader>
-98:     </body>
-99: </html>
-```
+<!doctype html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Learn to Auth!</title>
+      <link rel="stylesheet" href="styles/main.css" />
+      <link rel="icon" type="image/svg+xml" href="/assets/pizza-icon.svg" />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link rel="preload" href="https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK0nS.ttf" as="font" type="font/ttf" crossorigin>
+      
+      <!-- Inline critical CSS for immediate header rendering -->
+      <style>
+        /* Critical header styles to prevent FOUC */
+        site-header {
+          display: block !important;
+          contain: layout style paint !important;
+        }
+        .site-header-container {
+          contain: layout style paint !important;
+        }
+        header {
+          background-color: #f0f0f0 !important;
+          padding: 1rem !important;
+          border-bottom: 2px solid #ff00ff !important;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+          display: flex !important;
+          justify-content: space-between !important;
+          align-items: center !important;
+          font-family: "Press Start 2P", cursive !important;
+          min-height: 60px !important;
+          position: relative !important;
+          width: 100% !important;
+          box-sizing: border-box !important;
+        }
+        .header-content {
+          display: flex !important;
+          align-items: center !important;
+        }
+        .pizza-icon {
+          width: 40px !important;
+          height: 40px !important;
+        }
+        h1 {
+          margin: 0 !important;
+        }
+        h1 a {
+          text-decoration: none !important;
+          color: inherit !important;
+        }
+        nav {
+          background-color: #f0f0f0 !important;
+          padding: 0.5rem !important;
+          border-bottom: 1px solid #cccccc !important;
+        }
+      </style>
+      
+      <!-- Load fonts properly to prevent jumps -->
+      <link
+          href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+          rel="stylesheet"
+      />
+      
+      <script>
+          // Apply theme immediately to prevent flicker
+          const savedTheme = localStorage.getItem("theme") || "light";
+          document.documentElement.setAttribute("data-theme", savedTheme);
+      </script>
+      <script type="module" src="components/font-loader.js"></script>
+      <script type="module" src="components/theme-toggle.js"></script>
+      <script type="module" src="components/tabs-component.js"></script>
+      <script type="module" src="components/footer-component.js"></script>
+      <script type="module" src="components/header-component.js"></script>
+      <script src="scripts/main.js"></script>
+  </head>
+  <body>
+      <div class="main-wrapper">
+          <site-header></site-header>
+
+          <main>
+              <div class="content-container">
+                  <section>
+                      <h2>Welcome to Learn to Auth!</h2>
+                      <p>
+                          I wanted to build a resource that breaks down all of
+                          the various different methods of authentication that
+                          are out there. Many web developers will utilize
+                          these concepts 100+ times a day without thinking
+                          about how they actually work. I wanted to uncover
+                          the mysteries of authentication and provide somewhat
+                          comprehensive explanation for each method. My goal
+                          here is to build progressively in how things work as
+                          I learn how to integrate it.
+                      </p>
+
+                      <p>
+                          I'll also be introducing concepts from some of the
+                          front runners in the authentication space
+                          specifically customer identity access
+                          management(CIAM).
+                      </p>
+
+                      <h3>Available Topics:</h3>
+                      <ul>
+                          <li>
+                              <a href="basic-auth.html"
+                                  >Basic Authentication</a
+                              >
+                              - Simple username/password authentication
+                          </li>
+                          <li>
+                              <a href="jwt.html">JWT (JSON Web Tokens)</a> -
+                              Token-based authentication system
+                          </li>
+                          <li>
+                              <a href="oauth2.html">OAuth 2.0</a> -
+                              Authorization framework for third-party access
+                          </li>
+                          <li>
+                              <a href="oidc.html">OpenID Connect</a> -
+                              Identity layer built on OAuth 2.0
+                          </li>
+                          <li>
+                              <a href="concepts/index.html">Concepts</a> -
+                              Important authentication and security concepts
+                          </li>
+                      </ul>
+
+                      <h3>About This Resource</h3>
+                      <p>
+                          This guide aims to demystify modern authentication
+                          systems by explaining how each works, their pros and
+                          cons, and when to use them. The information is
+                          presented in a beginner-friendly manner with
+                          technical examples and diagrams.
+                      </p>
+                  </section>
+              </div>
+            </main>
+
+            <site-footer></site-footer>
+        </div>
+    </body>
+</html>
