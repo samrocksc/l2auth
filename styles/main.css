@@ -14,6 +14,18 @@
   transition: none !important;
 }
 
+/* Prevent header from shifting when scrollbars appear */
+.site-header-container {
+  contain: layout style paint;
+  transform: translateZ(0); /* Hardware acceleration */
+}
+
+/* Ensure the header doesn't flicker */
+site-header {
+  display: block;
+  contain: layout style paint;
+}
+
 :root {
   --bg-primary: #ffffff;
   --bg-secondary: #f0f0f0;
@@ -54,6 +66,10 @@ body {
 
   /* WebKit browsers - make scrollbar overlay content instead of taking space */
   overflow-y: overlay;
+
+  /* Ensure consistent rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* WebKit scrollbar styling (Chrome, Safari) */
@@ -82,6 +98,10 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+
+  /* Prevent layout shifts */
+  box-sizing: border-box;
+  width: 100%;
 }
 
 @media (max-width: 768px) {

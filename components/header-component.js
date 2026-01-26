@@ -7,6 +7,18 @@ import {
 class HeaderComponent extends LitElement {
   static get styles() {
     return css`
+      :host {
+        display: block;
+        /* Fix for potential flickering */
+        contain: layout style paint;
+      }
+
+      .site-header-container {
+        contain: layout style paint;
+        width: 100%;
+        transform: translateZ(0); /* Hardware acceleration */
+      }
+
       header {
         background-color: var(--bg-secondary, #f0f0f0);
         padding: 1rem;
@@ -20,6 +32,18 @@ class HeaderComponent extends LitElement {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         will-change: transform;
+
+        /* Prevent header from shifting when scrollbars appear */
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+
+        /* Ensure consistent rendering */
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        
+        /* Prevent potential transitions during page loads */
+        transition: none;
       }
 
       .header-content {
@@ -41,6 +65,13 @@ class HeaderComponent extends LitElement {
         font-size: 1.2rem;
       }
 
+      h1 a {
+        text-decoration: none;
+        color: inherit;
+        /* Prevent link hover effects during page transitions */
+        transition: none;
+      }
+
       @media (max-width: 768px) {
         .pizza-icon {
           width: 30px;
@@ -56,17 +87,19 @@ class HeaderComponent extends LitElement {
 
   render() {
     return html`
-      <header>
-        <div class="header-content">
-          <img src="/assets/pizza-icon.svg" alt="Pizza Icon" class="pizza-icon" />
-          <h1><a href="index.html" style="text-decoration: none; color: inherit;">Learn to Auth!</a></h1>
-        </div>
-        <theme-toggle></theme-toggle>
-      </header>
+      <div class="site-header-container">
+        <header>
+          <div class="header-content">
+            <img src="/assets/pizza-icon.svg" alt="Pizza Icon" class="pizza-icon" />
+            <h1><a href="/">Learn to Auth!</a></h1>
+          </div>
+          <theme-toggle></theme-toggle>
+        </header>
 
-      <nav>
-        <tabs-component></tabs-component>
-      </nav>
+        <nav>
+          <tabs-component></tabs-component>
+        </nav>
+      </div>
     `;
   }
 }
