@@ -69,8 +69,11 @@ class LazyWcMarkdown extends HTMLElement {
     this._revealed = true;
     this._stopPolling();
 
+    console.log("[lazy-wc-markdown] _reveal called with html:", html.substring(0, 200) + (html.length > 200 ? "..." : ""));
+
     // Create shadow root and inject highlighted HTML there → immune to external mutation
     const shadow = this.attachShadow({ mode: "open" });
+    console.log("[lazy-wc-markdown] shadow root created:", shadow);
 
     // Inject a style tag with !important to override any leaking :root * rules
     const style = document.createElement("style");
@@ -139,16 +142,25 @@ class LazyWcMarkdown extends HTMLElement {
       }
     `;
     shadow.appendChild(style);
+    console.log("[lazy-wc-markdown] style tag injected into shadow root");
 
     // Highlight the HTML string: create a temp container, set innerHTML, highlight, then capture result
     const temp = document.createElement("div");
     temp.innerHTML = html;
+    console.log("[lazy-wc-markdown] temp innerHTML before highlight:", temp.innerHTML.substring(0, 200) + (temp.innerHTML.length > 200 ? "..." : ""));
+
     WCMarkdown.highlight(temp); // Apply Prism syntax highlighting to code blocks inside temp
+    console.log("[lazy-wc-markdown] WCMarkdown.highlight(temp) called");
+
     const highlightedHtml = temp.innerHTML;
+    console.log("[lazy-wc-markdown] temp innerHTML after highlight:", highlightedHtml.substring(0, 200) + (highlightedHtml.length > 200 ? "..." : ""));
+    console.log("[lazy-wc-markdown] highlightedHtml contains 'token' ?", highlightedHtml.includes('class="token"'));
 
     shadow.innerHTML += highlightedHtml; // append after <style>
+    console.log("[lazy-wc-markdown] shadow.innerHTML set. Final content:", shadow.innerHTML.substring(0, 200) + (shadow.innerHTML.length > 200 ? "..." : ""));
 
     this.setAttribute("rendered", "");
+    console.log("[lazy-wc-markdown] rendered attribute set");
   }
 }
 
