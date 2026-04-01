@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ID Token vs. Access Token - Learn to Auth!</title>
+        <link rel="stylesheet" href="../styles/main.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+            media="print" onload="this.media='all'"
+        />
+        <script type="module" src="../components/font-loader.js"></script>
+        <script>
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        </script>
+        <script type="module" src="../components/theme-toggle.js"></script>
+        <script type="module" src="../components/tabs-component.js"></script>
+        <script type="module" src="../components/footer-component.js"></script>
+        <script type="module" src="../components/header-component.js"></script>
+        <script
+            type="module"
+            src="https://cdn.jsdelivr.net/gh/vanillawc/wc-markdown@1/index.js"
+        ></script>
+    </head>
+    <body>
+        <font-loader>
+            <div class="main-wrapper">
+                <site-header></site-header>
+
+                <main>
+                    <div class="content-container">
+                        <section>
+                            <h2>ID Token vs. Access Token</h2>
+
+                            <wc-markdown>
+## The Simple Version
+
+| | ID Token | Access Token |
+|--|----------|--------------|
+| **Says** | "This is who you are" | "This lets you access something" |
+| **Used by** | Your app (frontend) | An API (backend) |
+| **Contains** | User identity info | Permissions/scopes |
+
+---
+
+## ID Token — "Who are you?"
+
+The ID token proves the user's identity. Your app reads it to know **who logged in**.
+
+- It's a JWT signed by the identity provider
+- It contains claims like `sub`, `name`, `email`, `picture`
+- Your app **reads** it; it should never be sent to an API
+
+**Example:**
+```json
+{
+  "iss": "https://auth.example.com/",
+  "sub": "248289761001",
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "exp": 1704070800
+}
+```
+
+---
+
+## Access Token — "Here is what you can do"
+
+The access token proves your app has permission to call an API. The API **reads** it to decide whether to fulfill the request.
+
+- Can be a JWT or an opaque string
+- It contains scopes that say what data the app is allowed to access
+- Your app **sends** it to APIs as a Bearer token in the `Authorization` header
+
+**Example request:**
+```http
+GET /api/user-data HTTP/1.1
+Host: api.example.com
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs...
+```
+
+---
+
+## Think of It Like a Badge and a Key Card
+
+- **ID Token** = Your photo ID badge. It says who you are. You show it to prove your identity.
+- **Access Token** = A key card. It opens specific doors. The door checks the card to decide whether to let you in.
+
+---
+
+## How They Fit Into the Flow
+
+```
+1. User logs in at the identity provider
+2. Your app receives:
+   ├── ID Token      → use this to know WHO the user is
+   └── Access Token  → use this to talk to APIs on behalf of the user
+3. When calling an API:
+   GET /api/data
+   Authorization: Bearer <access_token>
+   (the API validates the access token and returns data)
+```
+
+---
+
+## Key Takeaway
+
+- **ID token** → for your app, to identify the user
+- **Access token** → for APIs, to authorize the request
+
+Never confuse the two. Sending an ID token to an API will be rejected. Sending an access token to your app will give you nothing useful.
+                            </wc-markdown>
+                        </section>
+                    </div>
+                </main>
+
+                <site-footer></site-footer>
+            </div>
+        </font-loader>
+    </body>
+</html>
