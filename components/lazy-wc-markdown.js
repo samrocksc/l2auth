@@ -109,6 +109,17 @@ class LazyWcMarkdown extends HTMLElement {
     });
     observer.observe(this, { childList: true, characterData: true, subtree: true });
 
+    // Debug: what we actually put in the element
+    const visibleText = this.textContent.trim();
+    console.debug("lazy-wc-markdown: _reveal called", {
+      htmlLength: html.length,
+      htmlPreview: html.slice(0, 200),
+      innerHTMLLength: this.innerHTML.length,
+      innerHTMLPreview: this.innerHTML.slice(0, 200),
+      visibleTextLength: visibleText.length,
+      visibleTextPreview: visibleText.slice(0, 200),
+    });
+
     // Debug: verify we actually have highlighted code blocks
     const codeBlocks = this.querySelectorAll('code[class*="language-"]');
     if (codeBlocks.length) {
