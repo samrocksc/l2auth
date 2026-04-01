@@ -1,25 +1,15 @@
-import "./wc-markdown.js";
-
 /**
  * lazy-wc-markdown
  *
  * Prevents FOUC when loading <wc-markdown> content.
+ * Wraps wc-markdown in the light DOM; polls until wc-markdown has rendered,
+ * then sets [rendered] attribute → CSS reveals with animation.
  *
- * Usage — put raw markdown inside:
+ * Usage — put raw markdown inside the element:
  *   <lazy-wc-markdown>
  *   ## Hello World
  *   Some **markdown** here.
  *   </lazy-wc-markdown>
- *
- * How it works:
- *   1. On connect, moves all light-DOM children into the inner <wc-markdown>
- *   2. <wc-markdown> parses and renders the markdown into its own innerHTML
- *   3. Polls until <wc-markdown> has rendered content
- *   4. Sets [rendered] attribute → CSS reveals the content
- *
- * CSS in main.css handles visibility:
- *   lazy-wc-markdown:not([rendered])  { visibility: hidden; }
- *   lazy-wc-markdown[rendered]        { visibility: visible; transition: opacity 0.25s; }
  */
 class LazyWcMarkdown extends HTMLElement {
   constructor() {
@@ -27,17 +17,24 @@ class LazyWcMarkdown extends HTMLElement {
     this._revealed = false;
     this._pollInterval = null;
 
-    const shadow = this.attachShadow({ mode: "open" });
-    shadow.innerHTML = `<wc-markdown></wc-markdown>`;
+    // Create wc-markdown as a light-DOM child (no shadow DOM)
+    // We use a div as the lazy-wrapper container
+    this._wrapper = document.createElement("div");
+    this._wrapper.style.display = "contents";
+
+    const wc = document.createElement("wc-markdown");
+    this._wrapper.appendChild(wc);
   }
 
   connectedCallback() {
-    const wc = this.shadowRoot.querySelector("wc-markdown");
-
-    // Move all light-DOM markdown content into wc-markdown
+    // Move all slotted light-DOM markdown content into the inner wc-markdown
+    const wc = this._wrapper.querySelector("wc-markdown");
     while (this.firstChild) {
       wc.appendChild(this.firstChild);
     }
+
+    // Insert our wrapper + wc-markdown into the actual DOM
+    this.appendChild(this._wrapper);
 
     this._startPolling(wc);
   }
@@ -79,6 +76,21 @@ class LazyWcMarkdown extends HTMLElement {
     if (this._revealed) return;
     this._revealed = true;
     this._stopPolling();
+
+    // Remove the display:contents so the wrapper participates in layout
+    this._wrapper.style.display = "";
+
+    // Transfer wc-markdown's rendered content up into the lazy-wc-markdown element
+    // so it sits exactly where the element is in the document
+    const wc = this._wrapper.querySelector("wc-markdown");
+    const rendered = wc.innerHTML;
+
+    // Move rendered content to the host element
+    this.innerHTML = rendered;
+
+    // Remove the now-redundant wrapper
+    this._wrapper.remove();
+
     this.setAttribute("rendered", "");
   }
 }
