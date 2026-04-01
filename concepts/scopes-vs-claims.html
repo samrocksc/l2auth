@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Scopes vs. Claims - Learn to Auth!</title>
+        <link rel="stylesheet" href="../styles/main.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+            media="print" onload="this.media='all'"
+        />
+        <script type="module" src="../components/font-loader.js"></script>
+        <script>
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        </script>
+        <script type="module" src="../components/theme-toggle.js"></script>
+        <script type="module" src="../components/tabs-component.js"></script>
+        <script type="module" src="../components/footer-component.js"></script>
+        <script type="module" src="../components/header-component.js"></script>
+        <script
+            type="module"
+            src="https://cdn.jsdelivr.net/gh/vanillawc/wc-markdown@1/index.js"
+        ></script>
+    </head>
+    <body>
+        <font-loader>
+            <div class="main-wrapper">
+                <site-header></site-header>
+
+                <main>
+                    <div class="content-container">
+                        <section>
+                            <h2>Scopes vs. Claims</h2>
+
+                            <wc-markdown>
+## The Short Version
+
+- **Scope** = *What* your app is asking permission to access
+- **Claim** = *A piece of information* about a user (name, email, etc.)
+
+Think of scopes as the **questions** your app asks, and claims as the **answers** the identity provider returns.
+
+---
+
+## Scopes
+
+A scope is a string that identifies the *resource and access level* your app is requesting from the authorization server.
+
+### Common Scopes
+
+| Scope | What It Means |
+|-------|---------------|
+| `openid` | Request authentication (required for OIDC) |
+| `profile` | Access to basic user profile info |
+| `email` | Access to the user's email address |
+| `phone` | Access to the user's phone number |
+| `address` | Access to the user's postal address |
+| `offline_access` | Issue a refresh token |
+| `read:data` | Read access to a custom API |
+| `write:data` | Write access to a custom API |
+
+### How Scopes Work
+
+When you request an authorization code, you list the scopes you want:
+
+```http
+GET /authorize?
+    response_type=code&
+    client_id=your_client_id&
+    redirect_uri=https://yourapp.com/callback&
+    scope=openid%20profile%20email&
+    state=random_string
+```
+
+The identity provider checks whether the **user** has authorized those scopes, and only grants what the user approved.
+
+---
+
+## Claims
+
+A claim is a single **key-value pair** of information about a user. The identity provider returns claims inside the ID token or userinfo response.
+
+### Standard OIDC Claims
+
+| Claim | What It Is |
+|-------|-----------|
+| `sub` | Subject identifier — unique user ID |
+| `name` | User's full display name |
+| `given_name` | User's first name |
+| `family_name` | User's last name |
+| `email` | User's email address |
+| `email_verified` | Whether the email has been verified |
+| `picture` | URL to the user's profile picture |
+| `phone_number` | User's phone number |
+| `phone_number_verified` | Whether the phone number is verified |
+| `preferred_username` | User's chosen username |
+| `locale` | User's preferred language/region |
+| `nonce` | Opaque value to prevent replay attacks |
+| `at_hash` | Access token hash (for ID token validation) |
+| `aud` | Audience — who this token is intended for |
+| `iss` | Issuer — which identity provider issued the token |
+| `exp` | Expiration timestamp |
+| `iat` | Issued-at timestamp |
+| `acr` | Authentication Context Class Reference |
+| `amr` | Authentication Methods References |
+| `azp` | Authorized party (client_id of the app) |
+
+---
+
+## How Scopes and Claims Relate
+
+Scopes are the **request**. Claims are the **response**.
+
+When you request scopes, the identity provider maps them to the corresponding claims:
+
+| Scopes Requested | Claims Returned |
+|------------------|-----------------|
+| `openid` | `sub` |
+| `openid profile` | `sub`, `name`, `given_name`, `family_name`, `preferred_username`, `picture` |
+| `openid email` | `sub`, `email`, `email_verified` |
+| `openid phone` | `sub`, `phone_number`, `phone_number_verified` |
+| `openid profile email phone` | All of the above combined |
+
+---
+
+## Key Differences
+
+| | Scope | Claim |
+|--|-------|-------|
+| **What it is** | A permission request | A piece of user data |
+| **Direction** | Client → Identity Provider (request) | Identity Provider → Client (response) |
+| **Format** | String identifier | Key-value pair (e.g. `"name": "Jane Doe"`) |
+| **Examples** | `openid`, `profile`, `email` | `sub`, `name`, `email` |
+| **Where it appears** | Authorization request URL | ID token, userinfo response |
+
+---
+
+## Example Flow
+
+```
+1. App requests: scope=openid profile email
+2. User logs in and approves the requested scopes
+3. Identity provider returns an ID token containing:
+   - sub, name, given_name, family_name, email, email_verified
+   (based on the approved scopes)
+```
+                            </wc-markdown>
+                        </section>
+                    </div>
+                </main>
+
+                <site-footer></site-footer>
+            </div>
+        </font-loader>
+    </body>
+</html>

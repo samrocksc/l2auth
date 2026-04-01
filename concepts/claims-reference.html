@@ -1,0 +1,514 @@
+<!dooptype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Standard Claims Reference - Learn to Auth!</title>
+        <link rel="stylesheet" href="../styles/main.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+            media="print" onload="this.media='all'"
+        />
+        <script type="module" src="../components/font-loader.js"></script>
+        <script>
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        </script>
+        <script type="module" src="../components/theme-toggle.js"></script>
+        <script type="module" src="../components/tabs-component.js"></script>
+        <script type="module" src="../components/footer-component.js"></script>
+        <script type="module" src="../components/header-component.js"></script>
+        <script
+            type="module"
+            src="https://cdn.jsdelivr.net/gh/vanillawc/wc-markdown@1/index.js"
+        ></script>
+    </head>
+    <body>
+        <font-loader>
+            <div class="main-wrapper">
+                <site-header></site-header>
+
+                <main>
+                    <div class="content-container">
+                        <section>
+                            <h2>Standard Claims Reference</h2>
+
+                            <wc-markdown>
+A complete reference of standard OIDC and OAuth 2.0 claims — what they mean, which flow uses them, and how they interact.
+
+---
+
+## Identity Claims
+
+### `sub` — Subject
+**What:** The unique identifier for the end user, assigned by the identity provider.
+
+**Used in:** Every OIDC flow — this is the only required claim in an ID token.
+
+```json
+{ "sub": "248289761001" }
+```
+
+**Notes:**
+- Stable across time — the same user always gets the same `sub`
+- Never reveal this to untrusted parties — it's an opaque internal identifier
+- Often used as the primary key for linking the identity to your own user database
+
+---
+
+### `name`
+**What:** The user's full display name.
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "name": "Jane Doe" }
+```
+
+---
+
+### `given_name`
+**What:** The user's first (given) name.
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "given_name": "Jane" }
+```
+
+---
+
+### `family_name`
+**What:** The user's last (family/surname) name.
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "family_name": "Doe" }
+```
+
+---
+
+### `middle_name`
+**What:** The user's middle name(s).
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "middle_name": "Marie" }
+```
+
+---
+
+### `nickname`
+**What:** A casual name the user prefers to be known by.
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "nickname": "Janey" }
+```
+
+---
+
+### `preferred_username`
+**What:** The user's chosen username or login handle.
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "preferred_username": "j.doe" }
+```
+
+---
+
+### `profile`
+**What:** A URL to the user's profile page.
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "profile": "https://example.com/users/j.doe" }
+```
+
+---
+
+### `picture`
+**What:** A URL to the user's profile picture or avatar.
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "picture": "https://example.com/avatars/j.doe.jpg" }
+```
+
+---
+
+### `website`
+**What:** A URL to the user's personal or profile website.
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "website": "https://janedoe.example.com" }
+```
+
+---
+
+### `email`
+**What:** The user's preferred email address.
+
+**Used in:** OIDC when `email` scope is requested.
+
+```json
+{ "email": "jane.doe@example.com" }
+```
+
+---
+
+### `email_verified`
+**What:** Boolean indicating whether the identity provider has verified the email address.
+
+**Used in:** OIDC when `email` scope is requested.
+
+```json
+{ "email": "jane.doe@example.com", "email_verified": true }
+```
+
+**Notes:**
+- `false` means the user entered it themselves but it hasn't been confirmed
+- Always check this if you need a verified email for sensitive operations
+
+---
+
+### `gender`
+**What:** The user's gender.
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "gender": "female" }
+```
+
+---
+
+### `birthdate`
+**What:** The user's date of birth in ISO 8601 format.
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "birthdate": "1980-01-15" }
+```
+
+---
+
+### `zoneinfo`
+**What:** The user's time zone string (IANA Time Zone Database format).
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "zoneinfo": "America/New_York" }
+```
+
+---
+
+### `locale`
+**What:** The user's preferred language and region (BCP 47 format).
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "locale": "en-US" }
+```
+
+---
+
+### `phone_number`
+**What:** The user's preferred telephone number.
+
+**Used in:** OIDC when `phone` scope is requested.
+
+```json
+{ "phone_number": "+1-555-123-4567" }
+```
+
+---
+
+### `phone_number_verified`
+**What:** Boolean indicating whether the phone number has been verified.
+
+**Used in:** OIDC when `phone` scope is requested.
+
+```json
+{ "phone_number_verified": true }
+```
+
+---
+
+### `address`
+**What:** The user's preferred postal address, as a structured object.
+
+**Used in:** OIDC when `address` scope is requested.
+
+```json
+{
+  "address": {
+    "formatted": "100 Main Street\nSpringfield, IL 62701\nUSA",
+    "street_address": "100 Main Street",
+    "locality": "Springfield",
+    "region": "IL",
+    "postal_code": "62701",
+    "country": "US"
+  }
+}
+```
+
+---
+
+### `updated_at`
+**What:** Unix timestamp of when the user's profile information was last updated.
+
+**Used in:** OIDC when `profile` scope is requested.
+
+```json
+{ "updated_at": 1704067200 }
+```
+
+---
+
+## Protocol Claims
+
+### `iss` — Issuer
+**What:** The URL of the identity provider that issued this token.
+
+**Used in:** Every JWT/OIDC token — this is a required claim.
+
+```json
+{ "iss": "https://auth.example.com/" }
+```
+
+**Validation:** Your app MUST verify this matches your expected identity provider URL.
+
+---
+
+### `aud` — Audience
+**What:** Who this token is intended for. Either the client_id of your app, or an API identifier.
+
+**Used in:** Every JWT/OIDC token — this is a required claim.
+
+```json
+{ "aud": "s6BhdRkqt3" }
+```
+
+**Notes:**
+- If the token is meant for an API (access token), this is the API's identifier
+- If it's an ID token, this is your app's `client_id`
+- Your app MUST verify `aud` contains its own `client_id`
+
+---
+
+### `exp` — Expiration Time
+**What:** Unix timestamp after which the token is no longer valid.
+
+**Used in:** Every JWT/OIDC token — this is a required claim.
+
+```json
+{ "exp": 1704070800 }
+```
+
+**Validation:** Your app MUST reject tokens where `exp` is in the past.
+
+---
+
+### `iat` — Issued At
+**What:** Unix timestamp of when the token was issued.
+
+**Used in:** Every JWT/OIDC token — this is a required claim.
+
+```json
+{ "iat": 1704067200 }
+```
+
+---
+
+### `auth_time` — Authentication Time
+**What:** Unix timestamp of when the user last authenticated (logged in).
+
+**Used in:** OIDC ID tokens when the `profile` or `email` scopes are requested.
+
+```json
+{ "auth_time": 1704067200 }
+```
+
+---
+
+### `nonce`
+**What:** A random, opaque string passed in the authorization request to prevent replay attacks.
+
+**Used in:** OIDC authorization requests and ID tokens.
+
+```
+# In the authorization request:
+GET /authorize?...&nonce=n-0S6_WzA2Mj...
+
+# In the ID token:
+{ "nonce": "n-0S6_WzA2Mj" }
+```
+
+**Validation:** Your app MUST verify the `nonce` in the ID token matches the one you sent in the authorization request.
+
+---
+
+### `at_hash` — Access Token Hash
+**What:** The base64url encoding of the left half of the hash of the access token, signed with the same key as the ID token.
+
+**Used in:** OIDC ID tokens.
+
+```json
+{ "at_hash": "4Pt2-SwEkG3i2_1vIa8F0A" }
+```
+
+**Purpose:** Allows the client to detect if someone tampered with the access token before using it.
+
+---
+
+### `c_hash` — Code Hash
+**What:** Hash of the authorization code, used in the Hybrid flow.
+
+**Used in:** OIDC ID tokens when using the Hybrid grant type.
+
+---
+
+### `acr` — Authentication Context Class Reference
+**What:** A string indicating the authentication strength used (e.g., `urn:fullname:oob-auth` for MFA).
+
+**Used in:** OIDC ID tokens (optional).
+
+```json
+{ "acr": "urn:mace:incommon:iap:silver" }
+```
+
+---
+
+### `amr` — Authentication Methods References
+**What:** An array of strings indicating which authentication methods were used.
+
+**Used in:** OIDC ID tokens (optional).
+
+```json
+{ "amr": ["pwd", "otp", "mfa"] }
+```
+
+| Value | Meaning |
+|-------|---------|
+| `pwd` | Password |
+| `otp` | One-time password (TOTP/HOTP) |
+| `mfa` | Multi-factor authentication |
+| `swk` | Software symmetric key |
+| `hwk` | Hardware symmetric key |
+| `pin` | PIN |
+| `rpt` | Remote pixel push |
+| `sms` | SMS |
+| `tel` | Telephone |
+| `geo` | Geolocation |
+| `fpt` | Fingerprint biometric |
+| `face` | Face recognition biometric |
+| `iris` | Iris scan biometric |
+| ` retina` | Retina scan biometric |
+| `vbm` | Voice biometric |
+| `bar` | Barcode |
+| `cba` | Community-based authentication |
+| `ca` | Certificate-based authentication |
+| `pgp` | PGP key authentication |
+| `dkp` | Derived key authentication |
+| `ec` | Evidence-based authentication |
+| `type` | Authentication type |
+| `mca` | Mobile contactless authentication |
+| `fma` | FIDO Authenticator |
+
+---
+
+### `azp` — Authorized Party
+**What:** The `client_id` of the application that was issued this token. Used when `aud` contains multiple values.
+
+**Used in:** OIDC ID tokens (optional, but required when `aud` has multiple entries).
+
+```json
+{ "aud": ["s6BhdRkqt3", "https://api.example.com"], "azp": "s6BhdRkqt3" }
+```
+
+---
+
+## How Claims Interact
+
+### ID Token vs. Access Token
+
+| | ID Token | Access Token |
+|--|----------|--------------|
+| **Format** | JWT | JWT or opaque |
+| **Issued by** | OIDC Provider | OAuth 2.0 Authorization Server |
+| **Contains** | Identity claims | API access scopes |
+| **For** | Your app (to know who the user is) | API (to grant access) |
+| **Validated by** | Your frontend app | The API server |
+
+---
+
+### Scopes → Claims Mapping
+
+When your app requests scopes, the identity provider maps them to claims in the ID token and userinfo response:
+
+| Scope | Claims included |
+|-------|----------------|
+| `openid` | `sub` |
+| `profile` | `name`, `given_name`, `family_name`, `middle_name`, `nickname`, `preferred_username`, `picture`, `profile`, `website`, `gender`, `birthdate`, `zoneinfo`, `locale`, `updated_at` |
+| `email` | `email`, `email_verified` |
+| `phone` | `phone_number`, `phone_number_verified` |
+| `address` | `address` |
+
+Requesting multiple scopes **combines** the claims sets.
+
+---
+
+### Example: Full ID Token Claims
+
+Request:
+```
+scope=openid profile email phone
+```
+
+Resulting ID token payload:
+```json
+{
+  "iss": "https://auth.example.com/",
+  "sub": "248289761001",
+  "aud": "s6BhdRkqt3",
+  "exp": 1704070800,
+  "iat": 1704067200,
+  "auth_time": 1704067200,
+  "nonce": "n-0S6_WzA2Mj",
+  "name": "Jane Doe",
+  "given_name": "Jane",
+  "family_name": "Doe",
+  "email": "jane.doe@example.com",
+  "email_verified": true,
+  "phone_number": "+1-555-123-4567",
+  "phone_number_verified": true,
+  "locale": "en-US",
+  "picture": "https://example.com/avatars/jane.jpg"
+}
+```
+                            </wc-markdown>
+                        </section>
+                    </div>
+                </main>
+
+                <site-footer></site-footer>
+            </div>
+        </font-loader>
+    </body>
+</html>
