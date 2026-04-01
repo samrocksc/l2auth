@@ -69,6 +69,10 @@ class LazyWcMarkdown extends HTMLElement {
     this._revealed = true;
     this._stopPolling();
 
+    console.log("[lazy-wc-markdown] _reveal called");
+    console.log("[lazy-wc-markdown] WCMarkdown exists?", typeof WCMarkdown !== 'undefined');
+    console.log("[lazy-wc-markdown] WCMarkdown.highlight exists?", typeof WCMarkdown.highlight === 'function');
+
     // Create a container div to hold the highlighted content
     const container = document.createElement("div");
     container.className = "lazy-wc-markdown-content";
@@ -76,8 +80,21 @@ class LazyWcMarkdown extends HTMLElement {
     // Highlight the HTML string
     const temp = document.createElement("div");
     temp.innerHTML = html;
-    WCMarkdown.highlight(temp); // Apply Prism syntax highlighting
+    console.log("[lazy-wc-markdown] temp.innerHTML before highlight:", temp.innerHTML.substring(0, 200) + (temp.innerHTML.length > 200 ? "..." : ""));
+
+    try {
+      WCMarkdown.highlight(temp); // Apply Prism syntax highlighting
+      console.log("[lazy-wc-markdown] WCMarkdown.highlight(temp) executed");
+    } catch (e) {
+      console.error("[lazy-wc-markdown] ERROR during WCMarkdown.highlight:", e);
+      // Fallback: just use raw html
+      temp.innerHTML = html;
+    }
+
     const highlightedHtml = temp.innerHTML;
+    console.log("[lazy-wc-markdown] temp.innerHTML after highlight:", highlightedHtml.substring(0, 200) + (highlightedHtml.length > 200 ? "..." : ""));
+    console.log("[lazy-wc-markdown] highlightedHtml contains '<span class=' ?", highlightedHtml.includes('<span class='));
+    console.log("[lazy-wc-markdown] highlightedHtml.contains('class=\"token\"') ?", highlightedHtml.includes('class="token"'));
 
     // Set the container's innerHTML
     container.innerHTML = highlightedHtml;
@@ -179,6 +196,7 @@ class LazyWcMarkdown extends HTMLElement {
         }
       `;
       document.head.appendChild(style);
+      console.log("[lazy-wc-markdown] prism style injected into document.head");
     }
 
     this.setAttribute("rendered", "");
