@@ -1,7 +1,5 @@
 import { WCMarkdown } from "./wc-markdown.js";
 
-console.log("lazy-wc-markdown: module loaded");
-
 /**
  * lazy-wc-markdown
  *
@@ -22,7 +20,6 @@ class LazyWcMarkdown extends HTMLElement {
     super();
     this._revealed = false;
     this._pollInterval = null;
-    console.log("lazy-wc-markdown: instance created");
   }
 
   connectedCallback() {
@@ -37,15 +34,6 @@ class LazyWcMarkdown extends HTMLElement {
     const MAX_TRIES = 200; // 200 * 50ms = 10s
     let tries = 0;
 
-    // Initial debug: what does the element actually contain?
-    console.log("lazy-wc-markdown: connectedCallback", {
-      textContentLength: this.textContent.length,
-      textContentPreview: JSON.stringify(this.textContent.slice(0, 200)),
-      innerHTMLLength: this.innerHTML.length,
-      innerHTMLPreview: JSON.stringify(this.innerHTML.slice(0, 200)),
-      childElementCount: this.children.length,
-    });
-
     this._pollInterval = setInterval(() => {
       tries++;
 
@@ -58,25 +46,13 @@ class LazyWcMarkdown extends HTMLElement {
           this._reveal(html);
           return;
         }
-        // Debug: show why we think it’s empty
-        console.debug("lazy-wc-markdown debug", {
-          rawLength: raw.length,
-          dedentedLength: dedented.length,
-          preparedLength: prepared.length,
-          htmlLength: html.length,
-          rawPreview: JSON.stringify(raw.slice(0, 100)),
-          dedentedPreview: JSON.stringify(dedented.slice(0, 100)),
-          preparedPreview: JSON.stringify(prepared.slice(0, 100)),
-          htmlPreview: JSON.stringify(html.slice(0, 100)),
-        });
-      }
 
-      if (tries >= MAX_TRIES) {
-        console.warn(
-          `lazy-wc-markdown: rendering timed out after ${tries * 50}ms, showing raw content`,
-          this
-        );
-        this._reveal(this.textContent);
+        if (tries >= MAX_TRIES) {
+          console.warn(
+            "lazy-wc-markdown: rendering timed out, showing raw content"
+          );
+          this._reveal(this.textContent);
+        }
       }
     }, 50);
   }
@@ -93,44 +69,17 @@ class LazyWcMarkdown extends HTMLElement {
     this._revealed = true;
     this._stopPolling();
 
-    // Set revealed HTML and start observing for mutations
-    this.innerHTML = html;
-    const observer = new MutationObserver((mutations) => {
-      for (const m of mutations) {
-        if (m.type === 'childList' || m.type === 'characterData') {
-          console.warn("lazy-wc-markdown: DOM mutated after reveal!", {
-            target: m.target,
-            addedNodes: m.addedNodes.length,
-            removedNodes: m.removedNodes.length,
-            newText: this.textContent.slice(0, 100)
-          });
-        }
-      }
-    });
-    observer.observe(this, { childList: true, characterData: true, subtree: true });
+    // Create shadow root and inject highlighted HTML there → immune to external mutation
+    const shadow = this.attachShadow({ mode: "open" });
 
-    // Debug: what we actually put in the element
-    const visibleText = this.textContent.trim();
-    console.debug("lazy-wc-markdown: _reveal called", {
-      htmlLength: html.length,
-      htmlPreview: html.slice(0, 200),
-      innerHTMLLength: this.innerHTML.length,
-      innerHTMLPreview: this.innerHTML.slice(0, 200),
-      visibleTextLength: visibleText.length,
-      visibleTextPreview: visibleText.slice(0, 200),
-    });
+    // Highlight the HTML string: create a temp container, set innerHTML, highlight, then capture result
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    WCMarkdown.highlight(temp); // Apply Prism syntax highlighting to code blocks inside temp
+    const highlightedHtml = temp.innerHTML;
 
-    // Debug: verify we actually have highlighted code blocks
-    const codeBlocks = this.querySelectorAll('code[class*="language-"]');
-    if (codeBlocks.length) {
-      console.debug("lazy-wc-markdown: found", codeBlocks.length, "code blocks to highlight");
-    } else {
-      console.debug("lazy-wc-markdown: no code blocks found in rendered HTML", {
-        htmlLength: html.length,
-        htmlPreview: html.slice(0, 200)
-      });
-    }
-    WCMarkdown.highlight(this); // Apply Prism syntax highlighting to code blocks
+    shadow.innerHTML = highlightedHtml;
+
     this.setAttribute("rendered", "");
   }
 }
