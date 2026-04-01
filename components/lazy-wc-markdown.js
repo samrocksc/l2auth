@@ -37,12 +37,10 @@ class LazyWcMarkdown extends HTMLElement {
     this._pollInterval = setInterval(() => {
       tries++;
 
-      // Use the wc-markdown library's own render pipeline
-      // WCMarkdown.prepare handles < > escaping
-      // WCMarkdown.toHtml runs it through marked
       const raw = this.textContent;
       if (raw.trim().length > 0) {
-        const prepared = WCMarkdown.prepare(raw);
+        const dedented = WCMarkdown.dedentText(raw);
+        const prepared = WCMarkdown.prepare(dedented);
         const html = WCMarkdown.toHtml(prepared);
         if (html.trim().length > 0) {
           this._reveal(html);
