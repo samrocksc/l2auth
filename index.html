@@ -67,15 +67,31 @@
           const savedTheme = localStorage.getItem("theme") || "light";
           document.documentElement.setAttribute("data-theme", savedTheme);
       </script>
-      <script type="module" src="components/font-loader.js"></script>
+          <script>
+            // GTM - must be as early as possible in <head>
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-MDJ26VZ');
+        </script>
+
+    <script type="module" src="components/font-loader.js"></script>
       <script type="module" src="components/theme-toggle.js"></script>
       <script type="module" src="components/tabs-component.js"></script>
       <script type="module" src="components/footer-component.js"></script>
       <script type="module" src="components/header-component.js"></script>
       <script src="scripts/main.js"></script>
-      <script type="module" src="components/gtm-tracker.js"></script>
     </head>
   <body>
+        <noscript>
+            <iframe
+                src="https://www.googletagmanager.com/ns.html?id=GTM-MDJ26VZ"
+                height="0"
+                width="0"
+                style="display:none;visibility:hidden"
+            ></iframe>
+        </noscript>
       <div class="main-wrapper">
           <site-header></site-header>
 
@@ -141,7 +157,6 @@
             </main>
 
             <site-footer></site-footer>
-        <gtm-tracker id="GTM-MDJ26VZ"></gtm-tracker>
       </div>
     </body>
 </html>
