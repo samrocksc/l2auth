@@ -540,6 +540,76 @@ if (Prism.languages.markup) {
   });
 }
 Prism.languages.js = Prism.languages.javascript;
+
+// JSON language support
+Prism.languages.json = {
+  property: {
+    pattern: /(^|[^\\])"(?:\\.|[^\\"\r\n])*"(?=\s*:)/,
+    lookbehind: true,
+    greedy: true
+  },
+  string: {
+    pattern: /(^|[^\\])"(?:\\.|[^\\"\r\n])*"/,
+    lookbehind: true,
+    greedy: true
+  },
+  comment: {
+    pattern: /\/\/.*|\/\*[\s\S]*?\*\//,
+    greedy: true
+  },
+  number: /-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
+  punctuation: /[{}\[\],]/,
+  operator: /:/,
+  boolean: /\b(?:true|false|null)\b/
+};
+
+// HTTP language support
+Prism.languages.http = {
+  request: {
+    pattern: /(^\s*)(?:GET|HEAD|POST|PUT|DELETE|CONNECT|OPTIONS|TRACE|PATCH)\s+[\w\-\.~:\/?#\[\]@!$&'()*+,;=]+\s+HTTP\/[\d.]+/m,
+    lookbehind: true,
+    inside: {
+      method: {
+        pattern: /(^\s*)[A-Z]+/,
+        lookbehind: true
+      },
+      path: {
+        pattern: /[\w\-\.~:\/?#\[\]@!$&'()*+,;=]+/
+      },
+      http_version: {
+        pattern: /HTTP\/[\d.]+/
+      }
+    }
+  },
+  response: {
+    pattern: /(^\s*)HTTP\/[\d.]+\s+\d{3}\s+[\w\s]*/m,
+    lookbehind: true,
+    inside: {
+      http_version: {
+        pattern: /HTTP\/[\d.]+/
+      },
+      status_code: {
+        pattern: /\d{3}/
+      },
+      status_message: {
+        pattern: /[\w\s]+/
+      }
+    }
+  },
+  header: {
+    pattern: /[\w-]+:.*/m,
+    inside: {
+      key: {
+        pattern: /^[\w-]+/,
+        alias: "property"
+      },
+      value: {
+        pattern: /:.*/,
+        alias: "string"
+      }
+    }
+  }
+};
 var prism_default = Prism;
 
 // node_modules/marked/lib/marked.esm.js
