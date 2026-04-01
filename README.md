@@ -1,127 +1,66 @@
 # L2Auth
 
-Layer 2 Authentication Service
+A personal knowledge site for learning CIAM (Customer Identity and Access Management) principles through interactive guides.
 
-## Description
+## What It Covers
 
-This project provides authentication services for Layer 2 protocols.
+- **Basic Auth** — Username/password authentication fundamentals
+- **JWT** — JSON Web Tokens: structure, signing, and usage
+- **OAuth 2.0** — Authorization flows and grant types
+- **OpenID Connect** — Identity layer on top of OAuth 2.0
+- **Concepts** — AuthN vs AuthZ, Strong Customer Authentication (SCA/PSD2), and more
 
-## Installation
+## Quick Start
 
-### Prerequisites
-
-- A modern web browser (Chrome, Firefox, Safari, or Edge)
-- A local web server (for development purposes)
-- Git (to clone the repository)
-
-### Quick Start
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/l2auth.git
-   cd l2auth
-   ```
-
-2. Serve the files locally:
-   
-   Option 1 - Using Python (if installed):
+1. Serve the site locally:
    ```bash
    # Python 3
    python -m http.server 8000
-   
-   # Python 2
-   python -m SimpleHTTPServer 8000
-   ```
-   
-   Option 2 - Using Node.js (if installed):
-   ```bash
+
+   # Node.js
    npx serve
    ```
-   
-   Option 3 - Using VS Code:
-   Install the "Live Server" extension and right-click index.html -> "Open with Live Server"
+2. Open [http://localhost:8000](http://localhost:8000) in your browser
 
-3. Open your browser and navigate to http://localhost:8000 (or the port specified by your server)
-
-### Project Structure
+## Project Structure
 
 ```
 l2auth/
-├── index.html          # Main entry point
-├── basic-auth.html     # Basic authentication guide
-├── jwt.html            # JWT authentication guide
-├── oauth2.html         # OAuth 2.0 guide
-├── oidc.html           # OpenID Connect guide
-├── styles/             # CSS stylesheets
-├── components/         # Web components (LitElement)
-├── assets/             # Images and other static assets
-└── scripts/            # JavaScript utilities
+├── index.html              # Home
+├── basic-auth.html         # Basic authentication
+├── jwt.html                # JSON Web Tokens
+├── oauth2.html             # OAuth 2.0
+├── oidc.html               # OpenID Connect
+├── concepts/               # Concept guides
+│   ├── index.html          # Concept index
+│   ├── auth-n-z.html       # AuthN vs AuthZ
+│   └── sca.html            # Strong Customer Authentication
+├── components/             # LitElement web components
+├── styles/                # CSS (light/dark theming via CSS variables)
+├── scripts/                # JavaScript utilities
+└── assets/
+    ├── markdown/           # OIDC reference docs
+    └── pizza-icon.svg      # 🍕
 ```
 
-### Technologies Used
+## Tech Stack
 
-- HTML5/CSS3 for structure and styling
-- JavaScript with LitElement for web components
-- Responsive design for mobile and desktop
-- CSS Variables for theme management
+- Vanilla HTML5/CSS3/JS — no build step
+- [LitElement](https://lit.dev) web components
+- CSS variables for light/dark theming
+- [wc-markdown](https://github.com/vanillawc/wc-markdown) for rendering content
+- [Biome](https://biomejs.dev/) for linting and formatting
 
-### Development
+## Development
 
-No build step is required. The project uses modern browser features directly:
-- ES Modules for JavaScript organization
-- CSS Variables for theming
-- Web Components for reusable UI elements
-
-Simply edit the HTML, CSS, or JS files and refresh your browser to see changes.
-
-### Code Quality
-
-This project uses [Biome](https://biomejs.dev/) for code formatting and linting. The configuration is optimized for web components and modern JavaScript development.
-
-To use Biome, you need Node.js installed:
-
-1. Install Biome:
-   ```bash
-   npm install -g @biomejs/biome
-   ```
-
-2. Format code:
-   ```bash
-   biome format --write .
-   ```
-
-3. Lint code:
-   ```bash
-   biome lint .
-   ```
-
-Alternatively, use the Makefile commands:
 ```bash
-make format  # Format all files
-make lint    # Lint all files
+make serve         # Start dev server
+make format        # Format code with Biome
+make lint          # Lint with Biome
+make check-format  # Check formatting
+make check-lint    # Check linting
 ```
 
-### Customization
+## Browser Support
 
-To modify themes:
-1. Edit the CSS variables in `styles/main.css`
-2. The dark/light theme toggle is available in the header
-3. Colors are controlled via CSS custom properties:
-   ```css
-   :root {
-     --bg-primary: #ffffff;    /* Primary background */
-     --bg-secondary: #f0f0f0;  /* Secondary background */
-     --text-primary: #000000;  /* Primary text */
-     --accent-color: #ff00ff;  /* Accent/magic color */
-   }
-   ```
-
-### Browser Support
-
-This project uses modern web technologies and is compatible with:
-- Chrome 60+
-- Firefox 63+
-- Safari 10.1+
-- Edge 79+
-
-For older browsers, polyfills may be required for Web Components.
+Chrome 60+, Firefox 63+, Safari 10.1+, Edge 79+
