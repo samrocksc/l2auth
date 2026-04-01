@@ -90,7 +90,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
                             <h3>ID Token Structure</h3>
                             <!-- biome-ignore format -->
-                            <lazy-wc-markdown><wc-markdown>```json
+                            <lazy-wc-markdown>```json
 {
   "iss": "https://server.example.com",
   "sub": "24400320",
@@ -101,7 +101,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   "auth_time": 1311280969,
   "acr": "urn:mace:incommon:iap:silver"
 }
-```</wc-markdown></lazy-wc-markdown>
+```</lazy-wc-markdown>
 
                             <h3>Authentication Flow</h3>
                             <ol>
@@ -125,11 +125,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                 user information:
                             </p>
                             <!-- biome-ignore format -->
-                            <lazy-wc-markdown><wc-markdown>```http
+                            <lazy-wc-markdown>```http
 GET /userinfo HTTP/1.1
 Host: server.example.com
 Authorization: Bearer SlAV32hkKG
-```</wc-markdown></lazy-wc-markdown>
+```</lazy-wc-markdown>
 
                             <button
                                 class="try-me-btn"
@@ -185,10 +185,7 @@ Authorization: Bearer SlAV32hkKG
                         <span id="close-modal" class="close-button">&times;</span>
                     </div>
                     <div class="modal-body">
-                        <lazy-wc-markdown><wc-markdown
-                            id="markdown-content"
-                            sanitize="false"
-                        ></wc-markdown></lazy-wc-markdown>
+                        <lazy-wc-markdown></lazy-wc-markdown>
                     </div>
                 </div>
             </div>
