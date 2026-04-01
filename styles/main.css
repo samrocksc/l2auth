@@ -8,8 +8,8 @@
   transition: none !important;
 }
 
-/* Dark Prism theme for syntax highlighting in shadow DOM */
-:root {
+/* Dark Prism theme for syntax highlighting — only active in dark mode */
+[data-theme="dark"] {
   --prism-background: #000000;
   --prism-foreground: #f8f8f2;
   --prism-comment: #6272a4;
@@ -20,6 +20,20 @@
   --prism-purple: #bd93f9;
   --prism-red: #ff5555;
   --prism-yellow: #f1fa8c;
+}
+
+/* Light theme Prism tokens */
+:root {
+  --prism-background: #f0f0f0;
+  --prism-foreground: #1a1a1a;
+  --prism-comment: #6a737d;
+  --prism-cyan: #005cc5;
+  --prism-green: #22863a;
+  --prism-orange: #e36209;
+  --prism-pink: #d73a49;
+  --prism-purple: #6f42c1;
+  --prism-red: #d73a49;
+  --prism-yellow: #735c0f;
 }
 
 /* Token styles */
@@ -88,10 +102,18 @@
   font-style: italic;
 }
 
-/* Make sure code blocks in shadow DOM inherit the theme */
-:root * {
-  color: var(--prism-foreground) !important;
-  background-color: var(--prism-background) !important;
+/* Prism token styles for syntax highlighting - scoped to code blocks */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: var(--prism-foreground);
+  background: var(--prism-background);
+}
+
+/* Scoped to actual code elements, not the entire page */
+.code-block code,
+pre code {
+  color: var(--prism-foreground);
+  background-color: var(--prism-background);
 }
 
 /* Prevent header from shifting when scrollbars appear */
