@@ -34,6 +34,15 @@ class LazyWcMarkdown extends HTMLElement {
     const MAX_TRIES = 200; // 200 * 50ms = 10s
     let tries = 0;
 
+    // Initial debug: what does the element actually contain?
+    console.debug("lazy-wc-markdown: connectedCallback", {
+      textContentLength: this.textContent.length,
+      textContentPreview: JSON.stringify(this.textContent.slice(0, 200)),
+      innerHTMLLength: this.innerHTML.length,
+      innerHTMLPreview: JSON.stringify(this.innerHTML.slice(0, 200)),
+      childElementCount: this.children.length,
+    });
+
     this._pollInterval = setInterval(() => {
       tries++;
 

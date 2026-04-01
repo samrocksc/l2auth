@@ -1,37 +1,7 @@
 /* Retro 80s Auth Systems Theme */
 
 /* Font loading strategy to prevent FOUC */
-@font-face {
-  font-family: 'Press Start 2P';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK0nS.ttf) format('truetype');
-}
-
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/ibmplexmono/v13/zYXgKVElMYYaJe8bpLHnCwDKhd0BYZy6i6KILLypDIq8TvwVEsQmBIK0qA1G1Lk0vyOs8jYjg.woff2) format('woff2');
-}
-
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/ibmplexmono/v13/zYXgKVElMYYaJe8bpLHnCwDKhd0BYZy6i6KILLypDIq8TvwVEsQmBIK0qA1G1Lk0vyOs8jYjg.woff2) format('woff2');
-}
-
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/ibmplexmono/v13/zYXgKVElMYYaJe8bpLHnCwDKhd0BYZy6i6KILLypDIq8TvwVEsQmBIK0qA1G1Lk0vyOs8jYjg.woff2) format('woff2');
-}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Press+Start+2P&display=swap');
 
 /* Ensure smooth transitions to prevent flickering */
 * {
