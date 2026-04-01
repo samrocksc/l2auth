@@ -46,6 +46,17 @@ class LazyWcMarkdown extends HTMLElement {
           this._reveal(html);
           return;
         }
+        // Debug: show why we think it’s empty
+        console.debug("lazy-wc-markdown debug", {
+          rawLength: raw.length,
+          dedentedLength: dedented.length,
+          preparedLength: prepared.length,
+          htmlLength: html.length,
+          rawPreview: JSON.stringify(raw.slice(0, 100)),
+          dedentedPreview: JSON.stringify(dedented.slice(0, 100)),
+          preparedPreview: JSON.stringify(prepared.slice(0, 100)),
+          htmlPreview: JSON.stringify(html.slice(0, 100)),
+        });
       }
 
       if (tries >= MAX_TRIES) {
@@ -70,6 +81,16 @@ class LazyWcMarkdown extends HTMLElement {
     this._stopPolling();
 
     this.innerHTML = html;
+    // Debug: verify we actually have highlighted code blocks
+    const codeBlocks = this.querySelectorAll('code[class*="language-"]');
+    if (codeBlocks.length) {
+      console.debug("lazy-wc-markdown: found", codeBlocks.length, "code blocks to highlight");
+    } else {
+      console.debug("lazy-wc-markdown: no code blocks found in rendered HTML", {
+        htmlLength: html.length,
+        htmlPreview: html.slice(0, 200)
+      });
+    }
     WCMarkdown.highlight(this); // Apply Prism syntax highlighting to code blocks
     this.setAttribute("rendered", "");
   }
