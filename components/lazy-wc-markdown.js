@@ -93,7 +93,22 @@ class LazyWcMarkdown extends HTMLElement {
     this._revealed = true;
     this._stopPolling();
 
+    // Set revealed HTML and start observing for mutations
     this.innerHTML = html;
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.type === 'childList' || m.type === 'characterData') {
+          console.warn("lazy-wc-markdown: DOM mutated after reveal!", {
+            target: m.target,
+            addedNodes: m.addedNodes.length,
+            removedNodes: m.removedNodes.length,
+            newText: this.textContent.slice(0, 100)
+          });
+        }
+      }
+    });
+    observer.observe(this, { childList: true, characterData: true, subtree: true });
+
     // Debug: verify we actually have highlighted code blocks
     const codeBlocks = this.querySelectorAll('code[class*="language-"]');
     if (codeBlocks.length) {
