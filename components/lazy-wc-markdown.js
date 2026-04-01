@@ -69,135 +69,84 @@ class LazyWcMarkdown extends HTMLElement {
     this._revealed = true;
     this._stopPolling();
 
-    console.log("[lazy-wc-markdown] _reveal called");
-    console.log("[lazy-wc-markdown] WCMarkdown exists?", typeof WCMarkdown !== 'undefined');
-    console.log("[lazy-wc-markdown] WCMarkdown.highlight exists?", typeof WCMarkdown.highlight === 'function');
+    // Create shadow root and inject highlighted HTML there → immune to external mutation
+    const shadow = this.attachShadow({ mode: "open" });
 
-    // Create a container div to hold the highlighted content
-    const container = document.createElement("div");
-    container.className = "lazy-wc-markdown-content";
+    // Inject a light theme <style> into the shadow root
+    const style = document.createElement("style");
+    style.textContent = `
+      :host {
+        display: block;
+        background-color: #ffffff;
+        color: #000000;
+        font-family: var(--font-sans);
+      }
+      /* Token styles — GitHub-like light theme */
+      .token.comment,
+      .token.prolog,
+      .token.doctype,
+      .token.cdata {
+        color: #6a737d;
+      }
+      .token.punctuation {
+        color: #24292f;
+      }
+      .token.property,
+      .token.tag,
+      .token.constant,
+      .token.symbol,
+      .token.deleted {
+        color: #d73a49;
+      }
+      .token.boolean,
+      .token.number {
+        color: #005cc5;
+      }
+      .token.selector,
+      .token.attr-name,
+      .token.string,
+      .token.char,
+      .token.builtin,
+      .token.inserted {
+        color: #032f62;
+      }
+      .token.operator,
+      .token.entity,
+      .token.url,
+      .language-css .token.string,
+      .style .token.token {
+        color: #6f42c1;
+      }
+      .token.atrule,
+      .token.attr-value,
+      .token.keyword {
+        color: #005cc5;
+      }
+      .token.function {
+        color: #6f42c1;
+      }
+      .token.regex,
+      .token.important,
+      .token.variable {
+        color: #e36209;
+      }
+      .token.important,
+      .token.bold {
+        font-weight: bold;
+      }
+      .token.italic {
+        font-style: italic;
+      }
+    `;
+    shadow.appendChild(style);
 
-    // Highlight the HTML string
+    // Highlight the HTML string: create a temp container, set innerHTML, highlight, then capture result
     const temp = document.createElement("div");
     temp.innerHTML = html;
-    console.log("[lazy-wc-markdown] temp.innerHTML before highlight:", temp.innerHTML.substring(0, 200) + (temp.innerHTML.length > 200 ? "..." : ""));
-
-    try {
-      WCMarkdown.highlight(temp); // Apply Prism syntax highlighting
-      console.log("[lazy-wc-markdown] WCMarkdown.highlight(temp) executed");
-    } catch (e) {
-      console.error("[lazy-wc-markdown] ERROR during WCMarkdown.highlight:", e);
-      // Fallback: just use raw html
-      temp.innerHTML = html;
-    }
-
+    WCMarkdown.highlight(temp); // Apply Prism syntax highlighting to code blocks inside temp
     const highlightedHtml = temp.innerHTML;
-    console.log("[lazy-wc-markdown] temp.innerHTML after highlight:", highlightedHtml.substring(0, 200) + (highlightedHtml.length > 200 ? "..." : ""));
-    console.log("[lazy-wc-markdown] highlightedHtml contains '<span class=' ?", highlightedHtml.includes('<span class='));
-    console.log("[lazy-wc-markdown] highlightedHtml.contains('class=\"token\"') ?", highlightedHtml.includes('class="token"'));
 
-    // Set the container's innerHTML
-    container.innerHTML = highlightedHtml;
-
-    // Clear this element and append the container
-    this.innerHTML = ""; // clear any existing content
-    this.appendChild(container);
-
-    // Inject a <style> tag into the document head (light DOM) to style our content
-    // We use !important to override the leaking :root * { ... } rule
-    const styleId = "lazy-wc-markdown-prism-style";
-    let style = document.getElementById(styleId);
-    if (!style) {
-      style = document.createElement("style");
-      style.id = styleId;
-      style.textContent = `
-        /* Target only our markdown content's descendants */
-        .lazy-wc-markdown-content {
-          display: block;
-          background-color: #000000 !important;
-          color: #f8f8f2 !important;
-          font-family: var(--font-sans) !important;
-          line-height: 1.5;
-          padding: 16px;
-          border-radius: 8px;
-          overflow: auto;
-          margin: 0.5em 0;
-        }
-        /* Prism token styles - !important to override :root * */
-        .lazy-wc-markdown-content .token.comment,
-        .lazy-wc-markdown-content .token.prolog,
-        .lazy-wc-markdown-content .token.doctype,
-        .lazy-wc-markdown-content .token.cdata {
-          color: #6272a4 !important;
-        }
-        .lazy-wc-markdown-content .token.punctuation {
-          color: #f8f8f2 !important;
-        }
-        .lazy-wc-markdown-content .token.property,
-        .lazy-wc-markdown-content .token.tag,
-        .lazy-wc-markdown-content .token.constant,
-        .lazy-wc-markdown-content .token.symbol,
-        .lazy-wc-markdown-content .token.deleted {
-          color: #ff5555 !important;
-        }
-        .lazy-wc-markdown-content .token.boolean,
-        .lazy-wc-markdown-content .token.number {
-          color: #ffb86c !important;
-        }
-        .lazy-wc-markdown-content .token.selector,
-        .lazy-wc-markdown-content .token.attr-name,
-        .lazy-wc-markdown-content .token.string,
-        .lazy-wc-markdown-content .token.char,
-        .lazy-wc-markdown-content .token.builtin,
-        .lazy-wc-markdown-content .token.inserted {
-          color: #50fa7b !important;
-        }
-        .lazy-wc-markdown-content .token.operator,
-        .lazy-wc-markdown-content .token.entity,
-        .lazy-wc-markdown-content .token.url,
-        .lazy-wc-markdown-content .language-css .token.string,
-        .lazy-wc-markdown-content .style .token.token {
-          color: #f1fa8c !important;
-        }
-        .lazy-wc-markdown-content .token.atrule,
-        .lazy-wc-markdown-content .token.attr-value,
-        .lazy-wc-markdown-content .token.keyword {
-          color: #bd93f9 !important;
-        }
-        .lazy-wc-markdown-content .token.function {
-          color: #8be9fd !important;
-        }
-        .lazy-wc-markdown-content .token.regex,
-        .lazy-wc-markdown-content .token.important,
-        .lazy-wc-markdown-content .token.variable {
-          color: #ff79c6 !important;
-        }
-        .lazy-wc-markdown-content .token.important,
-        .lazy-wc-markdown-content .token.bold {
-          font-weight: bold !important;
-        }
-        .lazy-wc-markdown-content .token.italic {
-          font-style: italic !important;
-        }
-        /* Ensure pre/code blocks are styled correctly */
-        .lazy-wc-markdown-content pre[class*="language-"] {
-          background-color: #000000 !important;
-          color: #f8f8f2 !important;
-          overflow: auto;
-          padding: 1em;
-          margin: 0.5em 0;
-          border-radius: 6px;
-        }
-        .lazy-wc-markdown-content code[class*="language-"] {
-          background: none !important;
-          padding: 0 !important;
-          margin: 0 !important;
-          color: inherit !important;
-        }
-      `;
-      document.head.appendChild(style);
-      console.log("[lazy-wc-markdown] prism style injected into document.head");
-    }
+    shadow.innerHTML = highlightedHtml;
 
     this.setAttribute("rendered", "");
   }
