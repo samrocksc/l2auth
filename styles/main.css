@@ -341,6 +341,7 @@ a:hover {
 .modal-header h2 {
   margin: 0;
   color: var(--accent-color);
+  margin-top: 1.5rem;
 }
 
 .close-button {
