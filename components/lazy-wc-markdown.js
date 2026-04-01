@@ -1,6 +1,6 @@
 import { WCMarkdown } from "./wc-markdown.js";
 
-console.debug("lazy-wc-markdown: module loaded");
+console.log("lazy-wc-markdown: module loaded");
 
 /**
  * lazy-wc-markdown
@@ -22,7 +22,7 @@ class LazyWcMarkdown extends HTMLElement {
     super();
     this._revealed = false;
     this._pollInterval = null;
-    console.debug("lazy-wc-markdown: instance created");
+    console.log("lazy-wc-markdown: instance created");
   }
 
   connectedCallback() {
@@ -38,7 +38,7 @@ class LazyWcMarkdown extends HTMLElement {
     let tries = 0;
 
     // Initial debug: what does the element actually contain?
-    console.debug("lazy-wc-markdown: connectedCallback", {
+    console.log("lazy-wc-markdown: connectedCallback", {
       textContentLength: this.textContent.length,
       textContentPreview: JSON.stringify(this.textContent.slice(0, 200)),
       innerHTMLLength: this.innerHTML.length,
