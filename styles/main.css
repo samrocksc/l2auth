@@ -8,6 +8,92 @@
   transition: none !important;
 }
 
+/* Dark Prism theme for syntax highlighting in shadow DOM */
+:root {
+  --prism-background: #000000;
+  --prism-foreground: #f8f8f2;
+  --prism-comment: #6272a4;
+  --prism-cyan: #8be9fd;
+  --prism-green: #50fa7b;
+  --prism-orange: #ffb86c;
+  --prism-pink: #ff79c6;
+  --prism-purple: #bd93f9;
+  --prism-red: #ff5555;
+  --prism-yellow: #f1fa8c;
+}
+
+/* Token styles */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--prism-comment);
+}
+
+.token.punctuation {
+  color: var(--prism-foreground);
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: var(--prism-red);
+}
+
+.token.boolean,
+.token.number {
+  color: var(--prism-orange);
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: var(--prism-green);
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.token {
+  color: var(--prism-yellow);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+  color: var(--prism-purple);
+}
+
+.token.function {
+  color: var(--prism-cyan);
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: var(--prism-pink);
+}
+
+.token.important,
+.token.bold {
+  font-weight: bold;
+}
+.token.italic {
+  font-style: italic;
+}
+
+/* Make sure code blocks in shadow DOM inherit the theme */
+:root * {
+  color: var(--prism-foreground) !important;
+  background-color: var(--prism-background) !important;
+}
+
 /* Prevent header from shifting when scrollbars appear */
 .site-header-container {
   contain: layout style paint;
