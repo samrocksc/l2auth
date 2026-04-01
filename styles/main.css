@@ -9,6 +9,30 @@
   src: url(https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK0nS.ttf) format('truetype');
 }
 
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v13/zYXgKVElMYYaJe8bpLHnCwDKhd0BYZy6i6KILLypDIq8TvwVEsQmBIK0qA1G1Lk0vyOs8jYjg.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v13/zYXgKVElMYYaJe8bpLHnCwDKhd0BYZy6i6KILLypDIq8TvwVEsQmBIK0qA1G1Lk0vyOs8jYjg.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v13/zYXgKVElMYYaJe8bpLHnCwDKhd0BYZy6i6KILLypDIq8TvwVEsQmBIK0qA1G1Lk0vyOs8jYjg.woff2) format('woff2');
+}
+
 /* Ensure smooth transitions to prevent flickering */
 * {
   transition: none !important;
@@ -39,6 +63,7 @@ site-header {
   --warning: #ffff00;
   --error: #ff0000;
   --font-primary: "Press Start 2P", cursive;
+  --font-sans: "IBM Plex Mono", monospace;
 }
 
 [data-theme="dark"] {
@@ -50,7 +75,7 @@ site-header {
 }
 
 body {
-  font-family: var(--font-primary);
+  font-family: var(--font-sans);
   background-color: var(--bg-primary);
   color: var(--text-primary);
   margin: 0;
@@ -59,7 +84,7 @@ body {
     background-color 0.3s,
     color 0.3s;
   line-height: 1.6;
-  font-size: 12px; /* Adjust base font size for better readability with Press Start 2P */
+  font-size: 14px; /* Slightly larger base for better readability */
 
   /* Prevent scrollbar jitter by always showing scrollbar or making it overlay */
   overflow-y: scroll; /* Always show vertical scrollbar to prevent layout shifts */
@@ -70,6 +95,9 @@ body {
   /* Ensure consistent rendering */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Reduce default boldness */
+  font-weight: 400;
 }
 
 /* WebKit scrollbar styling (Chrome, Safari) */
@@ -122,10 +150,12 @@ header {
 }
 
 h1 {
+  font-family: var(--font-primary);
   font-size: 1.5rem; /* Reduced size for better fit with Press Start 2P */
   margin: 0;
   text-shadow: 2px 2px 0 var(--accent-color);
   color: var(--accent-color);
+  font-weight: 400;
 }
 
 nav {
@@ -209,17 +239,21 @@ button:hover,
 }
 
 h2 {
+  font-family: var(--font-primary);
   color: var(--accent-color);
   text-shadow: 1px 1px 0 var(--shadow-color);
   border-bottom: 2px solid var(--highlight);
   padding-bottom: 0.5rem;
   font-size: 1.2rem; /* Adjust size for Press Start 2P */
+  font-weight: 400;
 }
 
 h3 {
+  font-family: var(--font-primary);
   color: var(--highlight);
   margin-top: 1.5rem;
   font-size: 1rem; /* Adjust size for Press Start 2P */
+  font-weight: 400;
 }
 
 ul li,
@@ -232,9 +266,8 @@ ol li {
   border: 2px solid var(--border-color);
   padding: 1rem;
   margin: 1rem 0;
-  font-family:
-    Courier New,
-    monospace;
+  font-family: var(--font-sans);
+  font-weight: 500;
   box-shadow: inset 2px 2px 4px var(--shadow-color);
   overflow-x: auto;
   white-space: pre-wrap;
@@ -248,6 +281,8 @@ ol li {
   text-align: center;
   box-shadow: inset 2px 2px 4px var(--shadow-color);
   font-style: italic;
+  font-family: var(--font-sans);
+  font-weight: 400;
 }
 
 table {
@@ -256,6 +291,8 @@ table {
   margin: 1rem 0;
   background-color: var(--bg-primary);
   box-shadow: inset 2px 2px 4px var(--shadow-color);
+  font-family: var(--font-sans);
+  font-weight: 400;
 }
 
 th,
@@ -367,12 +404,13 @@ x-markdown,
 wc-markdown {
   display: block;
   color: var(--text-primary);
-  font-family: var(--font-primary);
-  font-size: 0.8rem; /* Adjust size for Press Start 2P */
-  line-height: 1.6;
+  font-family: var(--font-sans);
+  font-size: 0.9rem; /* Slightly larger for better readability with IBM Plex Mono */
+  line-height: 1.7;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
+  font-weight: 400;
 }
 
 /* Ensure wc-markdown handles long words and URLs */
@@ -392,16 +430,19 @@ wc-markdown h2,
 wc-markdown h3,
 wc-markdown h4,
 wc-markdown h5 {
+  font-family: var(--font-primary);
   color: var(--accent-color);
   margin-top: 1rem;
   margin-bottom: 0.5rem;
   font-size: 1rem; /* Adjust size for Press Start 2P */
+  font-weight: 400;
 }
 
 x-markdown p,
 wc-markdown p {
   margin: 0.5rem 0;
-  line-height: 1.8; /* Increased line height for better readability with Press Start 2P */
+  line-height: 1.8; /* Increased line height for better readability */
+  font-weight: 400;
 }
 
 x-markdown code,
@@ -409,7 +450,8 @@ wc-markdown code {
   background-color: var(--bg-primary);
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
-  font-family: "Courier New", monospace; /* Keep monospace for code blocks */
+  font-family: var(--font-sans);
+  font-weight: 500; /* Slightly heavier for code */
   word-break: break-word;
 }
 
@@ -421,7 +463,8 @@ wc-markdown pre {
   padding: 1rem;
   overflow-x: auto;
   margin: 1rem 0;
-  font-family: "Courier New", monospace; /* Keep monospace for code blocks */
+  font-family: var(--font-sans);
+  font-weight: 500; /* Slightly heavier for code blocks */
   white-space: pre-wrap;
   word-wrap: break-word;
 }
@@ -431,6 +474,7 @@ wc-markdown pre code {
   background: none;
   padding: 0;
   word-break: break-word;
+  font-weight: inherit;
 }
 
 x-markdown ul,
@@ -439,11 +483,13 @@ wc-markdown ul,
 wc-markdown ol {
   margin: 0.5rem 0;
   padding-left: 1.5rem;
+  font-weight: 400;
 }
 
 x-markdown li,
 wc-markdown li {
   margin: 0.25rem 0;
+  font-weight: 400;
 }
 
 x-markdown table,
@@ -465,12 +511,14 @@ wc-markdown td {
   text-align: left;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  font-weight: 400;
 }
 
 x-markdown th,
 wc-markdown th {
   background-color: var(--accent-color);
   color: var(--bg-primary);
+  font-weight: 500; /* Slightly heavier for header */
 }
 
 /* Hide lazy-wc-markdown content until wc-markdown has finished rendering */
