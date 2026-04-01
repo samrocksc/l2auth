@@ -73,7 +73,8 @@ class LazyWcMarkdown extends HTMLElement {
 
       if (tries >= MAX_TRIES) {
         console.warn(
-          "lazy-wc-markdown: rendering timed out, showing raw content"
+          `lazy-wc-markdown: rendering timed out after ${tries * 50}ms, showing raw content`,
+          this
         );
         this._reveal(this.textContent);
       }
