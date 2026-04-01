@@ -471,3 +471,15 @@ wc-markdown th {
   background-color: var(--accent-color);
   color: var(--bg-primary);
 }
+
+/* Hide lazy-wc-markdown content until wc-markdown has finished rendering */
+lazy-wc-markdown:not([rendered]) {
+  visibility: hidden;
+  opacity: 0;
+}
+
+lazy-wc-markdown[rendered] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}

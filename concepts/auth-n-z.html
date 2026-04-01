@@ -48,13 +48,12 @@
                             <h2>Authorization vs. Authentication</h2>
 
                             <!-- biome-ignore format -->
-                            <wc-markdown
+                            <lazy-wc-markdown><wc-markdown
                                 style="
                                     word-wrap: break-word;
                                     overflow-wrap: break-word;
                                 "
-                            >
-Authorization and and authentication are two similar concepts; however they can be confused sometimes.
+                            >Authorization and and authentication are two similar concepts; however they can be confused sometimes.
 
 A simplified understanding would be:
 - Authentication (AuthN): "Who are you?" (verifying identity)
@@ -109,8 +108,7 @@ grant_type=authorization_code
 &redirect_uri={your_callback_url}
 ```
 
-The response token is the _authorizer_
-                            </wc-markdown>
+The response token is the _authorizer_</wc-markdown></lazy-wc-markdown>
                         </section>
                     </div>
                 </main>

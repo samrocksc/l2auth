@@ -39,6 +39,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </script>
 
     <script type="module" src="components/font-loader.js"></script>
+        <script type="module" src="components/lazy-wc-markdown.js"></script>
     <script>
       // Apply theme immediately to prevent flicker
       const savedTheme = localStorage.getItem("theme") || "light";
@@ -170,7 +171,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <span id="close-modal" class="close-button">&times;</span>
           </div>
           <div class="modal-body">
-            <wc-markdown id="markdown-content" sanitize="false"></wc-markdown>
+            <lazy-wc-markdown><wc-markdown id="markdown-content" sanitize="false"></wc-markdown></lazy-wc-markdown>
           </div>
         </div>
       </div>

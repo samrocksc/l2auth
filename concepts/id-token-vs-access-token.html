@@ -13,6 +13,7 @@
             media="print" onload="this.media='all'"
         />
         <script type="module" src="../components/font-loader.js"></script>
+        <script type="module" src="../components/lazy-wc-markdown.js"></script>
         <script>
             const savedTheme = localStorage.getItem("theme") || "light";
             document.documentElement.setAttribute("data-theme", savedTheme);
@@ -44,8 +45,7 @@
                         <section>
                             <h2>ID Token vs. Access Token</h2>
 
-                            <wc-markdown>
-## The Simple Version
+                            <lazy-wc-markdown><wc-markdown>## The Simple Version
 
 | | ID Token | Access Token |
 |--|----------|--------------|
@@ -120,8 +120,7 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs...
 - **ID token** → for your app, to identify the user
 - **Access token** → for APIs, to authorize the request
 
-Never confuse the two. Sending an ID token to an API will be rejected. Sending an access token to your app will give you nothing useful.
-                            </wc-markdown>
+Never confuse the two. Sending an ID token to an API will be rejected. Sending an access token to your app will give you nothing useful.</wc-markdown></lazy-wc-markdown>
                         </section>
                     </div>
                 </main>

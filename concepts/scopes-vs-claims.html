@@ -13,6 +13,7 @@
             media="print" onload="this.media='all'"
         />
         <script type="module" src="../components/font-loader.js"></script>
+        <script type="module" src="../components/lazy-wc-markdown.js"></script>
         <script>
             const savedTheme = localStorage.getItem("theme") || "light";
             document.documentElement.setAttribute("data-theme", savedTheme);
@@ -44,8 +45,7 @@
                         <section>
                             <h2>Scopes vs. Claims</h2>
 
-                            <wc-markdown>
-## The Short Version
+                            <lazy-wc-markdown><wc-markdown>## The Short Version
 
 - **Scope** = *What* your app is asking permission to access
 - **Claim** = *A piece of information* about a user (name, email, etc.)
@@ -155,8 +155,7 @@ When you request scopes, the identity provider maps them to the corresponding cl
 3. Identity provider returns an ID token containing:
    - sub, name, given_name, family_name, email, email_verified
    (based on the approved scopes)
-```
-                            </wc-markdown>
+```</wc-markdown></lazy-wc-markdown>
                         </section>
                     </div>
                 </main>

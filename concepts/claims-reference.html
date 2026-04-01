@@ -13,6 +13,7 @@
             media="print" onload="this.media='all'"
         />
         <script type="module" src="../components/font-loader.js"></script>
+        <script type="module" src="../components/lazy-wc-markdown.js"></script>
         <script>
             const savedTheme = localStorage.getItem("theme") || "light";
             document.documentElement.setAttribute("data-theme", savedTheme);
@@ -44,8 +45,7 @@
                         <section>
                             <h2>Standard Claims Reference</h2>
 
-                            <wc-markdown>
-A complete reference of standard OIDC and OAuth 2.0 claims — what they mean, which flow uses them, and how they interact.
+                            <lazy-wc-markdown><wc-markdown>A complete reference of standard OIDC and OAuth 2.0 claims — what they mean, which flow uses them, and how they interact.
 
 ---
 
@@ -509,8 +509,7 @@ Resulting ID token payload:
   "locale": "en-US",
   "picture": "https://example.com/avatars/jane.jpg"
 }
-```
-                            </wc-markdown>
+```</wc-markdown></lazy-wc-markdown>
                         </section>
                     </div>
                 </main>
