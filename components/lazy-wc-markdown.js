@@ -1,16 +1,25 @@
+import "./wc-markdown.js";
+
 /**
  * lazy-wc-markdown
  *
- * Wraps wc-markdown to prevent FOUC (flash of unrendered markdown).
+ * Prevents FOUC when loading <wc-markdown> content.
  *
- * Usage — put raw markdown content inside the element:
+ * Usage — put raw markdown inside:
  *   <lazy-wc-markdown>
  *   ## Hello World
- *   Some **markdown** content here.
+ *   Some **markdown** here.
  *   </lazy-wc-markdown>
  *
- * The component creates an internal <wc-markdown>, moves the slotted
- * content into it, polls until rendering is complete, then fades in.
+ * How it works:
+ *   1. On connect, moves all light-DOM children into the inner <wc-markdown>
+ *   2. <wc-markdown> parses and renders the markdown into its own innerHTML
+ *   3. Polls until <wc-markdown> has rendered content
+ *   4. Sets [rendered] attribute → CSS reveals the content
+ *
+ * CSS in main.css handles visibility:
+ *   lazy-wc-markdown:not([rendered])  { visibility: hidden; }
+ *   lazy-wc-markdown[rendered]        { visibility: visible; transition: opacity 0.25s; }
  */
 class LazyWcMarkdown extends HTMLElement {
   constructor() {
@@ -18,63 +27,42 @@ class LazyWcMarkdown extends HTMLElement {
     this._revealed = false;
     this._pollInterval = null;
 
-    // Create shadow DOM with a slot for light DOM content
     const shadow = this.attachShadow({ mode: "open" });
-    shadow.innerHTML = `
-      <style>
-        :host {
-          display: block;
-        }
-        :host([rendered]) {
-          visibility: visible;
-          opacity: 1;
-          transition: opacity 0.25s ease;
-        }
-        :host(:not([rendered])) {
-          visibility: hidden;
-          opacity: 0;
-        }
-      </style>
-      <wc-markdown></wc-markdown>
-    `;
+    shadow.innerHTML = `<wc-markdown></wc-markdown>`;
   }
 
   connectedCallback() {
-    this._moveContentAndPoll();
+    const wc = this.shadowRoot.querySelector("wc-markdown");
+
+    // Move all light-DOM markdown content into wc-markdown
+    while (this.firstChild) {
+      wc.appendChild(this.firstChild);
+    }
+
+    this._startPolling(wc);
   }
 
   disconnectedCallback() {
     this._stopPolling();
   }
 
-  /**
-   * Move slotted light-DOM content into the internal wc-markdown element,
-   * then poll until wc-markdown has rendered it into its shadow DOM.
-   */
-  _moveContentAndPoll() {
-    // Move all light-DOM children into the internal wc-markdown
-    const wcMarkdown = this.shadowRoot.querySelector("wc-markdown");
-    while (this.firstChild) {
-      wcMarkdown.appendChild(this.firstChild);
-    }
-
-    this._startPolling(wcMarkdown);
-  }
-
-  _startPolling(wcMarkdown) {
+  _startPolling(wc) {
     const MAX_TRIES = 200; // 200 * 50ms = 10s
     let tries = 0;
 
     this._pollInterval = setInterval(() => {
       tries++;
 
-      if (wcMarkdown.shadowRoot && wcMarkdown.shadowRoot.innerHTML.trim().length > 0) {
+      // wc-markdown renders into its own innerHTML
+      if (wc.innerHTML.trim().length > 0) {
         this._reveal();
         return;
       }
 
       if (tries >= MAX_TRIES) {
-        console.warn("lazy-wc-markdown: wc-markdown did not render within 10s, revealing anyway");
+        console.warn(
+          "lazy-wc-markdown: wc-markdown did not render within 10s, revealing anyway"
+        );
         this._reveal();
       }
     }, 50);
