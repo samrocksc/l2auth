@@ -72,35 +72,35 @@ class LazyWcMarkdown extends HTMLElement {
     // Create shadow root and inject highlighted HTML there → immune to external mutation
     const shadow = this.attachShadow({ mode: "open" });
 
-    // Inject a dark Prism theme <style> into the shadow root
+    // Inject a style tag with !important to override any leaking :root * rules
     const style = document.createElement("style");
     style.textContent = `
       :host {
         display: block;
-        background-color: #000000;
-        color: #f8f8f2;
-        font-family: var(--font-sans);
+        background-color: #000000 !important;
+        color: #f8f8f2 !important;
+        font-family: var(--font-sans) !important;
       }
       /* Token styles */
       .token.comment,
       .token.prolog,
       .token.doctype,
       .token.cdata {
-        color: #6272a4;
+        color: #6272a4 !important;
       }
       .token.punctuation {
-        color: #f8f8f2;
+        color: #f8f8f2 !important;
       }
       .token.property,
       .token.tag,
       .token.constant,
       .token.symbol,
       .token.deleted {
-        color: #ff5555;
+        color: #ff5555 !important;
       }
       .token.boolean,
       .token.number {
-        color: #ffb86c;
+        color: #ffb86c !important;
       }
       .token.selector,
       .token.attr-name,
@@ -108,34 +108,35 @@ class LazyWcMarkdown extends HTMLElement {
       .token.char,
       .token.builtin,
       .token.inserted {
-        color: #50fa7b;
+        color: #50fa7b !important;
       }
       .token.operator,
       .token.entity,
       .token.url,
       .language-css .token.string,
       .style .token.token {
-        color: #f1fa8c;
+        color: #f1fa8c !important;
       }
       .token.atrule,
       .token.attr-value,
       .token.keyword {
-        color: #bd93f9;
+        color: #bd93f9 !important;
       }
       .token.function {
-        color: #8be9fd;
+        color: #8be9fd !important;
       }
       .token.regex,
       .token.important,
       .token.variable {
-        color: #ff79c6;
+        color: #ff79c6 !important;
       }
       .token.important,
       .token.bold {
-        font-weight: bold;
+        font-weight: bold !important;
       }
       .token.italic {
-        font-style: italic;
+        font-style: italic !important;
+      }
     `;
     shadow.appendChild(style);
 
