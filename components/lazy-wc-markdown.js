@@ -72,6 +72,7 @@ class LazyWcMarkdown extends HTMLElement {
     this._stopPolling();
 
     this.innerHTML = html;
+    WCMarkdown.highlight(this); // Apply Prism syntax highlighting to code blocks
     this.setAttribute("rendered", "");
   }
 }
