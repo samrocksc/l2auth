@@ -1,5 +1,7 @@
 import { WCMarkdown } from "./wc-markdown.js";
 
+console.debug("lazy-wc-markdown: module loaded");
+
 /**
  * lazy-wc-markdown
  *
@@ -20,6 +22,7 @@ class LazyWcMarkdown extends HTMLElement {
     super();
     this._revealed = false;
     this._pollInterval = null;
+    console.debug("lazy-wc-markdown: instance created");
   }
 
   connectedCallback() {
