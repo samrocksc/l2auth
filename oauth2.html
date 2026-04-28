@@ -30,15 +30,14 @@
       media="print"
       onload="this.media = 'all'"
     />
-        <script>
-            // GTM - must be as early as possible in <head>
-    <link rel="icon" type="image/svg+xml" href="/assets/pizza-icon.svg" />
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    <script>
+      // GTM - must be as early as possible in <head>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-MDJ26VZ');
-        </script>
+    </script>
 
     <script type="module" src="components/font-loader.js"></script>
         <script type="module" src="components/lazy-wc-markdown.js"></script>
@@ -51,6 +50,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <script type="module" src="components/tabs-component.js"></script>
     <script type="module" src="components/footer-component.js"></script>
     <script type="module" src="components/header-component.js"></script>
+    <script type="module" src="components/try-me-modal.js"></script>
+    <script type="module">
+      document.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-try-me-out]");
+        if (!btn) return;
+        const endpoint = btn.getAttribute("data-try-me-out");
+        const title = btn.textContent.trim().replace("Try Me Out: ", "");
+        document.querySelector("try-me-modal").open(endpoint, title);
+      });
+    </script>
 </head>
   <body>
         <noscript>
@@ -161,18 +170,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <site-footer></site-footer>
       </div>
 
-      <!-- Modal for displaying markdown content -->
-      <div class="modal-overlay" id="markdown-modal">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h2 id="modal-title">Endpoint Information</h2>
-            <span id="close-modal" class="close-button">&times;</span>
-          </div>
-          <div class="modal-body">
-            <lazy-wc-markdown></lazy-wc-markdown>
-          </div>
-        </div>
-      </div>
+      <try-me-modal></try-me-modal>
     </font-loader>
     <script src="scripts/main.js"></script>
   </body>

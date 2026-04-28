@@ -34,14 +34,7 @@ function initMarkdownModal() {
   const markdownContent = document.getElementById('markdown-content');
   const modalTitle = document.getElementById('modal-title');
 
-  // Debug: Check if wc-markdown is available
-  console.log('Markdown content element:', markdownContent);
-  if (markdownContent) {
-    console.log(
-      'wc-markdown custom element defined:',
-      customElements.get('wc-markdown')
-    );
-  }
+  if (!modal || !closeModalBtn || !markdownContent || !modalTitle) return;
 
   // Close modal when close button is clicked
   closeModalBtn.addEventListener('click', () => {

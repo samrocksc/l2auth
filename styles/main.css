@@ -8,20 +8,6 @@
   transition: none !important;
 }
 
-/* Dark Prism theme for syntax highlighting — only active in dark mode */
-[data-theme="dark"] {
-  --prism-background: #000000;
-  --prism-foreground: #f8f8f2;
-  --prism-comment: #6272a4;
-  --prism-cyan: #8be9fd;
-  --prism-green: #50fa7b;
-  --prism-orange: #ffb86c;
-  --prism-pink: #ff79c6;
-  --prism-purple: #bd93f9;
-  --prism-red: #ff5555;
-  --prism-yellow: #f1fa8c;
-}
-
 /* Light theme Prism tokens */
 :root {
   --prism-background: #f0f0f0;
@@ -34,6 +20,20 @@
   --prism-purple: #6f42c1;
   --prism-red: #d73a49;
   --prism-yellow: #735c0f;
+}
+
+/* Dark Prism theme for syntax highlighting — overrides :root in dark mode */
+[data-theme="dark"] {
+  --prism-background: #000000;
+  --prism-foreground: #f8f8f2;
+  --prism-comment: #6272a4;
+  --prism-cyan: #8be9fd;
+  --prism-green: #50fa7b;
+  --prism-orange: #ffb86c;
+  --prism-pink: #ff79c6;
+  --prism-purple: #bd93f9;
+  --prism-red: #ff5555;
+  --prism-yellow: #f1fa8c;
 }
 
 /* Token styles */
