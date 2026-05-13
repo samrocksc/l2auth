@@ -114,6 +114,35 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                 </li>
                             </ol>
 
+                            <h3>Discovery Document (Well-Known URL)</h3>
+                            <p>
+                                Before a client app can talk to an OIDC provider, it
+                                needs to know where the endpoints live. The Discovery
+                                Document is a JSON file at a standard location that
+                                tells the client everything it needs:
+                            </p>
+                            <!-- biome-ignore format -->
+                            <lazy-wc-markdown>```http
+GET /.well-known/openid-configuration HTTP/1.1
+Host: server.example.com
+```</lazy-wc-markdown>
+                            <p>
+                                The response includes every endpoint URL
+                                (<code>authorization_endpoint</code>,
+                                <code>token_endpoint</code>,
+                                <code>jwks_uri</code>, etc.) plus what features the
+                                server supports. The <code>/.well-known/</code>
+                                prefix is a standard — it means this URL is always
+                                in the same place, on every server. No guessing.
+                            </p>
+                            <p>
+                                <strong>Why this matters:</strong> your app only
+                                needs to know the provider's base URL. Everything
+                                else is auto-discovered. If the provider adds a new
+                                endpoint or algorithm, the discovery document
+                                updates and your app adapts — no code changes needed.
+                            </p>
+
                             <h3>UserInfo Endpoint</h3>
                             <p>
                                 OIDC adds a UserInfo endpoint to retrieve additional
@@ -125,6 +154,33 @@ GET /userinfo HTTP/1.1
 Host: server.example.com
 Authorization: Bearer SlAV32hkKG
 ```</lazy-wc-markdown>
+
+                            <h3>JWKS Endpoint (Key Verification)</h3>
+                            <p>
+                                When your app gets an ID token, how does it know the
+                                token wasn't forged? The JWKS (JSON Web Key Set)
+                                endpoint publishes the server's public keys so you
+                                can verify the signature.
+                            </p>
+                            <!-- biome-ignore format -->
+                            <lazy-wc-markdown>```http
+GET /jwks HTTP/1.1
+Host: server.example.com
+```</lazy-wc-markdown>
+                            <p>
+                                The response contains one or more public keys, each
+                                with a unique <code>kid</code> (Key ID). The token's
+                                header includes its own <code>kid</code>, so your
+                                app matches them up: find the right key, verify the
+                                signature, done.
+                            </p>
+                            <p>
+                                <strong>Why this matters:</strong> key rotation
+                                works without downtime. The server adds new keys to
+                                the JWKS set and removes old ones anytime. Your app
+                                always picks the right key at verification time —
+                                no manual updates, no service interruptions.
+                            </p>
 
                             <button
                                 class="try-me-btn"
