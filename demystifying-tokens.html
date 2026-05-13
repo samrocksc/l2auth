@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    <link rel="icon" type="image/svg+xml" href="/assets/pizza-icon.svg" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Demystifying the Tokens - Learn to Auth!</title>
+        <link rel="stylesheet" href="styles/main.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preload" href="https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK0nS.ttf" as="font" type="font/ttf" crossorigin>
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+            media="print" onload="this.media='all'"
+        />
+    <script>
+      // GTM - must be as early as possible in <head>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-MDJ26VZ');
+    </script>
+
+    <script type="module" src="components/font-loader.js"></script>
+        <script type="module" src="components/lazy-wc-markdown.js"></script>
+        <script>
+            // Apply theme immediately to prevent flicker
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        </script>
+        <script type="module" src="components/theme-toggle.js"></script>
+        <script type="module" src="components/tabs-component.js"></script>
+        <script type="module" src="components/footer-component.js"></script>
+        <script type="module" src="components/header-component.js"></script>
+</head>
+    <body>
+        <noscript>
+            <iframe
+                src="https://www.googletagmanager.com/ns.html?id=GTM-MDJ26VZ"
+                height="0"
+                width="0"
+                style="display:none;visibility:hidden"
+            ></iframe>
+        </noscript>
+        <font-loader>
+            <div class="main-wrapper">
+                <site-header></site-header>
+
+                <main>
+                    <div class="content-container">
+                        <section>
+                            <h2>Demystifying the Tokens</h2>
+
+                            <lazy-wc-markdown>Every time you hit "Sign in with Google" or log into an app, a handful of tokens fly between systems. Here's what each one does — no fluff.
+
+---
+
+## Authorization Code — The Handshake
+
+This is the shortest-lived token in the pipeline. It's not a token you keep — it's a one-time handshake that proves the user just authorized your app.
+
+```
+Browser  →  Authorization Server  →  gets a code
+Browser  →  Your App  →  passes the code
+Your App →  Authorization Server  →  exchanges the code for real tokens
+```
+
+- **Lifetime:** Seconds to minutes
+- **Format:** Opaque string (a random blob)
+- **What it does:** Proves the user authorized your app. Exchange it once, then it's dead.
+- **Why it exists:** So the browser never sees the actual tokens. The code goes through the frontend, but the real tokens come back over a secure backend channel.
+
+---
+
+## Access Token — The Key Card
+
+This is the token your app sends to APIs. Think of it like a hotel key card — it opens specific doors for a limited time.
+
+```http
+GET /api/orders HTTP/1.1
+Host: api.example.com
+Authorization: Bearer eyJhbGciOiJSUzI1NiIs...
+```
+
+- **Lifetime:** Minutes to hours (typically 15 min — 1 hour)
+- **Format:** JWT or opaque string
+- **What it does:** Proves to the API that your app has permission to access specific data
+- **Who reads it:** The API (resource server). Your app just passes it along.
+- **Contents:** Scopes, permissions, maybe a user ID — but never PII
+
+**Key rule:** The access token tells the API *what you can do*, not *who you are*. If you need identity info, use the ID token.
+
+---
+
+## ID Token — The Photo ID
+
+This one only shows up in OpenID Connect flows. It's proof of identity — a JWT signed by the identity provider that says "this user just logged in."
+
+```json
+{
+  "iss": "https://auth.example.com/",
+  "sub": "248289761001",
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "exp": 1704070800
+}
+```
+
+- **Lifetime:** Minutes to hours
+- **Format:** Always a JWT (so your app can verify the signature)
+- **What it does:** Tells your app who the user is — name, email, avatar, etc.
+- **Who reads it:** Your app (frontend). Never send this to an API.
+- **Validation:** Your app must verify the signature using the provider's JWKS keys
+
+**ID token vs. access token:** The ID token is for *your app* to know the user. The access token is for *APIs* to authorize requests. They serve completely different jobs.
+
+---
+
+## Refresh Token — The Re-Entry Pass
+
+Access tokens expire quickly by design. The refresh token lets your app get new access tokens without bothering the user to log in again.
+
+```
+Your App →  Authorization Server  →  POST /token with refresh_token
+           Authorization Server  →  Your App  →  new access token (+ maybe new refresh token)
+```
+
+- **Lifetime:** Days to months (long-lived)
+- **Format:** Opaque string
+- **What it does:** Gets you new access tokens silently in the background
+- **Storage:** Must be stored securely (server-side, httpOnly cookie, or secure storage)
+- **Rotation:** Best practice is to issue a new refresh token each time one is used (so old ones can't be replayed)
+
+**When to use it:** After the user logs in the first time, all subsequent visits should use the refresh token to get fresh access tokens. The user never sees a login screen again until the refresh token itself expires or is revoked.
+
+---
+
+## The Big Picture
+
+Here's how they flow together in a standard OIDC Authorization Code flow with PKCE:
+
+```
+User clicks "Sign In"
+       ↓
+Browser → Authorization Server → User authenticates
+       ↓
+Browser gets an Authorization Code (lives for seconds)
+       ↓
+Your backend exchanges the code for:
+   ├── ID Token       → proves who the user is
+   ├── Access Token   → lets you call APIs
+   └── Refresh Token  → gets you new access tokens later
+       ↓
+Access token expires → use refresh token → new access token
+       ↓
+Refresh token expires → user needs to re-authenticate
+```
+
+## One-Liner Summary
+
+| Token | Purpose | Lifetime | Read by |
+|-------|---------|----------|---------|
+| Authorization Code | One-time handshake | Seconds | Auth server only |
+| Access Token | Calls APIs | Minutes–hours | The API |
+| ID Token | Identifies the user | Minutes–hours | Your app |
+| Refresh Token | Gets new tokens | Days–months | Auth server only |</lazy-wc-markdown>
+                        </section>
+                    </div>
+                </main>
+
+                <site-footer></site-footer>
+            </div>
+        </font-loader>
+        <script src="scripts/main.js"></script>
+    </body>
+</html>
