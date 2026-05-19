@@ -114,6 +114,110 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                 </li>
                             </ol>
 
+                            <h4>Authorization Endpoint</h4>
+                            <!-- biome-ignore format -->
+                            <lazy-wc-markdown># OIDC Authorization Endpoint
+
+The Authorization Endpoint is used to interact with the resource owner and obtain an authorization grant. It's used for the Authorization Code flow and Implicit flow.
+
+## Endpoint URL
+```
+GET /authorize
+```
+
+## Parameters
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `response_type` | Yes | Determines the flow - "code" for Authorization Code flow, "token" for Implicit flow, "id_token" for Hybrid flow |
+| `client_id` | Yes | The client identifier registered with the provider |
+| `redirect_uri` | Recommended | Where to redirect the user after authorization |
+| `scope` | Recommended | Space-separated list of scopes (openid is required for OIDC) |
+| `state` | Recommended | Random value used to prevent CSRF attacks |
+| `nonce` | Required for Implicit/ Hybrid | Random value used to mitigate replay attacks |
+
+## Example Request
+
+```
+GET /authorize?
+  response_type=code&amp;
+  client_id=s6BhdRkqt3&amp;
+  redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&amp;
+  scope=openid%20profile%20email&amp;
+  state=af0ifjsldkj&amp;
+  nonce=n-0S6_WzA2Mj
+```
+
+## Response
+
+The authorization server redirects the user-agent back to the client with either:
+- An authorization code (in the Authorization Code flow)
+- Access token and/or ID token (in the Implicit flow)</lazy-wc-markdown>
+
+                            <h4>Token Endpoint</h4>
+                            <!-- biome-ignore format -->
+                            <lazy-wc-markdown># OIDC Token Endpoint
+
+The Token Endpoint is used by the client to obtain an access token, ID token, and refresh token by presenting its authorization grant or refresh token.
+
+## Endpoint URL
+```
+POST /token
+```
+
+## Parameters (Authorization Code Flow)
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `grant_type` | Yes | Must be set to "authorization_code" |
+| `code` | Yes | The authorization code received from the authorization endpoint |
+| `redirect_uri` | Yes | Must match the redirect_uri used in the authorization request |
+| `client_id` | Yes | The client identifier |
+| `client_secret` | Yes | The client secret (for confidential clients) |
+
+## Example Request
+
+```
+POST /token HTTP/1.1
+Host: server.example.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code&amp;
+code=SplxlOBeZQQYbYS6WxSbIA&amp;
+redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&amp;
+client_id=s6BhdRkqt3&amp;
+client_secret=7Fjfp0ZBr1KtDRbnfVdmIw
+```
+
+## Example Response
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+  "access_token": "SlAV32hkKG",
+  "token_type": "Bearer",
+  "refresh_token": "8xLOxBtZp8",
+  "expires_in": 3600,
+  "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ..."
+}
+```
+
+## Refresh Token Request
+
+```
+POST /token HTTP/1.1
+Host: server.example.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token&amp;
+refresh_token=8xLOxBtZp8&amp;
+client_id=s6BhdRkqt3&amp;
+client_secret=7Fjfp0ZBr1KtDRbnfVdmIw</lazy-wc-markdown>
+
                             <h3>Discovery Document (Well-Known URL)</h3>
                             <p>
                                 Before a client app can talk to an OIDC provider, it
@@ -143,6 +247,72 @@ Host: server.example.com
                                 updates and your app adapts — no code changes needed.
                             </p>
 
+                            <h4>Discovery Document</h4>
+                            <!-- biome-ignore format -->
+                            <lazy-wc-markdown># OIDC Discovery Document
+
+If you've ever set up a social login (Sign in with Google, Apple, etc.), at some point you had to enter URLs like "Authorization Endpoint" and "Token Endpoint" into a config screen. The Discovery Document makes that whole process automatic.
+
+## The URL
+```
+GET https://auth.server.com/.well-known/openid-configuration
+```
+
+The `/.well-known/` prefix is a standard pattern — it means "this URL is always in the same place, on every server." No guessing where the config lives.
+
+## What It Does
+
+The Discovery Document is a JSON file that tells client apps everything they need to know about the OpenID Connect provider. It's like a restaurant menu — one glance tells you what's available and where to find it.
+
+A client can bootstrap itself with just one URL. Here's how:
+
+1. The client knows the provider's base URL (e.g., `https://accounts.google.com`)
+2. It appends `/.well-known/openid-configuration`
+3. The response tells it every endpoint URL, supported feature, and capability
+4. The client configures itself automatically — no manual setup needed
+
+## What You Get Back
+
+```json
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "issuer": "https://server.example.com",
+  "authorization_endpoint": "https://server.example.com/authorize",
+  "token_endpoint": "https://server.example.com/token",
+  "userinfo_endpoint": "https://server.example.com/userinfo",
+  "jwks_uri": "https://server.example.com/jwks",
+  "scopes_supported": [
+    "openid", "profile", "email"
+  ],
+  "response_types_supported": [
+    "code", "token", "id_token"
+  ],
+  "subject_types_supported": [
+    "public"
+  ],
+  "id_token_signing_alg_values_supported": [
+    "RS256"
+  ]
+}
+```
+
+## What It Tells You
+
+| Field | What It Means |
+|-------|---------------|
+| `issuer` | Who runs this server — the unique identifier for this provider |
+| `*_endpoint` | The actual URLs for each OIDC endpoint |
+| `jwks_uri` | Where to find public keys for token verification |
+| `*_supported` | What features this server supports (scopes, algorithms, etc.) |
+
+## Why This Matters
+
+**No more hardcoding URLs.** Your app only needs to know one thing — the provider's issuer URL. Everything else is discovered automatically. If the provider moves an endpoint or adds support for a new algorithm, the discovery document updates and your app adapts without a code change.
+
+It's also how libraries and SDKs handle "one-click" OIDC setup. Ever wondered how a social login button just works? It starts here.</lazy-wc-markdown>
+
                             <h3>UserInfo Endpoint</h3>
                             <p>
                                 OIDC adds a UserInfo endpoint to retrieve additional
@@ -154,6 +324,70 @@ GET /userinfo HTTP/1.1
 Host: server.example.com
 Authorization: Bearer SlAV32hkKG
 ```</lazy-wc-markdown>
+
+                            <h4>UserInfo Endpoint</h4>
+                            <!-- biome-ignore format -->
+                            <lazy-wc-markdown># OIDC UserInfo Endpoint
+
+The UserInfo Endpoint is an OAuth 2.0 protected resource that returns claims about the authenticated end-user.
+
+## Endpoint URL
+```
+GET /userinfo
+```
+
+## Requirements
+- Requires a valid access token
+- Uses Bearer token authorization
+- Returns claims about the authenticated user
+
+## Example Request
+```
+GET /userinfo HTTP/1.1
+Host: server.example.com
+Authorization: Bearer SlAV32hkKG
+```
+
+## Example Response
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "sub": "248289761001",
+  "name": "Jane Doe",
+  "given_name": "Jane",
+  "family_name": "Doe",
+  "preferred_username": "j.doe",
+  "email": "janedoe@example.com",
+  "picture": "http://example.com/janedoe/me.jpg"
+}
+```
+
+## Standard Claims
+
+| Claim | Description |
+|-------|-------------|
+| `sub` | Subject - Identifier for the End-User |
+| `name` | End-User's full name |
+| `given_name` | Given name(s) or first name |
+| `family_name` | Surname(s) or last name |
+| `middle_name` | Middle name(s) |
+| `nickname` | Casual name of the End-User |
+| `preferred_username` | Shorthand name by which the End-User wishes to be referred |
+| `profile` | Profile page URL |
+| `picture` | Profile picture URL |
+| `website` | Web page or blog URL |
+| `email` | End-User's preferred e-mail address |
+| `email_verified` | True if the e-mail address has been verified |
+| `gender` | End-User's gender |
+| `birthdate` | End-User's birthday |
+| `zoneinfo` | Time zone |
+| `locale` | Locale |
+| `phone_number` | Preferred telephone number |
+| `phone_number_verified` | True if the phone number has been verified |
+| `address` | End-User's preferred postal address |
+| `updated_at` | Time the information was last updated</lazy-wc-markdown>
 
                             <h3>JWKS Endpoint (Key Verification)</h3>
                             <p>
@@ -182,36 +416,72 @@ Host: server.example.com
                                 no manual updates, no service interruptions.
                             </p>
 
-                            <button
-                                class="try-me-btn"
-                                data-try-me-out="authorization-endpoint"
-                            >
-                                Try Me Out: Authorization Endpoint
-                            </button>
-                            <button
-                                class="try-me-btn"
-                                data-try-me-out="token-endpoint"
-                            >
-                                Try Me Out: Token Endpoint
-                            </button>
-                            <button
-                                class="try-me-btn"
-                                data-try-me-out="userinfo-endpoint"
-                            >
-                                Try Me Out: UserInfo Endpoint
-                            </button>
-                            <button
-                                class="try-me-btn"
-                                data-try-me-out="discovery-document"
-                            >
-                                Try Me Out: Discovery Document
-                            </button>
-                            <button
-                                class="try-me-btn"
-                                data-try-me-out="jwks-endpoint"
-                            >
-                                Try Me Out: JWKS Endpoint
-                            </button>
+                            <h4>JWKS Endpoint</h4>
+                            <!-- biome-ignore format -->
+                            <lazy-wc-markdown># JWKS Endpoint
+
+When your app receives an ID token, how does it know the token is legit and not forged? That's where the JWKS Endpoint comes in.
+
+## The URL
+```
+GET https://auth.server.com/jwks
+```
+
+## What It Does
+
+The JWKS (JSON Web Key Set) endpoint publishes the **public keys** that the authorization server uses to sign tokens. Think of it like a public key directory — anyone can look up the keys here, but only the server holds the private keys needed to create signatures.
+
+Here's the flow:
+
+1. Your app gets an ID token back from the token endpoint
+2. The token's header says "hey, I was signed with key #abc123" (via the `kid` field)
+3. Your app fetches `GET /jwks` to get the server's public keys
+4. Your app finds the matching key and verifies the signature
+5. If the signature checks out, you know the token is authentic
+
+## What You Get Back
+
+```json
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "keys": [
+    {
+      "kid": "key1",
+      "kty": "RSA",
+      "alg": "RS256",
+      "use": "sig",
+      "n": "0vx7agoebGcQSuuPiLJXZptN9nndzPwTi...",
+      "e": "AQAB"
+    }
+  ]
+}
+```
+
+## The Key Fields
+
+| Field | What It Means |
+|-------|---------------|
+| `kid` | Key ID — this is how the token tells you which key to use |
+| `kty` | Key type — usually RSA or EC (the crypto algorithm family) |
+| `alg` | The specific signing algorithm (RS256 = RSA with SHA-256) |
+| `use` | What the key is for — `sig` means signatures, `enc` means encryption |
+| `n` | The RSA modulus (the big number that makes RSA work) |
+| `e` | The RSA public exponent (usually "AQAB" = 65537) |
+
+## Why This Matters
+
+**Key rotation without downtime.** The server can add new keys to the JWKS set and remove old ones anytime. Since your app looks up the key by `kid` at verification time, you never need a manual update. The server rolls its keys, and your app just follows along.
+
+## The Verification Checklist
+
+1. Grab the JWKS from `GET /jwks`
+2. Match the `kid` in the token header to a key in the set
+3. Use that public key to verify the token's signature
+4. Check the usual claims (expiration, issuer, audience)
+
+No match found for the `kid`? The token is suspect — reject it.</lazy-wc-markdown>
 
                             <h3>Pros & Cons</h3>
                             <ul>
@@ -228,17 +498,6 @@ Host: server.example.com
                 <site-footer></site-footer>
             </div>
 
-      <try-me-modal></try-me-modal>
-      <script type="module" src="components/try-me-modal.js"></script>
-      <script type="module">
-        document.addEventListener("click", (e) => {
-          const btn = e.target.closest("[data-try-me-out]");
-          if (!btn) return;
-          const endpoint = btn.getAttribute("data-try-me-out");
-          const title = btn.textContent.trim().replace("Try Me Out: ", "");
-          document.querySelector("try-me-modal").open(endpoint, title);
-        });
-      </script>
         </font-loader>
         <script src="scripts/main.js"></script>
     </body>

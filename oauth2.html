@@ -50,16 +50,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <script type="module" src="components/tabs-component.js"></script>
     <script type="module" src="components/footer-component.js"></script>
     <script type="module" src="components/header-component.js"></script>
-    <script type="module" src="components/try-me-modal.js"></script>
-    <script type="module">
-      document.addEventListener("click", (e) => {
-        const btn = e.target.closest("[data-try-me-out]");
-        if (!btn) return;
-        const endpoint = btn.getAttribute("data-try-me-out");
-        const title = btn.textContent.trim().replace("Try Me Out: ", "");
-        document.querySelector("try-me-modal").open(endpoint, title);
-      });
-    </script>
 </head>
   <body>
         <noscript>
@@ -145,17 +135,111 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 </li>
               </ul>
 
-              <button
-                class="try-me-btn"
-                data-try-me-out="authorization-endpoint"
-              >
-                Try Me Out: Authorization Endpoint
-              </button>
-              <button class="try-me-btn" data-try-me-out="token-endpoint">
-                Try Me Out: Token Endpoint
-              </button>
+              <h4>Authorization Endpoint</h4>
+              <!-- biome-ignore format -->
+              <lazy-wc-markdown># OIDC Authorization Endpoint
 
-              <h3>Pros & Cons</h3>
+The Authorization Endpoint is used to interact with the resource owner and obtain an authorization grant. It's used for the Authorization Code flow and Implicit flow.
+
+## Endpoint URL
+```
+GET /authorize
+```
+
+## Parameters
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `response_type` | Yes | Determines the flow - "code" for Authorization Code flow, "token" for Implicit flow, "id_token" for Hybrid flow |
+| `client_id` | Yes | The client identifier registered with the provider |
+| `redirect_uri` | Recommended | Where to redirect the user after authorization |
+| `scope` | Recommended | Space-separated list of scopes (openid is required for OIDC) |
+| `state` | Recommended | Random value used to prevent CSRF attacks |
+| `nonce` | Required for Implicit/ Hybrid | Random value used to mitigate replay attacks |
+
+## Example Request
+
+```
+GET /authorize?
+  response_type=code&amp;
+  client_id=s6BhdRkqt3&amp;
+  redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&amp;
+  scope=openid%20profile%20email&amp;
+  state=af0ifjsldkj&amp;
+  nonce=n-0S6_WzA2Mj
+```
+
+## Response
+
+The authorization server redirects the user-agent back to the client with either:
+- An authorization code (in the Authorization Code flow)
+- Access token and/or ID token (in the Implicit flow)</lazy-wc-markdown>
+
+              <h4>Token Endpoint</h4>
+              <!-- biome-ignore format -->
+              <lazy-wc-markdown># OIDC Token Endpoint
+
+The Token Endpoint is used by the client to obtain an access token, ID token, and refresh token by presenting its authorization grant or refresh token.
+
+## Endpoint URL
+```
+POST /token
+```
+
+## Parameters (Authorization Code Flow)
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `grant_type` | Yes | Must be set to "authorization_code" |
+| `code` | Yes | The authorization code received from the authorization endpoint |
+| `redirect_uri` | Yes | Must match the redirect_uri used in the authorization request |
+| `client_id` | Yes | The client identifier |
+| `client_secret` | Yes | The client secret (for confidential clients) |
+
+## Example Request
+
+```
+POST /token HTTP/1.1
+Host: server.example.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code&amp;
+code=SplxlOBeZQQYbYS6WxSbIA&amp;
+redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&amp;
+client_id=s6BhdRkqt3&amp;
+client_secret=7Fjfp0ZBr1KtDRbnfVdmIw
+```
+
+## Example Response
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+  "access_token": "SlAV32hkKG",
+  "token_type": "Bearer",
+  "refresh_token": "8xLOxBtZp8",
+  "expires_in": 3600,
+  "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ..."
+}
+```
+
+## Refresh Token Request
+
+```
+POST /token HTTP/1.1
+Host: server.example.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token&amp;
+refresh_token=8xLOxBtZp8&amp;
+client_id=s6BhdRkqt3&amp;
+client_secret=7Fjfp0ZBr1KtDRbnfVdmIw</lazy-wc-markdown>
+
+              <h3>Pros &amp; Cons</h3>
               <ul>
                 <li>✅ Standardized protocol</li>
                 <li>✅ Delegated access without sharing passwords</li>
@@ -170,7 +254,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <site-footer></site-footer>
       </div>
 
-      <try-me-modal></try-me-modal>
     </font-loader>
     <script src="scripts/main.js"></script>
   </body>
