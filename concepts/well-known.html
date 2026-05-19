@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    <link rel="icon" type="image/svg+xml" href="../assets/pizza-icon.svg" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>OpenID Connect Discovery Document - Learn to Auth!</title>
+        <link rel="stylesheet" href="../styles/main.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+            media="print" onload="this.media='all'"
+        />
+        <script type="module" src="../components/font-loader.js"></script>
+        <script type="module" src="../components/lazy-wc-markdown.js"></script>
+        <script>
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        </script>
+        <script type="module" src="../components/theme-toggle.js"></script>
+        <script type="module" src="../components/tabs-component.js"></script>
+        <script type="module" src="../components/footer-component.js"></script>
+        <script type="module" src="../components/header-component.js"></script>
+
+    </head>
+    <body>
+        <font-loader>
+            <div class="main-wrapper">
+                <site-header></site-header>
+
+                <main>
+                    <div class="content-container">
+                        <section>
+                            <h2>OpenID Connect Discovery Document</h2>
+
+                            <!-- biome-ignore format -->
+                            <lazy-wc-markdown>## What It Is
+
+The OpenID Connect Discovery Document is a standard JSON endpoint that acts as the **service manual** for an OIDC provider. One URL tells a client application everything it needs to know about the provider — where its endpoints live, what algorithms it supports, what scopes are available, and more.
+
+Instead of hardcoding URLs or maintaining manual configuration, a client fetches this document at startup and dynamically discovers every endpoint and capability.
+
+---
+
+## The URL
+
+```
+GET https://{provider}/.well-known/openid-configuration
+```
+
+The `/.well-known/` prefix is defined by **RFC 5785** — it is a convention that means "this path is always in the same place on every server." No guessing, no custom configuration, no vendor-specific setup.
+
+| Provider | Discovery URL |
+|----------|--------------|
+| Google | `https://accounts.google.com/.well-known/openid-configuration` |
+| Auth0 | `https://{tenant}.auth0.com/.well-known/openid-configuration` |
+| Microsoft | `https://login.microsoftonline.com/{tenant}/v2.0/.well-known/openid-configuration` |
+| Amazon Cognito | `https://cognito-idp.{region}.amazonaws.com/{poolId}/.well-known/openid-configuration` |
+
+---
+
+## What It Returns
+
+The response is a JSON document with a standard set of fields defined by the [OpenID Connect Discovery spec](https://openid.net/specs/openid-connect-discovery-1_0.html). Here is a representative example with annotations:
+
+```json
+{
+  "issuer": "https://auth.example.com",
+  "authorization_endpoint": "https://auth.example.com/authorize",
+  "token_endpoint": "https://auth.example.com/token",
+  "userinfo_endpoint": "https://auth.example.com/userinfo",
+  "jwks_uri": "https://auth.example.com/.well-known/jwks.json",
+  "registration_endpoint": "https://auth.example.com/register",
+  "scopes_supported": [
+    "openid",
+    "profile",
+    "email",
+    "address",
+    "phone"
+  ],
+  "response_types_supported": [
+    "code",
+    "id_token",
+    "token id_token"
+  ],
+  "response_modes_supported": [
+    "query",
+    "fragment",
+    "form_post"
+  ],
+  "grant_types_supported": [
+    "authorization_code",
+    "implicit",
+    "refresh_token"
+  ],
+  "id_token_signing_alg_values_supported": [
+    "RS256",
+    "RS384",
+    "RS512",
+    "ES256",
+    "ES384",
+    "ES512"
+  ],
+  "subject_types_supported": [
+    "public"
+  ],
+  "claims_supported": [
+    "sub",
+    "iss",
+    "aud",
+    "exp",
+    "iat",
+    "name",
+    "email",
+    "picture"
+  }
+}
+```
+
+### Field Reference
+
+| Field | Type | What It Tells You |
+|-------|------|-------------------|
+| `issuer` | string | The unique identifier for this provider. Your app must verify this matches the `iss` claim in every token to prevent token confusion attacks. |
+| `authorization_endpoint` | URL | Where to redirect the user's browser for login. |
+| `token_endpoint` | URL | Where to exchange authorization codes for tokens. |
+| `userinfo_endpoint` | URL | Where to fetch standard profile claims using an access token. |
+| `jwks_uri` | URL | Where to download public keys for signature verification. |
+| `registration_endpoint` | URL | Where clients can register themselves dynamically (optional). |
+| `scopes_supported` | array | What access scopes the server recognizes. |
+| `response_types_supported` | array | Which OAuth response types the server supports (code, token, id_token, etc.). |
+| `response_modes_supported` | array | How the server sends responses back to the client (query params, fragment, form POST). |
+| `grant_types_supported` | array | Which OAuth grant types are available. |
+| `id_token_signing_alg_values_supported` | array | Which signing algorithms the server uses for ID tokens. |
+| `subject_types_supported` | array | Whether subject identifiers are `public` (same across all clients) or `pairwise` (different per client). |
+| `claims_supported` | array | The full list of claims the server can return about a user. |
+
+---
+
+## How Clients Use It (Bootstrapping)
+
+A client only needs **one piece of information** to configure itself: the provider's issuer URL. Here is how bootstrapping works:
+
+1. The developer configures the client with the issuer URL (e.g., `https://auth.example.com`)
+2. At startup, the client appends `/.well-known/openid-configuration` and fetches the document
+3. It extracts all endpoint URLs and supported features from the response
+4. The client configures its internal OIDC library automatically — no hardcoded URLs
+
+**No manual URL entry, no admin copy-paste, no mismatch errors.**
+
+Most OIDC SDKs do this automatically. When you configure a library with just `issuer: "https://accounts.google.com"`, it fetches the Discovery Document under the hood and wires everything up.
+
+---
+
+## Zero-Downtime Changes
+
+The Discovery Document enables providers to change their infrastructure without breaking existing clients:
+
+- **Endpoint migration**: If the provider moves its token endpoint from `/token` to `/v2/token`, it updates the Discovery Document. Clients pick up the new URL on their next fetch. No code deploy needed.
+- **New algorithm support**: When the provider adds a stronger signing algorithm, it adds it to `id_token_signing_alg_values_supported`. Clients can start using it immediately.
+- **Deprecation**: The provider can signal deprecated features by removing them from the `*_supported` arrays.
+
+Clients typically cache the Discovery Document for a configurable period (hours to days), so changes propagate gradually — no thundering herd on the provider's infrastructure.
+
+---
+
+## Key Rotation Tie-In
+
+The `jwks_uri` field in the Discovery Document points to the JWKS (JSON Web Key Set) endpoint — the server's public key directory. This is how key rotation works seamlessly:
+
+1. The provider generates a new signing key pair and adds the public key to its JWKS endpoint
+2. New tokens are signed with the new key (identified by a unique `kid` in the token header)
+3. The JWKS endpoint now serves both old and new public keys
+4. Clients fetch keys at verification time and match by `kid`
+5. Old keys are removed from JWKS once all tokens signed with them have expired
+
+Since the Discovery Document always points to the current `jwks_uri`, providers can rotate `jwks_uri` itself (e.g., moving to a new CDN-backed endpoint) with the same zero-downtime mechanism.
+
+**No manual key rollover. No shared secrets. No downtime.**
+
+---
+
+## Real-World Examples
+
+### Google
+
+```
+https://accounts.google.com/.well-known/openid-configuration
+```
+
+Google's Discovery Document is one of the most complete in the industry. It advertises:
+- 30+ supported scopes (including Google-specific ones like `https://www.googleapis.com/auth/userinfo.email`)
+- Multiple signing algorithms (RS256 is primary)
+- Pairwise subject identifiers for privacy
+- A `claims_parameter_supported` flag
+
+### Auth0
+
+```
+https://{your-tenant}.auth0.com/.well-known/openid-configuration
+```
+
+Auth0 uses tenant-specific subdomains. Each tenant gets its own Discovery Document. Key differences from Google:
+- Supports both RS256 and HS256 (symmetric) signing
+- Exposes a `registration_endpoint` for dynamic client registration
+- Uses public subject type by default
+
+### Key Differences Between Providers
+
+| Aspect | Google | Auth0 |
+|--------|--------|-------|
+| Subject type | Pairwise (privacy) | Public (default) |
+| Signing algorithms | RS256 + ES256 | RS256 + HS256 |
+| Dynamic registration | Not exposed | Available |
+| Scope count | 30+ | Configurable |
+| Tenant structure | Single global | Multi-tenant per subdomain |
+
+---
+
+## Dynamic Client Registration
+
+If the Discovery Document includes a `registration_endpoint`, clients can register themselves programmatically — no admin portal, no copy-paste of client IDs.
+
+The client sends a POST request with its metadata:
+
+```json
+{
+  "client_name": "My App",
+  "redirect_uris": [
+    "https://myapp.com/callback",
+    "https://myapp.com/alt-callback"
+  ],
+  "grant_types": ["authorization_code", "refresh_token"],
+  "token_endpoint_auth_method": "client_secret_basic",
+  "scope": "openid profile email"
+}
+```
+
+The server responds with a registered client ID:
+
+```json
+{
+  "client_id": "a1b2c3d4e5f6g7h8",
+  "client_secret": "p9q8r7s6t5u4v3w2",
+  "client_id_issued_at": 1699000000,
+  "client_secret_expires_at": 0
+}
+```
+
+- `client_secret_expires_at: 0` means the secret never expires
+- The client stores these credentials and uses them for all future requests
+- Registration can be authenticated (using an initial access token) or open
+
+This is how developer portals and API marketplaces work — when you create a new app, the platform registers a client for you behind the scenes.
+
+---
+
+## How SDKs Use It
+
+Every major OIDC library fetches the Discovery Document under the hood. It is the foundation of "one-click" provider configuration.
+
+| Library / SDK | How It Uses Discovery |
+|--------------|----------------------|
+| **NextAuth.js** | `provider: "google"` fetches Google's Discovery Document to wire up endpoints |
+| **Spring Security** | `spring.security.oauth2.client.provider.google.issuer-uri` triggers auto-discovery |
+| **oauth2-proxy** | `--provider=google` uses Discovery to find all endpoints |
+| **node-openid-client** | `Issuer.discover("https://accounts.google.com")` fetches and parses the document |
+| **AppAuth (mobile)** | Service configuration fetched from Discovery to bootstrap native auth flows |
+
+When you configure a social login provider with just a name or URL, the SDK is doing this:
+
+```
+issuer URL + "/.well-known/openid-configuration"
+  → fetch JSON
+    → extract authorization_endpoint, token_endpoint, jwks_uri
+      → configure OIDC client
+```
+
+All of this happens in milliseconds at app startup or on first authentication attempt.
+
+---
+
+## One-Liner Summary
+
+| Field | What It Tells You |
+|-------|-------------------|
+| `issuer` | Who runs this server — your app checks this to prevent token confusion |
+| `*_endpoint` | The actual URLs for each OIDC operation |
+| `jwks_uri` | Where to find public keys for signature verification |
+| `*_supported` | What this server supports (scopes, algorithms, claims, etc.) |</lazy-wc-markdown>
+                        </section>
+                    </div>
+                </main>
+
+                <site-footer></site-footer>
+            </div>
+        </font-loader>
+        <script src="../scripts/main.js"></script>
+    </body>
+</html>
