@@ -1,46 +1,54 @@
-const CACHE_NAME = "l2auth-v1";
-const ASSETS = [
-  "/",
-  "/index.html",
-  "/basic-auth.html",
-  "/jwt.html",
-  "/oauth2.html",
-  "/oidc.html",
-  "/demystifying-tokens.html",
-  "/concepts/index.html",
-  "/concepts/auth-n-z.html",
-  "/concepts/auth-n-z-new.html",
-  "/concepts/claims-reference.html",
-  "/concepts/id-token-vs-access-token.html",
-  "/concepts/sca.html",
-  "/concepts/scopes-vs-claims.html",
-  "/concepts/well-known.html",
+const CACHE_NAME = "l2auth-v2";
+const STATIC_CACHE = "l2auth-static-v2";
+
+const STATIC_ASSETS = [
   "/styles/main.css",
   "/scripts/main.js",
   "/manifest.json",
   "/assets/pizza-icon.svg",
 ];
 
-// Install: cache all static assets
+// Install: cache static assets only (not HTML)
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+    caches.open(STATIC_CACHE).then((cache) => cache.addAll(STATIC_ASSETS))
   );
   self.skipWaiting();
 });
 
-// Activate: clean old caches
+// Activate: clean old caches, take control immediately
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    )
+    Promise.all([
+      caches.keys().then((keys) =>
+        Promise.all(keys.filter((k) => k !== CACHE_NAME && k !== STATIC_CACHE).map((k) => caches.delete(k)))
+      ),
+      self.clients.claim(),
+    ])
   );
 });
 
-// Fetch: serve from cache, fall back to network
+// Fetch: network-first for HTML, cache-first for static assets
 self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((cached) => cached || fetch(event.request))
-  );
+  const url = new URL(event.request.url);
+  const isHTML = url.pathname === "/" || url.pathname.endsWith(".html");
+
+  if (isHTML) {
+    // Network-first: always try the server, fall back to cache
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+  } else if (STATIC_ASSETS.includes(url.pathname)) {
+    // Cache-first for known static assets
+    event.respondWith(
+      caches.match(event.request).then((cached) => cached || fetch(event.request))
+    );
+  }
+  // Everything else: pass through (fonts, unpkg CDN, etc.)
 });
