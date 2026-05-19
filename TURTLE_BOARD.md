@@ -1,11 +1,11 @@
 # Turtle Board — L2Auth
 
 ## 📋 Todo
-- [x] #t_try-me-remove [chore] Remove Try Me modal pattern from OAuth 2.0 and OIDC pages | high | requested 2026-05-19 | @leonardo
-
-- [ ] [feature] Add .well-known/openid-configuration concept page
-  New standalone deep-dive at `concepts/well-known.html`. Annotated JSON of real discovery docs, field-by-field breakdown (issuer, endpoints, jwks_uri, all `*_supported` arrays), how client bootstraps from a single URL, key rotation tie-in, dynamic client registration, real-world provider examples. Wire it into the Concepts index, the OIDC page, and the OAuth 2.0 page.
+- [ ] [feature] Add PWA manifest and service worker support | medium | requested 2026-05-19
+  Create manifest.json with app name, icons (pizza-icon.svg), theme colors, start URL. Add `<link rel="manifest">` to all HTML pages. Optionally add a basic service worker for offline caching of static assets.
 
 ## 🔧 In Progress (empty)
 
-## ✅ Done (empty)
+## ✅ Done
+- [x] #t_try-me-remove [chore] Remove Try Me modal pattern from OAuth 2.0 and OIDC pages | high | @leonardo
+- [x] #t_well-known [feature] Add .well-known/openid-configuration concept page | high | @leonardo
