@@ -3,11 +3,6 @@
 /* Font loading strategy to prevent FOUC */
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Press+Start+2P&display=swap');
 
-/* Ensure smooth transitions to prevent flickering */
-* {
-  transition: none !important;
-}
-
 /* Light theme Prism tokens */
 :root {
   --prism-background: #f0f0f0;
@@ -22,7 +17,7 @@
   --prism-yellow: #735c0f;
 }
 
-/* Dark Prism theme for syntax highlighting — overrides :root in dark mode */
+/* Dark Prism theme for syntax highlighting */
 [data-theme="dark"] {
   --prism-background: #000000;
   --prism-foreground: #f8f8f2;
@@ -109,7 +104,6 @@ pre[class*="language-"] {
   background: var(--prism-background);
 }
 
-/* Scoped to actual code elements, not the entire page */
 .code-block code,
 pre code {
   color: var(--prism-foreground);
@@ -119,7 +113,7 @@ pre code {
 /* Prevent header from shifting when scrollbars appear */
 .site-header-container {
   contain: layout style paint;
-  transform: translateZ(0); /* Hardware acceleration */
+  transform: translateZ(0);
 }
 
 /* Ensure the header doesn't flicker */
@@ -158,29 +152,17 @@ body {
   color: var(--text-primary);
   margin: 0;
   padding: 0;
-  transition:
-    background-color 0.3s,
-    color 0.3s;
-  line-height: 1.6;
-  font-size: 14px; /* Slightly larger base for better readability */
-
-  /* Prevent scrollbar jitter by always showing scrollbar or making it overlay */
-  overflow-y: scroll; /* Always show vertical scrollbar to prevent layout shifts */
-
-  /* WebKit browsers - make scrollbar overlay content instead of taking space */
-  overflow-y: overlay;
-
-  /* Ensure consistent rendering */
+  line-height: 1.7;
+  font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  /* Reduce default boldness */
   font-weight: 400;
+  overflow-y: auto;
 }
 
-/* WebKit scrollbar styling (Chrome, Safari) */
+/* WebKit scrollbar styling */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -189,7 +171,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: var(--accent-color);
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -197,31 +179,25 @@ body {
 }
 
 .main-wrapper {
-  padding-top: 1rem;
-  padding-bottom: 20px; /* Add bottom padding to prevent content from touching edges */
-  max-width: 80%;
+  max-width: 960px;
   margin: 0 auto;
+  padding: 1rem 1.5rem 2rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-
-  /* Prevent layout shifts */
   box-sizing: border-box;
-  width: 100%;
 }
 
 @media (max-width: 768px) {
   .main-wrapper {
-    max-width: 100%;
-    padding-bottom: 20px; /* Ensure padding on mobile devices too */
+    padding: 0.5rem 1rem 2rem;
   }
 }
 
 header {
   background-color: var(--bg-secondary);
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   border-bottom: 2px solid var(--accent-color);
-  box-shadow: 0 4px 8px var(--shadow-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -229,7 +205,7 @@ header {
 
 h1 {
   font-family: var(--font-primary);
-  font-size: 1.5rem; /* Reduced size for better fit with Press Start 2P */
+  font-size: 1.2rem;
   margin: 0;
   text-shadow: 2px 2px 0 var(--accent-color);
   color: var(--accent-color);
@@ -238,17 +214,15 @@ h1 {
 
 nav {
   background-color: var(--bg-secondary);
-  padding: 0.5rem;
+  padding: 0.75rem 1.5rem;
   border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .content-container {
-  margin: 2rem 0;
+  margin: 1.5rem 0;
   padding: 2rem;
   background-color: var(--bg-secondary);
-  box-shadow: 0 8px 16px var(--shadow-color);
-  min-height: 60vh;
+  border: 1px solid var(--border-color);
   flex-grow: 1;
 }
 
@@ -257,8 +231,7 @@ footer {
   padding: 1rem;
   background-color: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
-  margin-top: 2rem;
-  box-shadow: 0 -2px 4px var(--shadow-color);
+  margin-top: auto;
 }
 
 .tab-content {
@@ -280,8 +253,7 @@ footer {
 }
 
 button,
-.tab-button,
-.try-me-btn {
+.tab-button {
   font-family: var(--font-primary);
   background-color: var(--bg-primary);
   color: var(--text-primary);
@@ -289,31 +261,27 @@ button,
   padding: 0.5rem 1rem;
   margin: 0.25rem;
   cursor: pointer;
-  box-shadow: 4px 4px 0 var(--shadow-color);
-  transition: all 0.2s;
-  font-size: 0.8rem; /* Adjust size for Press Start 2P */
+  font-size: 0.75rem;
+  transition: all 0.15s;
 }
 
 button:hover,
-.tab-button:hover,
-.try-me-btn:hover {
+.tab-button:hover {
   background-color: var(--accent-color);
   color: var(--bg-primary);
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 var(--shadow-color);
+  transform: translate(1px, 1px);
 }
 
 .tabs-container {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  font-size: 0.8rem; /* Adjust size for Press Start 2P */
+  font-size: 0.75rem;
 }
 
 .tab-button.active {
   background-color: var(--accent-color);
   color: var(--bg-primary);
-  box-shadow: inset 2px 2px 0 var(--shadow-color);
 }
 
 h2 {
@@ -322,42 +290,52 @@ h2 {
   text-shadow: 1px 1px 0 var(--shadow-color);
   border-bottom: 2px solid var(--highlight);
   padding-bottom: 0.5rem;
-  font-size: 1.2rem; /* Adjust size for Press Start 2P */
+  font-size: 1.1rem;
   font-weight: 400;
+  margin-top: 0;
 }
 
 h3 {
   font-family: var(--font-primary);
   color: var(--highlight);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+h4 {
+  font-family: var(--font-primary);
+  color: var(--accent-color);
   margin-top: 1.5rem;
-  font-size: 1rem; /* Adjust size for Press Start 2P */
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
   font-weight: 400;
 }
 
 ul li,
 ol li {
   margin-bottom: 0.5rem;
+  line-height: 1.7;
 }
 
 .code-block {
   background-color: var(--bg-primary);
-  border: 2px solid var(--border-color);
+  border: 1px solid var(--border-color);
   padding: 1rem;
   margin: 1rem 0;
   font-family: var(--font-sans);
   font-weight: 500;
-  box-shadow: inset 2px 2px 4px var(--shadow-color);
   overflow-x: auto;
   white-space: pre-wrap;
 }
 
 .diagram {
   background-color: var(--bg-primary);
-  border: 2px solid var(--border-color);
+  border: 1px solid var(--border-color);
   padding: 1rem;
   margin: 1rem 0;
   text-align: center;
-  box-shadow: inset 2px 2px 4px var(--shadow-color);
   font-style: italic;
   font-family: var(--font-sans);
   font-weight: 400;
@@ -368,7 +346,6 @@ table {
   border-collapse: collapse;
   margin: 1rem 0;
   background-color: var(--bg-primary);
-  box-shadow: inset 2px 2px 4px var(--shadow-color);
   font-family: var(--font-sans);
   font-weight: 400;
 }
@@ -376,7 +353,7 @@ table {
 th,
 td {
   border: 1px solid var(--border-color);
-  padding: 0.5rem;
+  padding: 0.6rem 0.75rem;
   text-align: left;
 }
 
@@ -388,7 +365,8 @@ th {
 a {
   color: var(--accent-color);
   text-decoration: none;
-  box-shadow: 0 1px 0 var(--accent-color);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
 }
 
 a:visited {
@@ -397,84 +375,26 @@ a:visited {
 
 a:hover {
   color: var(--highlight);
-  box-shadow: 0 2px 0 var(--highlight);
+  border-bottom-color: var(--highlight);
 }
 
 .theme-toggle {
   background: none;
-  border: none;
-  font-size: 1.5rem;
+  border: 1px solid var(--border-color);
+  font-size: 1.2rem;
   cursor: pointer;
   color: var(--accent-color);
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: all 0.3s;
+  border-radius: 0;
+  transition: all 0.15s;
 }
 
 .theme-toggle:hover {
   background-color: rgba(255, 0, 255, 0.1);
-  transform: rotate(15deg);
-}
-
-/* Try Me Out Modal Styles */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background-color: var(--bg-secondary);
-  border: 2px solid var(--accent-color);
-  border-radius: 8px;
-  box-shadow: 0 4px 8px var(--shadow-color);
-  max-width: 800px;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.modal-header h2 {
-  margin: 0;
-  color: var(--accent-color);
-  margin-top: 1.5rem;
-}
-
-.close-button {
-  background: none;
-  border: none;
-  font-size: 2rem;
-  cursor: pointer;
-  color: var(--accent-color);
-  padding: 0;
-  margin: 0;
-}
-
-.close-button:hover {
-  color: var(--highlight);
-}
-
-.modal-body {
-  padding: 1rem;
 }
 
 /* Override default x-markdown and wc-markdown styles to match our theme */
@@ -483,7 +403,7 @@ wc-markdown {
   display: block;
   color: var(--text-primary);
   font-family: var(--font-sans);
-  font-size: 0.9rem; /* Slightly larger for better readability with IBM Plex Mono */
+  font-size: 0.9rem;
   line-height: 1.7;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -510,26 +430,31 @@ wc-markdown h4,
 wc-markdown h5 {
   font-family: var(--font-primary);
   color: var(--accent-color);
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  font-size: 1rem; /* Adjust size for Press Start 2P */
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
   font-weight: 400;
+}
+
+x-markdown h1,
+wc-markdown h1 {
+  border-bottom: 2px solid var(--highlight);
+  padding-bottom: 0.5rem;
 }
 
 x-markdown p,
 wc-markdown p {
-  margin: 0.5rem 0;
-  line-height: 1.8; /* Increased line height for better readability */
+  margin: 0.75rem 0;
+  line-height: 1.8;
   font-weight: 400;
 }
 
 x-markdown code,
 wc-markdown code {
   background-color: var(--bg-primary);
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
+  padding: 0.15rem 0.35rem;
   font-family: var(--font-sans);
-  font-weight: 500; /* Slightly heavier for code */
+  font-weight: 500;
   word-break: break-word;
 }
 
@@ -537,12 +462,11 @@ x-markdown pre,
 wc-markdown pre {
   background-color: var(--bg-primary);
   border: 1px solid var(--border-color);
-  border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
   margin: 1rem 0;
   font-family: var(--font-sans);
-  font-weight: 500; /* Slightly heavier for code blocks */
+  font-weight: 500;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
@@ -559,14 +483,14 @@ x-markdown ul,
 x-markdown ol,
 wc-markdown ul,
 wc-markdown ol {
-  margin: 0.5rem 0;
+  margin: 0.75rem 0;
   padding-left: 1.5rem;
   font-weight: 400;
 }
 
 x-markdown li,
 wc-markdown li {
-  margin: 0.25rem 0;
+  margin: 0.35rem 0;
   font-weight: 400;
 }
 
@@ -576,8 +500,8 @@ wc-markdown table {
   border-collapse: collapse;
   margin: 1rem 0;
   background-color: var(--bg-primary);
-  font-family: "Courier New", monospace; /* Keep monospace for tables */
-  table-layout: fixed;
+  font-family: var(--font-sans);
+  table-layout: auto;
 }
 
 x-markdown th,
@@ -585,30 +509,35 @@ x-markdown td,
 wc-markdown th,
 wc-markdown td {
   border: 1px solid var(--border-color);
-  padding: 0.5rem;
+  padding: 0.5rem 0.75rem;
   text-align: left;
   word-wrap: break-word;
   overflow-wrap: break-word;
   font-weight: 400;
 }
 
+x-markdown hr,
+wc-markdown hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 1.5rem 0;
+}
+
 x-markdown th,
 wc-markdown th {
   background-color: var(--accent-color);
   color: var(--bg-primary);
-  font-weight: 500; /* Slightly heavier for header */
+  font-weight: 500;
 }
 
-/* Hide lazy-wc-markdown content until wc-markdown has finished rendering */
+/* Lazy wc-markdown render animation */
 lazy-wc-markdown:not([rendered]) {
   visibility: hidden;
   opacity: 0;
-  transform: translateY(-20px);
 }
 
 lazy-wc-markdown[rendered] {
   visibility: visible;
   opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.3s ease;
 }
