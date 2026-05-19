@@ -5,6 +5,12 @@ import {
 } from "https://unpkg.com/lit@2.0.0-rc.4/index.js?module";
 
 class HeaderComponent extends LitElement {
+	static get properties() {
+		return {
+			_navOpen: { type: Boolean, state: true },
+		};
+	}
+
 	static get styles() {
 		return css`
       :host {
@@ -15,7 +21,7 @@ class HeaderComponent extends LitElement {
       .site-header-container {
         contain: layout style paint;
         width: 100%;
-        transform: translateZ(0); /* Hardware acceleration */
+        transform: translateZ(0);
       }
 
       header {
@@ -27,28 +33,19 @@ class HeaderComponent extends LitElement {
         justify-content: space-between;
         align-items: center;
         font-family: var(--font-primary);
-        /* Add these to prevent flickering */
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         will-change: transform;
-
-        /* Prevent header from shifting when scrollbars appear */
         position: relative;
         width: 100%;
         box-sizing: border-box;
-
-        /* Ensure consistent rendering */
         transform: translateZ(0);
         backface-visibility: hidden;
-
-        /* Prevent potential transitions during page loads */
         transition: none;
-
-        /* Ensure header renders immediately without waiting for other components */
         min-height: 60px;
       }
 
-      .header-content {
+      .header-left {
         display: flex;
         align-items: center;
         gap: 1rem;
@@ -57,7 +54,6 @@ class HeaderComponent extends LitElement {
       .pizza-icon {
         width: 40px;
         height: 40px;
-        /* Ensure icon loads quickly */
         contain: strict;
       }
 
@@ -70,11 +66,56 @@ class HeaderComponent extends LitElement {
       h1 a {
         text-decoration: none;
         color: inherit;
-        /* Prevent link hover effects during page transitions */
         transition: none;
       }
 
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .hamburger {
+        display: none;
+        background: none;
+        border: 2px solid var(--accent-color);
+        color: var(--accent-color);
+        font-size: 1.3rem;
+        cursor: pointer;
+        padding: 0.4rem 0.6rem;
+        font-family: var(--font-primary);
+        box-shadow: 3px 3px 0 var(--shadow-color);
+        transition: all 0.15s;
+        line-height: 1;
+      }
+
+      .hamburger:hover {
+        background-color: var(--accent-color);
+        color: var(--bg-primary);
+        transform: translate(1px, 1px);
+        box-shadow: 2px 2px 0 var(--shadow-color);
+      }
+
+      nav {
+        background-color: var(--bg-secondary);
+        padding: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: 0 2px 4px var(--shadow-color);
+      }
+
       @media (max-width: 768px) {
+        .hamburger {
+          display: inline-block;
+        }
+
+        nav {
+          display: none;
+        }
+
+        nav.open {
+          display: block;
+        }
+
         .pizza-icon {
           width: 30px;
           height: 30px;
@@ -87,11 +128,20 @@ class HeaderComponent extends LitElement {
     `;
 	}
 
+	constructor() {
+		super();
+		this._navOpen = false;
+	}
+
+	_toggleNav() {
+		this._navOpen = !this._navOpen;
+	}
+
 	render() {
 		return html`
       <div class="site-header-container">
         <header>
-          <div class="header-content">
+          <div class="header-left">
             <img
               src="/assets/pizza-icon.svg"
               alt="Pizza Icon"
@@ -100,10 +150,19 @@ class HeaderComponent extends LitElement {
             />
             <h1><a href="/">Learn to Auth!</a></h1>
           </div>
-          <theme-toggle></theme-toggle>
+          <div class="header-right">
+            <button
+              class="hamburger"
+              @click="${this._toggleNav}"
+              aria-label="Toggle navigation menu"
+            >
+              ☰
+            </button>
+            <theme-toggle></theme-toggle>
+          </div>
         </header>
 
-        <nav>
+        <nav class="${this._navOpen ? 'open' : ''}">
           <tabs-component></tabs-component>
         </nav>
       </div>
