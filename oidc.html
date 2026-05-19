@@ -237,7 +237,7 @@ Host: server.example.com
                                 <code>token_endpoint</code>,
                                 <code>jwks_uri</code>, etc.) plus what features the
                                 server supports. The <code>/.well-known/</code>
-                                prefix is a standard — it means this URL is always
+                                prefix is a standard - it means this URL is always
                                 in the same place, on every server. No guessing.
                             </p>
                             <p>
@@ -245,7 +245,7 @@ Host: server.example.com
                                 needs to know the provider's base URL. Everything
                                 else is auto-discovered. If the provider adds a new
                                 endpoint or algorithm, the discovery document
-                                updates and your app adapts — no code changes needed.
+                                updates and your app adapts - no code changes needed.
                             </p>
                             <p>
                                 <a href="concepts/well-known.html" class="concept-link"
@@ -264,18 +264,18 @@ If you've ever set up a social login (Sign in with Google, Apple, etc.), at some
 GET https://auth.server.com/.well-known/openid-configuration
 ```
 
-The `/.well-known/` prefix is a standard pattern — it means "this URL is always in the same place, on every server." No guessing where the config lives.
+The `/.well-known/` prefix is a standard pattern - it means "this URL is always in the same place, on every server." No guessing where the config lives.
 
 ## What It Does
 
-The Discovery Document is a JSON file that tells client apps everything they need to know about the OpenID Connect provider. It's like a restaurant menu — one glance tells you what's available and where to find it.
+The Discovery Document is a JSON file that tells client apps everything they need to know about the OpenID Connect provider. It's like a restaurant menu - one glance tells you what's available and where to find it.
 
 A client can bootstrap itself with just one URL. Here's how:
 
 1. The client knows the provider's base URL (e.g., `https://accounts.google.com`)
 2. It appends `/.well-known/openid-configuration`
 3. The response tells it every endpoint URL, supported feature, and capability
-4. The client configures itself automatically — no manual setup needed
+4. The client configures itself automatically - no manual setup needed
 
 ## What You Get Back
 
@@ -308,14 +308,14 @@ Content-Type: application/json
 
 | Field | What It Means |
 |-------|---------------|
-| `issuer` | Who runs this server — the unique identifier for this provider |
+| `issuer` | Who runs this server - the unique identifier for this provider |
 | `*_endpoint` | The actual URLs for each OIDC endpoint |
 | `jwks_uri` | Where to find public keys for token verification |
 | `*_supported` | What features this server supports (scopes, algorithms, etc.) |
 
 ## Why This Matters
 
-**No more hardcoding URLs.** Your app only needs to know one thing — the provider's issuer URL. Everything else is discovered automatically. If the provider moves an endpoint or adds support for a new algorithm, the discovery document updates and your app adapts without a code change.
+**No more hardcoding URLs.** Your app only needs to know one thing - the provider's issuer URL. Everything else is discovered automatically. If the provider moves an endpoint or adds support for a new algorithm, the discovery document updates and your app adapts without a code change.
 
 It's also how libraries and SDKs handle "one-click" OIDC setup. Ever wondered how a social login button just works? It starts here.</lazy-wc-markdown>
 
@@ -418,7 +418,7 @@ Host: server.example.com
                                 <strong>Why this matters:</strong> key rotation
                                 works without downtime. The server adds new keys to
                                 the JWKS set and removes old ones anytime. Your app
-                                always picks the right key at verification time —
+                                always picks the right key at verification time -
                                 no manual updates, no service interruptions.
                             </p>
 
@@ -435,7 +435,7 @@ GET https://auth.server.com/jwks
 
 ## What It Does
 
-The JWKS (JSON Web Key Set) endpoint publishes the **public keys** that the authorization server uses to sign tokens. Think of it like a public key directory — anyone can look up the keys here, but only the server holds the private keys needed to create signatures.
+The JWKS (JSON Web Key Set) endpoint publishes the **public keys** that the authorization server uses to sign tokens. Think of it like a public key directory - anyone can look up the keys here, but only the server holds the private keys needed to create signatures.
 
 Here's the flow:
 
@@ -469,10 +469,10 @@ Content-Type: application/json
 
 | Field | What It Means |
 |-------|---------------|
-| `kid` | Key ID — this is how the token tells you which key to use |
-| `kty` | Key type — usually RSA or EC (the crypto algorithm family) |
+| `kid` | Key ID - this is how the token tells you which key to use |
+| `kty` | Key type - usually RSA or EC (the crypto algorithm family) |
 | `alg` | The specific signing algorithm (RS256 = RSA with SHA-256) |
-| `use` | What the key is for — `sig` means signatures, `enc` means encryption |
+| `use` | What the key is for - `sig` means signatures, `enc` means encryption |
 | `n` | The RSA modulus (the big number that makes RSA work) |
 | `e` | The RSA public exponent (usually "AQAB" = 65537) |
 
@@ -487,7 +487,7 @@ Content-Type: application/json
 3. Use that public key to verify the token's signature
 4. Check the usual claims (expiration, issuer, audience)
 
-No match found for the `kid`? The token is suspect — reject it.</lazy-wc-markdown>
+No match found for the `kid`? The token is suspect - reject it.</lazy-wc-markdown>
 
                             <h3>Pros & Cons</h3>
                             <ul>

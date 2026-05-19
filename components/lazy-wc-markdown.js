@@ -5,7 +5,7 @@ import { WCMarkdown } from "./wc-markdown.js";
  *
  * Prevents FOUC when loading markdown content.
  *
- * Usage — put raw markdown inside the element:
+ * Usage - put raw markdown inside the element:
  *   <lazy-wc-markdown>
  *   ## Hello World
  *   Some **markdown** here.

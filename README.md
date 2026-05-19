@@ -4,11 +4,11 @@ A personal knowledge site for learning CIAM (Customer Identity and Access Manage
 
 ## What It Covers
 
-- **Basic Auth** — Username/password authentication fundamentals
-- **JWT** — JSON Web Tokens: structure, signing, and usage
-- **OAuth 2.0** — Authorization flows and grant types
-- **OpenID Connect** — Identity layer on top of OAuth 2.0
-- **Concepts** — AuthN vs AuthZ, Strong Customer Authentication (SCA/PSD2), and more
+- **Basic Auth** - Username/password authentication fundamentals
+- **JWT** - JSON Web Tokens: structure, signing, and usage
+- **OAuth 2.0** - Authorization flows and grant types
+- **OpenID Connect** - Identity layer on top of OAuth 2.0
+- **Concepts** - AuthN vs AuthZ, Strong Customer Authentication (SCA/PSD2), and more
 
 ## Quick Start
 
@@ -45,7 +45,7 @@ l2auth/
 
 ## Tech Stack
 
-- Vanilla HTML5/CSS3/JS — no build step
+- Vanilla HTML5/CSS3/JS - no build step
 - [LitElement](https://lit.dev) web components
 - CSS variables for light/dark theming
 - [wc-markdown](https://github.com/vanillawc/wc-markdown) for rendering content

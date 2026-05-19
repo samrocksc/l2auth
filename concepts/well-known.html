@@ -39,7 +39,7 @@
                             <!-- biome-ignore format -->
                             <lazy-wc-markdown>## What It Is
 
-The OpenID Connect Discovery Document is a standard JSON endpoint that acts as the **service manual** for an OIDC provider. One URL tells a client application everything it needs to know about the provider — where its endpoints live, what algorithms it supports, what scopes are available, and more.
+The OpenID Connect Discovery Document is a standard JSON endpoint that acts as the **service manual** for an OIDC provider. One URL tells a client application everything it needs to know about the provider - where its endpoints live, what algorithms it supports, what scopes are available, and more.
 
 Instead of hardcoding URLs or maintaining manual configuration, a client fetches this document at startup and dynamically discovers every endpoint and capability.
 
@@ -51,7 +51,7 @@ Instead of hardcoding URLs or maintaining manual configuration, a client fetches
 GET https://{provider}/.well-known/openid-configuration
 ```
 
-The `/.well-known/` prefix is defined by **RFC 5785** — it is a convention that means "this path is always in the same place on every server." No guessing, no custom configuration, no vendor-specific setup.
+The `/.well-known/` prefix is defined by **RFC 5785** - it is a convention that means "this path is always in the same place on every server." No guessing, no custom configuration, no vendor-specific setup.
 
 | Provider | Discovery URL |
 |----------|--------------|
@@ -147,7 +147,7 @@ A client only needs **one piece of information** to configure itself: the provid
 1. The developer configures the client with the issuer URL (e.g., `https://auth.example.com`)
 2. At startup, the client appends `/.well-known/openid-configuration` and fetches the document
 3. It extracts all endpoint URLs and supported features from the response
-4. The client configures its internal OIDC library automatically — no hardcoded URLs
+4. The client configures its internal OIDC library automatically - no hardcoded URLs
 
 **No manual URL entry, no admin copy-paste, no mismatch errors.**
 
@@ -163,13 +163,13 @@ The Discovery Document enables providers to change their infrastructure without 
 - **New algorithm support**: When the provider adds a stronger signing algorithm, it adds it to `id_token_signing_alg_values_supported`. Clients can start using it immediately.
 - **Deprecation**: The provider can signal deprecated features by removing them from the `*_supported` arrays.
 
-Clients typically cache the Discovery Document for a configurable period (hours to days), so changes propagate gradually — no thundering herd on the provider's infrastructure.
+Clients typically cache the Discovery Document for a configurable period (hours to days), so changes propagate gradually - no thundering herd on the provider's infrastructure.
 
 ---
 
 ## Key Rotation Tie-In
 
-The `jwks_uri` field in the Discovery Document points to the JWKS (JSON Web Key Set) endpoint — the server's public key directory. This is how key rotation works seamlessly:
+The `jwks_uri` field in the Discovery Document points to the JWKS (JSON Web Key Set) endpoint - the server's public key directory. This is how key rotation works seamlessly:
 
 1. The provider generates a new signing key pair and adds the public key to its JWKS endpoint
 2. New tokens are signed with the new key (identified by a unique `kid` in the token header)
@@ -222,7 +222,7 @@ Auth0 uses tenant-specific subdomains. Each tenant gets its own Discovery Docume
 
 ## Dynamic Client Registration
 
-If the Discovery Document includes a `registration_endpoint`, clients can register themselves programmatically — no admin portal, no copy-paste of client IDs.
+If the Discovery Document includes a `registration_endpoint`, clients can register themselves programmatically - no admin portal, no copy-paste of client IDs.
 
 The client sends a POST request with its metadata:
 
@@ -254,7 +254,7 @@ The server responds with a registered client ID:
 - The client stores these credentials and uses them for all future requests
 - Registration can be authenticated (using an initial access token) or open
 
-This is how developer portals and API marketplaces work — when you create a new app, the platform registers a client for you behind the scenes.
+This is how developer portals and API marketplaces work - when you create a new app, the platform registers a client for you behind the scenes.
 
 ---
 
@@ -287,7 +287,7 @@ All of this happens in milliseconds at app startup or on first authentication at
 
 | Field | What It Tells You |
 |-------|-------------------|
-| `issuer` | Who runs this server — your app checks this to prevent token confusion |
+| `issuer` | Who runs this server - your app checks this to prevent token confusion |
 | `*_endpoint` | The actual URLs for each OIDC operation |
 | `jwks_uri` | Where to find public keys for signature verification |
 | `*_supported` | What this server supports (scopes, algorithms, claims, etc.) |</lazy-wc-markdown>

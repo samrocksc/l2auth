@@ -55,13 +55,13 @@
                         <section>
                             <h2>Demystifying the Tokens</h2>
 
-                            <lazy-wc-markdown>Every time you hit "Sign in with Google" or log into an app, a handful of tokens fly between systems. Here's what each one does — no fluff.
+                            <lazy-wc-markdown>Every time you hit "Sign in with Google" or log into an app, a handful of tokens fly between systems. Here's what each one does - no fluff.
 
 ---
 
-## Authorization Code — The Handshake
+## Authorization Code - The Handshake
 
-This is the shortest-lived token in the pipeline. It's not a token you keep — it's a one-time handshake that proves the user just authorized your app.
+This is the shortest-lived token in the pipeline. It's not a token you keep - it's a one-time handshake that proves the user just authorized your app.
 
 ```
 Browser  →  Authorization Server  →  gets a code
@@ -76,9 +76,9 @@ Your App →  Authorization Server  →  exchanges the code for real tokens
 
 ---
 
-## Access Token — The Key Card
+## Access Token - The Key Card
 
-This is the token your app sends to APIs. Think of it like a hotel key card — it opens specific doors for a limited time.
+This is the token your app sends to APIs. Think of it like a hotel key card - it opens specific doors for a limited time.
 
 ```http
 GET /api/orders HTTP/1.1
@@ -86,19 +86,19 @@ Host: api.example.com
 Authorization: Bearer eyJhbGciOiJSUzI1NiIs...
 ```
 
-- **Lifetime:** Minutes to hours (typically 15 min — 1 hour)
+- **Lifetime:** Minutes to hours (typically 15 min - 1 hour)
 - **Format:** JWT or opaque string
 - **What it does:** Proves to the API that your app has permission to access specific data
 - **Who reads it:** The API (resource server). Your app just passes it along.
-- **Contents:** Scopes, permissions, maybe a user ID — but never PII
+- **Contents:** Scopes, permissions, maybe a user ID - but never PII
 
 **Key rule:** The access token tells the API *what you can do*, not *who you are*. If you need identity info, use the ID token.
 
 ---
 
-## ID Token — The Photo ID
+## ID Token - The Photo ID
 
-This one only shows up in OpenID Connect flows. It's proof of identity — a JWT signed by the identity provider that says "this user just logged in."
+This one only shows up in OpenID Connect flows. It's proof of identity - a JWT signed by the identity provider that says "this user just logged in."
 
 ```json
 {
@@ -112,7 +112,7 @@ This one only shows up in OpenID Connect flows. It's proof of identity — a JWT
 
 - **Lifetime:** Minutes to hours
 - **Format:** Always a JWT (so your app can verify the signature)
-- **What it does:** Tells your app who the user is — name, email, avatar, etc.
+- **What it does:** Tells your app who the user is - name, email, avatar, etc.
 - **Who reads it:** Your app (frontend). Never send this to an API.
 - **Validation:** Your app must verify the signature using the provider's JWKS keys
 
@@ -120,7 +120,7 @@ This one only shows up in OpenID Connect flows. It's proof of identity — a JWT
 
 ---
 
-## Refresh Token — The Re-Entry Pass
+## Refresh Token - The Re-Entry Pass
 
 Access tokens expire quickly by design. The refresh token lets your app get new access tokens without bothering the user to log in again.
 

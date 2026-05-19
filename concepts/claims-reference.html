@@ -44,24 +44,24 @@
                         <section>
                             <h2>Standard Claims Reference</h2>
 
-                            <lazy-wc-markdown>A complete reference of standard OIDC and OAuth 2.0 claims — what they mean, which flow uses them, and how they interact.
+                            <lazy-wc-markdown>A complete reference of standard OIDC and OAuth 2.0 claims - what they mean, which flow uses them, and how they interact.
 
 ---
 
 ## Identity Claims
 
-### `sub` — Subject
+### `sub` - Subject
 **What:** The unique identifier for the end user, assigned by the identity provider.
 
-**Used in:** Every OIDC flow — this is the only required claim in an ID token.
+**Used in:** Every OIDC flow - this is the only required claim in an ID token.
 
 ```json
 { "sub": "248289761001" }
 ```
 
 **Notes:**
-- Stable across time — the same user always gets the same `sub`
-- Never reveal this to untrusted parties — it's an opaque internal identifier
+- Stable across time - the same user always gets the same `sub`
+- Never reveal this to untrusted parties - it's an opaque internal identifier
 - Often used as the primary key for linking the identity to your own user database
 
 ---
@@ -290,10 +290,10 @@
 
 ## Protocol Claims
 
-### `iss` — Issuer
+### `iss` - Issuer
 **What:** The URL of the identity provider that issued this token.
 
-**Used in:** Every JWT/OIDC token — this is a required claim.
+**Used in:** Every JWT/OIDC token - this is a required claim.
 
 ```json
 { "iss": "https://auth.example.com/" }
@@ -303,10 +303,10 @@
 
 ---
 
-### `aud` — Audience
+### `aud` - Audience
 **What:** Who this token is intended for. Either the client_id of your app, or an API identifier.
 
-**Used in:** Every JWT/OIDC token — this is a required claim.
+**Used in:** Every JWT/OIDC token - this is a required claim.
 
 ```json
 { "aud": "s6BhdRkqt3" }
@@ -319,10 +319,10 @@
 
 ---
 
-### `exp` — Expiration Time
+### `exp` - Expiration Time
 **What:** Unix timestamp after which the token is no longer valid.
 
-**Used in:** Every JWT/OIDC token — this is a required claim.
+**Used in:** Every JWT/OIDC token - this is a required claim.
 
 ```json
 { "exp": 1704070800 }
@@ -332,10 +332,10 @@
 
 ---
 
-### `iat` — Issued At
+### `iat` - Issued At
 **What:** Unix timestamp of when the token was issued.
 
-**Used in:** Every JWT/OIDC token — this is a required claim.
+**Used in:** Every JWT/OIDC token - this is a required claim.
 
 ```json
 { "iat": 1704067200 }
@@ -343,7 +343,7 @@
 
 ---
 
-### `auth_time` — Authentication Time
+### `auth_time` - Authentication Time
 **What:** Unix timestamp of when the user last authenticated (logged in).
 
 **Used in:** OIDC ID tokens when the `profile` or `email` scopes are requested.
@@ -371,7 +371,7 @@ GET /authorize?...&nonce=n-0S6_WzA2Mj...
 
 ---
 
-### `at_hash` — Access Token Hash
+### `at_hash` - Access Token Hash
 **What:** The base64url encoding of the left half of the hash of the access token, signed with the same key as the ID token.
 
 **Used in:** OIDC ID tokens.
@@ -384,14 +384,14 @@ GET /authorize?...&nonce=n-0S6_WzA2Mj...
 
 ---
 
-### `c_hash` — Code Hash
+### `c_hash` - Code Hash
 **What:** Hash of the authorization code, used in the Hybrid flow.
 
 **Used in:** OIDC ID tokens when using the Hybrid grant type.
 
 ---
 
-### `acr` — Authentication Context Class Reference
+### `acr` - Authentication Context Class Reference
 **What:** A string indicating the authentication strength used (e.g., `urn:fullname:oob-auth` for MFA).
 
 **Used in:** OIDC ID tokens (optional).
@@ -402,7 +402,7 @@ GET /authorize?...&nonce=n-0S6_WzA2Mj...
 
 ---
 
-### `amr` — Authentication Methods References
+### `amr` - Authentication Methods References
 **What:** An array of strings indicating which authentication methods were used.
 
 **Used in:** OIDC ID tokens (optional).
@@ -440,7 +440,7 @@ GET /authorize?...&nonce=n-0S6_WzA2Mj...
 
 ---
 
-### `azp` — Authorized Party
+### `azp` - Authorized Party
 **What:** The `client_id` of the application that was issued this token. Used when `aud` contains multiple values.
 
 **Used in:** OIDC ID tokens (optional, but required when `aud` has multiple entries).

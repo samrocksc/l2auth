@@ -1,4 +1,4 @@
-# Turtle Board — L2Auth
+# Turtle Board - L2Auth
 
 ## 📋 Todo (empty)
 
