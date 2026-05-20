@@ -22,7 +22,7 @@ class ThemeToggle extends LitElement {
       }
 
       .theme-toggle:hover {
-        background-color: rgba(255, 0, 255, 0.1);
+        background-color: transparent;
         transform: rotate(15deg);
       }
     `;

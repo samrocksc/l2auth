@@ -417,7 +417,7 @@ a:hover {
 }
 
 .theme-toggle:hover {
-  background-color: rgba(255, 0, 255, 0.1);
+  background-color: transparent;
 }
 
 /* Override default x-markdown and wc-markdown styles to match our theme */
