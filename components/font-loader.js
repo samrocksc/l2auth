@@ -9,10 +9,11 @@ class FontLoader extends LitElement {
     return css`
       :host {
         display: block;
-        visibility: visible; /* Always visible by default to prevent flicker */
+        visibility: hidden;
       }
-
-      /* Fallback for when JavaScript is disabled */
+      :host([loaded]) {
+        visibility: visible;
+      }
       @media (scripting: none) {
         :host {
           visibility: visible;
@@ -23,7 +24,7 @@ class FontLoader extends LitElement {
 
   static get properties() {
     return {
-      loaded: { type: Boolean },
+      loaded: { type: Boolean, reflect: true },
     };
   }
 
@@ -57,10 +58,8 @@ class FontLoader extends LitElement {
   }
 
   onFontsLoaded() {
-    if (this.loaded) return; // Prevent double execution
-
+    if (this.loaded) return;
     this.loaded = true;
-    // No need to change classes since we're always visible now
   }
 
   render() {

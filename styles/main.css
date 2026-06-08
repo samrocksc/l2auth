@@ -1,7 +1,12 @@
 /* Retro 80s Auth Systems Theme */
 
 /* Font loading strategy to prevent FOUC */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Press+Start+2P&display=block');
+
+/* Hide font-loader content before the custom element is registered */
+font-loader:not(:defined) {
+  visibility: hidden;
+}
 
 /* Light theme Prism tokens */
 :root {
