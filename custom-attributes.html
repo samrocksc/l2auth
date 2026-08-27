@@ -1,230 +1,195 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Attributes Lineage - Okta vs Auth0</title>
-    <style>
-        :root {
-            --bg-primary: #111111;
-            --bg-secondary: #222222;
-            --text-primary: #ffffff;
-            --text-secondary: #dddddd;
-            --accent-color: #ff00ff;
-            --highlight: #3385cc;
-            --border-color: #444444;
-            --font-primary: "Press Start 2P", cursive;
-            --font-sans: "IBM Plex Mono", monospace;
-        }
+    <head>
+        <link rel="manifest" href="./manifest.json" />
+        <link rel="icon" type="image/svg+xml" href="./assets/pizza-icon.svg" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Custom Attributes to Token Claims - Learn to Auth!</title>
+        <link rel="stylesheet" href="./styles/main.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+            media="print" onload="this.media='all'"
+        />
+        <script type="module" src="./components/font-loader.js"></script>
+        <script type="module" src="./components/lazy-wc-markdown.js"></script>
+        <script>
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        </script>
+        <script type="module" src="./components/theme-toggle.js"></script>
+        <script type="module" src="./components/tabs-component.js"></script>
+        <script type="module" src="./components/footer-component.js"></script>
+        <script type="module" src="./components/header-component.js"></script>
+        <!-- Google tag (gtag.js) -->
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-R5HH1F5KDM"
+        ></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", "G-R5HH1F5KDM");
+        </script>
+    </head>
+    <body>
+        <font-loader>
+            <div class="main-wrapper">
+                <site-header></site-header>
 
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: var(--font-sans);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 4rem 2rem;
-            margin: 0;
-            line-height: 1.7;
-        }
+                <main>
+                    <div class="content-container">
+                        <section>
+                            <h2>Custom Attributes → Token Claims</h2>
 
-        h1 {
-            font-family: var(--font-sans);
-            font-weight: 800;
-            font-size: 2rem;
-            color: var(--accent-color);
-            text-shadow: 2px 2px 0 #000;
-            margin-bottom: 0.5rem;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: -0.02em;
-        }
+                            <lazy-wc-markdown>## The One Sentence
 
-        .subtitle {
-            color: var(--text-secondary);
-            margin-bottom: 5rem;
-            text-align: center;
-            font-size: 1rem;
-            max-width: 600px;
-        }
+Custom data lives in the **user profile**. A **claim** is only what you explicitly **project** from that profile into a token. Nothing ships in a token by accident — you have to whitelist it, map it, and put it in the right token.
 
-        .diagram-container {
-            display: flex;
-            gap: 8rem;
-            position: relative;
-            margin-bottom: 4rem;
-        }
+---
 
-        .column {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 300px;
-        }
+## 1. Profile Data ≠ Token Claims
 
-        .node {
-            background-color: var(--bg-secondary);
-            border: 2px solid var(--border-color);
-            padding: 1.5rem;
-            width: 100%;
-            text-align: center;
-            position: relative;
-            box-sizing: border-box;
-        }
+This is the reframe that the old diagram missed.
 
-        .node.vendor {
-            font-family: var(--font-sans);
-            font-weight: 800;
-            font-size: 1.4rem;
-            color: var(--accent-color);
-            border: none;
-            background: transparent;
-            text-shadow: 2px 2px 0 #000;
-            text-transform: uppercase;
-        }
+| | Profile Attribute | Token Claim |
+|--|-------------------|-------------|
+| **What it is** | Stored data about the user | A key-value pair projected into a token |
+| **Where it lives** | The identity profile (schema) | The signed token payload |
+| **How it gets there** | Manually, via sync, or from an IdP | Only by explicit mapping/projection |
+| **Is it visible?** | Only to whoever can read the profile | Visible to anyone who can decode the token |
 
-        .node-label {
-            display: block;
-            font-family: var(--font-primary);
-            font-size: 0.6rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-        }
+The mistake most people make is assuming "I added a custom attribute, so it'll just appear in the token." **It won't.** An attribute is inert until you project it into a claim.
 
-        .node-value {
-            font-family: var(--font-sans);
-            font-size: 1rem;
-            font-weight: 600;
-        }
+---
 
-        .arrow {
-            height: 3rem;
-            width: 2px;
-            background-color: var(--border-color);
-            position: relative;
-        }
+## 2. Where Custom Data Lives (The Storage Model)
 
-        .arrow::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: -4px;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 8px solid var(--border-color);
-        }
+### Okta
 
-        .split-container {
-            display: flex;
-            gap: 1rem;
-            width: 100%;
-            justify-content: center;
-            margin: 1rem 0;
-        }
+Custom attributes are added to the **user profile schema** — either in the **Profile Editor** (admin UI) or via the **Users API** (`/api/v1/meta/schemas/user/default`). You define the attribute, its type, and whether it's required/read-only. You can also populate attributes from **group membership** (group attribute mappings).
 
-        .split-node {
-            background-color: var(--bg-secondary);
-            border: 2px solid var(--border-color);
-            padding: 1rem;
-            width: 45%;
-            text-align: center;
-        }
+### Auth0
 
-        .token-section {
-            margin-top: 4rem;
-            padding: 3rem;
-            background-color: var(--bg-secondary);
-            border: 4px solid var(--accent-color);
-            border-radius: 0;
-            text-align: center;
-            width: 700px;
-            box-shadow: 8px 8px 0 var(--border-color);
-        }
+Auth0 splits custom data into **two namespaces**, and the distinction matters a lot:
 
-        .token-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
+| | `app_metadata` | `user_metadata` |
+|--|----------------|-----------------|
+| **Who writes it** | Admin only (Dashboard / Management API) | The user themselves (when your app writes it) |
+| **What it's for** | **Authorization** data: roles, plan, permissions, flags | Non-critical **preferences**: theme, language, newsletter opt-in |
+| **Can the user self-edit it?** | No | Yes |
+| **Security posture** | Trusted — treat as authz source of truth | Untrusted — never base authorization decisions on it |
 
-        .token-box {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            padding: 1.5rem;
-            text-align: left;
-            font-family: var(--font-sans);
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
+> **Rule of thumb:** authorization data → `app_metadata`; preferences → `user_metadata`. If a user could self-escalate by editing a value, it belongs in `app_metadata`.
 
-        .highlight { color: var(--highlight); font-weight: bold; }
-    </style>
-</head>
-<body>
+---
 
-    <h1>Custom Attributes Lineage</h1>
-    <div class="subtitle">Architectural data flow mapping from User Profiles to JWT Claims</div>
+## 3. The Projection — Turning an Attribute Into a Claim
 
-    <div class="diagram-container">
-        <!-- OKTA COLUMN -->
-        <div class="column">
-            <div class="node vendor">Okta</div>
-            <div class="arrow"></div>
-            <div class="node">
-                <span class="node-label">Storage Model</span>
-                <span class="node-value">Custom Profile Attribute</span>
+This is the step the profile → token diagram compressed into one box. It's actually two.
+
+### Okta
+
+Map profile attributes to claims inside an **Authorization Server** (the **Default** AS or a custom one). You configure which attribute becomes which claim, and you scope it to the **ID token**, the **access token**, or both.
+
+```
+Custom Profile Attribute  →  Claim Mapping (AS config)  →  Token Claim
+```
+
+### Auth0
+
+Two pieces:
+
+1. **Whitelist the metadata** so it *can* appear in the token.
+2. Write a **post-login Action** (JavaScript) to add or copy the claim into the token.
+
+```js
+exports.onExecutePostLogin = async (event, api) => {
+  // Copy a value from app_metadata into the access token
+  api.accessToken.setCustomClaim("roles", event.user.app_metadata.roles);
+  // Or from user_metadata into the ID token
+  api.idToken.setCustomClaim("theme", event.user.user_metadata.theme);
+};
+```
+
+Without a whitelist and an Action (or a Rules rule), your custom attribute will **not** appear in any token.
+
+---
+
+## 4. Which Token, For Whom?
+
+The old diagram showed a generic "JWT" — but *which* token you target changes the semantics. See [ID Token vs. Access Token](./concepts/id-token-vs-access-token.html).
+
+| | ID Token | Access Token |
+|--|----------|--------------|
+| **Audience** | Your app (frontend) | Your API (backend) |
+| **Purpose** | Identity — *who* the user is | Authorization — *what* the user can do |
+| **Custom authz claims (roles, permissions) belong?** | ❌ No | ✅ Yes |
+
+If you're adding **roles or permissions** to make authorization decisions at your API, put them in the **access token**, not the ID token. The ID token is for identity; it shouldn't be sent to your API.
+
+---
+
+## 5. The RBAC Gotcha
+
+Adding **permissions** to an Auth0 access token is a two-part switch:
+
+1. Enable **RBAC** on the API.
+2. Toggle **"Add Permissions in the Access Token"** on that API.
+
+**Enabling RBAC alone is not enough.** The permissions only land in the access token when that second toggle is on. This is the classic "I enabled RBAC but my token has no permissions" trap.
+
+---
+
+## 6. Scopes Gate the Claims
+
+Requested **scopes** determine which claims come back — scopes are the *request*, claims are the *response*. (See [Scopes vs. Claims](./concepts/scopes-vs-claims.html).)
+
+Standard claims (`openid profile email`) map automatically. **Custom claims usually need a custom scope** that your Authorization Server recognizes and that your client requests. If the client never asks for the scope, the custom claim stays out of the token even though you mapped it.
+
+```
+Request: scope=openid profile roles   →   Response: sub, name, ..., roles
+Request: scope=openid profile         →   Response: sub, name, ...   (no roles!)
+```
+
+---
+
+## 7. Security & Hygiene
+
+- **Don't put sensitive data in tokens.** Tokens travel through the browser and can be large. Keep PII out; prefer a `userinfo` call or a backend lookup for heavy data.
+- **Keep `app_metadata` admin-controlled.** If users could write authz data, they could escalate their own privileges. Only trust `app_metadata` for authorization decisions.
+- **Keep tokens lean.** Every claim adds weight to every request. Project only what you actually consume.
+- **Map once, don't duplicate.** Prefer a single source of truth in the profile over duplicating values into several claims.
+
+---
+
+## The Full Lineage
+
+```
+                 STORAGE                     PROJECTION                    TOKEN
+        ┌─────────────────────┐      ┌──────────────────────┐     ┌──────────────────┐
+ Okta   │ User Profile Schema │ ───▶ │ AS Claim Mapping     │ ──▶ │ ID / Access Token│
+        │ (custom attribute)  │      │ (scoped per token)   │     │                  │
+        └─────────────────────┘      └──────────────────────┘     └──────────────────┘
+
+ Auth0  │ app_metadata (authz)│      │ Whitelist + Post-login│ ──▶ │ Access Token     │
+        │ user_metadata (pref)│      │ Action (JS)           │     │ ID Token         │
+        └─────────────────────┘      └──────────────────────┘     └──────────────────┘
+```
+
+**Key takeaway:** storage → projection → target. Pick the right store, project explicitly, and target the correct token. Get any of the three wrong and your custom data either never reaches the token — or worse, reaches the wrong one.</lazy-wc-markdown>
+                        </section>
+                    </div>
+                </main>
+
+                <site-footer></site-footer>
             </div>
-            <div class="arrow"></div>
-            <div class="node">
-                <span class="node-label">Projection Logic</span>
-                <span class="node-value">Claim Mapping (Config)</span>
-            </div>
-        </div>
-
-        <!-- AUTH0 COLUMN -->
-        <div class="column">
-            <div class="node vendor">Auth0</div>
-            <div class="arrow"></div>
-            <div class="split-container">
-                <div class="split-node">
-                    <span class="node-label">User Space</span>
-                    <span class="node-value">user_metadata</span>
-                </div>
-                <div class="split-node">
-                    <span class="node-label">Admin Space</span>
-                    <span class="node-value">app_metadata</span>
-                </div>
-            </div>
-            <div class="arrow" style="margin-top: -1rem;"></div>
-            <div class="node">
-                <span class="node-label">Projection Logic</span>
-                <span class="node-value">Auth0 Action (JavaScript)</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="token-section">
-        <span class="node-label" style="font-size: 1rem; color: var(--text-primary);">Final Artifact: The JWT</span>
-        <div class="token-grid">
-            <div class="token-box">
-                <span style="color: var(--text-secondary);">// ID Token (Identity)</span><br>
-                {<br>
-                &nbsp;&nbsp;"sub": "auth0|123...",<br>
-                &nbsp;&nbsp;<span class="highlight">"custom_attr": "value"</span><br>
-                }
-            </div>
-            <div class="token-box">
-                <span style="color: var(--text-secondary);">// Access Token (AuthZ)</span><br>
-                {<br>
-                &nbsp;&nbsp;"scope": "openid profile",<br>
-                &nbsp;&nbsp;<span class="highlight">"custom_attr": "value"</span><br>
-                }
-            </div>
-        </div>
-    </div>
-
-</body>
+        </font-loader>
+    </body>
 </html>
