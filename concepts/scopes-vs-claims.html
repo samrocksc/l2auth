@@ -25,16 +25,21 @@
         <script type="module" src="../components/footer-component.js"></script>
         <script type="module" src="../components/header-component.js"></script>
         
+        <!-- Google tag (gtag.js) -->
+    <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-R5HH1F5KDM"
+    ></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "G-R5HH1F5KDM");
+    </script>
     </head>
     <body>
-        <noscript>
-            <iframe
-                src="https://www.googletagmanager.com/ns.html?id=GTM-MDJ26VZ"
-                height="0"
-                width="0"
-                style="display:none;visibility:hidden"
-            ></iframe>
-        </noscript>
         <font-loader>
             <div class="main-wrapper">
                 <site-header></site-header>
