@@ -68,7 +68,7 @@ class TabsComponent extends LitElement {
       <div class="tabs-container">
         <a href="${rootPath}index.html" class="tab-button ${currentPage === 'index.html' ? 'active' : ''}">Home</a>
         <a href="${rootPath}basic-auth.html" class="tab-button ${currentPage === 'basic-auth.html' ? 'active' : ''}">Basic Auth</a>
-        <a href="${rootPath}jwt.html" class="tab-button ${currentPage === 'jwt.html' ? 'active' : ''}">JWT</a>
+        <a href="${conceptsPath}jwt.html" class="tab-button ${currentPage === 'jwt.html' ? 'active' : ''}">JWT</a>
         <a href="${rootPath}oauth2.html" class="tab-button ${currentPage === 'oauth2.html' ? 'active' : ''}">OAuth 2.0</a>
         <a href="${rootPath}oidc.html" class="tab-button ${currentPage === 'oidc.html' ? 'active' : ''}">OIDC</a>
         <a href="${conceptsPath}index.html" class="tab-button ${currentPage === 'concepts/index.html' ? 'active' : ''}">Concepts</a>
