@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="../assets/pizza-icon.svg" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Authenticator Assurance Levels (AAL) - Learn to Auth!</title>
+        <link rel="stylesheet" href="../styles/main.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+            media="print" onload="this.media='all'"
+        />
+        <script type="module" src="../components/font-loader.js"></script>
+        <script>
+            // Apply theme immediately to prevent flicker
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        </script>
+        <script type="module" src="../components/theme-toggle.js"></script>
+        <script type="module" src="../components/tabs-component.js"></script>
+        <script type="module" src="../components/footer-component.js"></script>
+        <script type="module" src="../components/header-component.js"></script>
+        <style>
+            .reveal-group {
+                margin: 2rem 0;
+            }
+
+            .reveal-group h3 {
+                margin-bottom: 0.5rem;
+            }
+
+            .reveal-tabs {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .reveal-tab {
+                font-family: var(--font-primary);
+                font-size: 0.75rem;
+                background-color: var(--bg-primary);
+                color: var(--text-primary);
+                border: 2px solid var(--accent-color);
+                padding: 0.5rem 1rem;
+                cursor: pointer;
+                box-shadow: 4px 4px 0 var(--shadow-color);
+                transition: all 0.2s;
+            }
+
+            .reveal-tab:hover {
+                transform: translate(2px, 2px);
+                box-shadow: 2px 2px 0 var(--shadow-color);
+            }
+
+            .reveal-tab.active {
+                background-color: var(--accent-color);
+                color: var(--bg-primary);
+                box-shadow: inset 2px 2px 0 var(--shadow-color);
+            }
+
+            .reveal-panel {
+                display: none;
+                border: 2px solid var(--border-color);
+                background-color: var(--bg-secondary);
+                padding: 1.25rem;
+                font-family: var(--font-sans);
+            }
+
+            .reveal-panel.active {
+                display: block;
+            }
+
+            .reveal-panel .level-tag {
+                font-family: var(--font-primary);
+                font-size: 0.7rem;
+                color: var(--highlight);
+                display: block;
+                margin-bottom: 0.75rem;
+            }
+
+            .reveal-panel ul {
+                margin: 0.75rem 0 0 1.25rem;
+                padding: 0;
+            }
+
+            .reveal-panel li {
+                margin-bottom: 0.35rem;
+            }
+
+            .cheat-sheet {
+                border: 2px solid var(--accent-color);
+                background-color: var(--bg-secondary);
+                padding: 1.25rem 1.5rem;
+                margin: 1.5rem 0 2rem;
+                font-family: var(--font-sans);
+            }
+
+            .cheat-sheet h3 {
+                margin-top: 0;
+            }
+
+            .cheat-sheet .pillars {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin: 0.75rem 0 1rem;
+            }
+
+            .cheat-sheet .pillar {
+                flex: 1 1 200px;
+                border: 1px solid var(--border-color);
+                padding: 0.75rem;
+            }
+
+            .cheat-sheet .pillar strong {
+                color: var(--accent-color);
+                font-family: var(--font-primary);
+                font-size: 0.7rem;
+                display: block;
+                margin-bottom: 0.35rem;
+            }
+
+            .chain-note {
+                border-left: 4px solid var(--accent-color);
+                background-color: var(--bg-secondary);
+                padding: 1rem 1.25rem;
+                margin: 2rem 0;
+                font-family: var(--font-sans);
+            }
+
+            .chain-note code {
+                color: var(--accent-color);
+            }
+
+            .phish {
+                color: var(--highlight);
+                font-weight: 600;
+            }
+        </style>
+        <!-- Google tag (gtag.js) -->
+    <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-R5HH1F5KDM"
+    ></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "G-R5HH1F5KDM");
+    </script>
+    </head>
+    <body>
+        <font-loader>
+            <div class="main-wrapper">
+                <site-header></site-header>
+
+                <main>
+                    <div class="content-container">
+                        <section>
+                            <h2>Authenticator Assurance Levels (AAL)</h2>
+                            <p>
+                                An <strong>Authenticator Assurance Level (AAL)</strong> is a way
+                                of saying how much you can trust a login. The more it takes to
+                                prove who you are, and the harder that proof is to fake, the
+                                higher the assurance. NIST sets out three rungs that climb in
+                                that order: <strong>AAL1</strong> (some assurance),
+                                <strong>AAL2</strong> (high confidence), and
+                                <strong>AAL3</strong> (very high confidence).
+                            </p>
+                            <p>
+                                The thing to keep straight: AAL is a property of the
+                                <em>whole login event</em>, not of any single method. Each level
+                                stacks on the one below it, and the same technique can sit at
+                                different levels depending on how it's set up.
+                            </p>
+
+                            <div class="cheat-sheet">
+                                <h3>The Three Levels (one glance)</h3>
+                                <div class="pillars">
+                                    <div class="pillar">
+                                        <strong>AAL1 - SOME ASSURANCE</strong>
+                                        One factor over a secure channel. Typing a password
+                                        at login is the textbook case.
+                                    </div>
+                                    <div class="pillar">
+                                        <strong>AAL2 - HIGH CONFIDENCE</strong>
+                                        Two factors that are genuinely different, plus proper
+                                        cryptography. Examples: password then approve a push on
+                                        your phone; or unlock a synced passkey with your device
+                                        PIN or fingerprint.
+                                    </div>
+                                    <div class="pillar">
+                                        <strong>AAL3 - VERY HIGH CONFIDENCE</strong>
+                                        Everything AAL2 asks for, plus a physical key that an
+                                        attacker can't spoof even with a phishing lure. Examples:
+                                        password then tap a FIDO security key; or a passkey that
+                                        is locked to a single device.
+                                    </div>
+                                </div>
+                                <p>
+                                    <strong>What separates AAL2 from AAL3 is
+                                    <span class="phish">hardware binding</span>.</strong>
+                                    A synced passkey gets you AAL2, because syncing lets it roam
+                                    across your devices and even copy to other users. A
+                                    device-bound passkey, which lives on exactly one chip,
+                                    gets you AAL3. Same passkey idea, two different levels.
+                                </p>
+                            </div>
+
+                            <div class="reveal-group" id="levels">
+                                <h3>Explore each level</h3>
+                                <div class="reveal-tabs" role="tablist">
+                                    <button class="reveal-tab active" data-group="levels" data-panel="l-aal1" role="tab">AAL1</button>
+                                    <button class="reveal-tab" data-group="levels" data-panel="l-aal2" role="tab">AAL2</button>
+                                    <button class="reveal-tab" data-group="levels" data-panel="l-aal3" role="tab">AAL3</button>
+                                </div>
+                                <div class="reveal-panel active" id="l-aal1" role="tabpanel">
+                                    <span class="level-tag">&gt; AAL1 - SOME ASSURANCE</span>
+                                    <strong>Requirement:</strong> prove it's you with a single
+                                    factor, over a secure channel.
+                                    <ul>
+                                        <li>Example: logging in with a password.</li>
+                                        <li>Factor in play: Knowledge (something you know).</li>
+                                    </ul>
+                                </div>
+                                <div class="reveal-panel" id="l-aal2" role="tabpanel">
+                                    <span class="level-tag">&gt; AAL2 - HIGH CONFIDENCE</span>
+                                    <strong>Requirement:</strong> prove it's you with two factors
+                                    that come from different categories, using approved
+                                    cryptographic techniques. This is the everyday "strong MFA"
+                                    bar.
+                                    <ul>
+                                        <li>Example: type your password, then approve a push on your phone with the Auth0 Guardian app. That's Knowledge followed by Possession.</li>
+                                        <li>Example: approve the sign-in with the same PIN or fingerprint you use to unlock your device, backed by a <em>synced</em> passkey that is allowed to roam across your devices.</li>
+                                    </ul>
+                                </div>
+                                <div class="reveal-panel" id="l-aal3" role="tabpanel">
+                                    <span class="level-tag">&gt; AAL3 - VERY HIGH CONFIDENCE</span>
+                                    <strong>Requirement:</strong> everything AAL2 needs, plus a
+                                    "hard" key that resists <span class="phish">verifier
+                                    impersonation</span> - meaning a phishing or man-in-the-middle
+                                    attack can't trick you into handing over a usable credential.
+                                    <ul>
+                                        <li>Example: type your password, then tap or insert a FIDO security key. The key only answers to the real site, so a lookalike login page gets nothing.</li>
+                                        <li>Example: approve the sign-in with the PIN, fingerprint, or security key that unlocks your device, backed by a <em>device-bound</em> passkey that can exist on only one piece of hardware.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="chain-note">
+                                <strong>The additive chain, memorised once:</strong>
+                                every level <code>stacks on</code> the one before it. AAL2
+                                starts from AAL1 (one factor, secure channel) and <code>adds</code>
+                                a second, different factor plus real cryptography. AAL3
+                                takes all of AAL2 and <code>adds</code> a phishing-proof,
+                                hardware-bound key.
+                            </div>
+
+                            <h3>How this maps to Auth0 MFA</h3>
+                            <p>
+                                You can line the AAL ladder up against the authenticators from
+                                the MFA cheat sheet. Push (the Auth0 Guardian app) and synced
+                                passkeys get you to AAL2. FIDO security keys and device-bound
+                                passkeys - the phishing-resistant, WebAuthn class - push you
+                                into AAL3.
+                            </p>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Level</th>
+                                        <th>What it requires</th>
+                                        <th>Auth0 authenticators that can get there</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>AAL1</strong></td>
+                                        <td>One factor over a secure channel</td>
+                                        <td>Password (Knowledge), Email magic link (Knowledge), Phone SMS/voice (Possession)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>AAL2</strong></td>
+                                        <td>Two different factors + proper cryptography</td>
+                                        <td>Password + Auth0 Guardian push; synced passkey; WebAuthn device biometrics</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>AAL3</strong></td>
+                                        <td>AAL2 + phishing / MITM resistance</td>
+                                        <td>Password + FIDO WebAuthn security key; device-bound passkey</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p>
+                                See
+                                <a href="mfa-factors.html">MFA &amp; Authentication Factors</a>
+                                for the full authenticator-to-factor comparison.
+                            </p>
+
+                            <h3>Gotchas worth drilling</h3>
+                            <ul>
+                                <li>
+                                    <strong>Synced passkeys are NOT AAL3.</strong> They land at
+                                    AAL2 because sync lets them roam from device to device, and
+                                    even reach other people. That mobility is precisely what
+                                    disqualifies them. Only device-bound passkeys, locked to a
+                                    single chip, reach AAL3.
+                                </li>
+                                <li>
+                                    <strong>AAL describes the login, not the gadget.</strong> The
+                                    clearest proof: one passkey technology can satisfy AAL2
+                                    (synced) or AAL3 (device-bound) purely by how it's enrolled.
+                                    Don't think "this authenticator is AAL3" - think "this way
+                                    of logging in lands at AAL3."
+                                </li>
+                                <li>
+                                    <strong>Anti-phishing kicks in at AAL3, not AAL2.</strong>
+                                    AAL2 already demands approved cryptography, but the
+                                    impersonation-resistance requirement is what lifts you into
+                                    AAL3. That's the real difference between pushing a
+                                    notification and tapping a FIDO key.
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+                </main>
+
+                <site-footer></site-footer>
+            </div>
+        </font-loader>
+        <script>
+            // Reveal-tab switcher (vanilla, no build step, matches repo style)
+            document.querySelectorAll(".reveal-tab").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const group = document.getElementById(btn.dataset.group);
+                    group.querySelectorAll(".reveal-tab").forEach((b) => b.classList.remove("active"));
+                    group.querySelectorAll(".reveal-panel").forEach((p) => p.classList.remove("active"));
+                    btn.classList.add("active");
+                    document.getElementById(btn.dataset.panel).classList.add("active");
+                });
+            });
+        </script>
+    </body>
+</html>

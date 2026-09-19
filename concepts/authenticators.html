@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="../assets/pizza-icon.svg" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Authenticators: Independent vs Dependent - Learn to Auth!</title>
+        <link rel="stylesheet" href="../styles/main.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+            media="print" onload="this.media='all'"
+        />
+        <script type="module" src="../components/font-loader.js"></script>
+        <script>
+            // Apply theme immediately to prevent flicker
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        </script>
+        <script type="module" src="../components/theme-toggle.js"></script>
+        <script type="module" src="../components/tabs-component.js"></script>
+        <script type="module" src="../components/footer-component.js"></script>
+        <script type="module" src="../components/header-component.js"></script>
+        <style>
+            .cheat-sheet {
+                border: 2px solid var(--accent-color);
+                background-color: var(--bg-secondary);
+                padding: 1.25rem 1.5rem;
+                margin: 1.5rem 0 2rem;
+                font-family: var(--font-sans);
+            }
+
+            .cheat-sheet h3 {
+                margin-top: 0;
+            }
+
+            .two-col {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin: 0.75rem 0 1rem;
+            }
+
+            .col {
+                flex: 1 1 280px;
+                border: 1px solid var(--border-color);
+                padding: 0.75rem 1rem;
+            }
+
+            .col strong {
+                font-family: var(--font-primary);
+                font-size: 0.7rem;
+                display: block;
+                margin-bottom: 0.35rem;
+            }
+
+            .col.indep strong {
+                color: var(--accent-color);
+            }
+
+            .col.dep strong {
+                color: var(--highlight);
+            }
+
+            .col ul {
+                margin: 0.35rem 0 0 1.1rem;
+                padding: 0;
+            }
+
+            .col li {
+                margin-bottom: 0.3rem;
+            }
+
+            .chain-note {
+                border-left: 4px solid var(--accent-color);
+                background-color: var(--bg-secondary);
+                padding: 1rem 1.25rem;
+                margin: 2rem 0;
+                font-family: var(--font-sans);
+            }
+
+            .chain-note code {
+                color: var(--accent-color);
+            }
+
+            .qa-item {
+                border: 1px solid var(--border-color);
+                background-color: var(--bg-secondary);
+                margin-bottom: 0.75rem;
+            }
+
+            .qa-item summary {
+                cursor: pointer;
+                font-family: var(--font-sans);
+                font-weight: 600;
+                padding: 0.8rem 1rem;
+                color: var(--text-primary);
+                list-style: none;
+            }
+
+            .qa-item summary::-webkit-details-marker {
+                display: none;
+            }
+
+            .qa-item summary::before {
+                content: "Q: ";
+                color: var(--accent-color);
+                font-family: var(--font-primary);
+                font-size: 0.65rem;
+            }
+
+            .qa-item summary::after {
+                content: "+";
+                float: right;
+                color: var(--accent-color);
+                font-family: var(--font-primary);
+                font-size: 0.8rem;
+            }
+
+            .qa-item[open] summary::after {
+                content: "-";
+            }
+
+            .qa-answer {
+                border-top: 1px solid var(--border-color);
+                padding: 0.8rem 1rem 1rem;
+                font-family: var(--font-sans);
+            }
+
+            .qa-answer strong {
+                color: var(--accent-color);
+            }
+
+            .qa-options {
+                margin: 0.5rem 0 0 1.1rem;
+                padding: 0;
+            }
+
+            .qa-options li {
+                margin-bottom: 0.3rem;
+            }
+
+            .phish {
+                color: var(--highlight);
+                font-weight: 600;
+            }
+
+            .reveal-group {
+                margin: 2rem 0;
+            }
+
+            .reveal-group h3 {
+                margin-bottom: 0.5rem;
+            }
+
+            .reveal-tabs {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .reveal-tab {
+                font-family: var(--font-primary);
+                font-size: 0.75rem;
+                background-color: var(--bg-primary);
+                color: var(--text-primary);
+                border: 2px solid var(--accent-color);
+                padding: 0.5rem 1rem;
+                cursor: pointer;
+                box-shadow: 4px 4px 0 var(--shadow-color);
+                transition: all 0.2s;
+            }
+
+            .reveal-tab:hover {
+                transform: translate(2px, 2px);
+                box-shadow: 2px 2px 0 var(--shadow-color);
+            }
+
+            .reveal-tab.active {
+                background-color: var(--accent-color);
+                color: var(--bg-primary);
+                box-shadow: inset 2px 2px 0 var(--shadow-color);
+            }
+
+            .reveal-panel {
+                display: none;
+                border: 2px solid var(--border-color);
+                background-color: var(--bg-secondary);
+                padding: 1.25rem;
+                font-family: var(--font-sans);
+            }
+
+            .reveal-panel.active {
+                display: block;
+            }
+
+            .reveal-panel .level-tag {
+                font-family: var(--font-primary);
+                font-size: 0.7rem;
+                color: var(--highlight);
+                display: block;
+                margin-bottom: 0.75rem;
+            }
+
+            .reveal-panel ul {
+                margin: 0.75rem 0 0 1.25rem;
+                padding: 0;
+            }
+
+            .reveal-panel li {
+                margin-bottom: 0.35rem;
+            }
+        </style>
+        <!-- Google tag (gtag.js) -->
+    <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-R5HH1F5KDM"
+    ></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "G-R5HH1F5KDM");
+    </script>
+    </head>
+    <body>
+        <font-loader>
+            <div class="main-wrapper">
+                <site-header></site-header>
+
+                <main>
+                    <div class="content-container">
+                        <section>
+                            <h2>Authenticators: Independent vs Dependent</h2>
+                            <p>
+                                An <strong>authenticator</strong> is the thing that actually
+                                confirms who you are - a password, a security key, an app on
+                                your phone. It's the middle layer of the identity stack:
+                                credentials prove an identity, an authenticator holds those
+                                credentials, and one or more <em>factor types</em> describe how
+                                the authenticator proves it. There's a dedicated page on
+                                <a href="mfa-factors.html">MFA factors</a> for that bottom
+                                layer.
+                            </p>
+                            <p>
+                                This page sorts authenticators into the buckets that matter in
+                                practice, starting with the one Auth0 draws on the MFA dashboard:
+                                <strong>independent</strong> vs <strong>dependent</strong>.
+                            </p>
+
+                            <div class="cheat-sheet">
+                                <h3>The two-way split (one glance)</h3>
+                                <p>
+                                    On Auth0's <code>Security &gt; Multi-factor Auth</code> screen,
+                                    every factor is either independent or dependent. The rule:
+                                    you cannot enable a <em>dependent</em> factor until at least
+                                    one <em>independent</em> one is switched on.
+                                </p>
+                                <div class="two-col">
+                                    <div class="col indep">
+                                        <strong>INDEPENDENT</strong>
+                                        Standalone proof - works alone, nothing else needs to be
+                                        on first. These are the factors that can carry MFA on
+                                        their own:
+                                        <ul>
+                                            <li>WebAuthn with FIDO Security Keys</li>
+                                            <li>One-time Password (OTP / authenticator app)</li>
+                                            <li>Push Notification (Auth0 Guardian)</li>
+                                            <li>Phone Message (SMS + Voice)</li>
+                                            <li>Cisco Duo Security</li>
+                                        </ul>
+                                        <em>You must enable at least one of these to require MFA.</em>
+                                    </div>
+                                    <div class="col dep">
+                                        <strong>DEPENDENT</strong>
+                                        Fallbacks and alternatives - only usable once an
+                                        independent factor is already on. They extend or rescue
+                                        an existing setup, they don't start one:
+                                        <ul>
+                                            <li>WebAuthn with FIDO Device Biometrics</li>
+                                            <li>Email (one-time code)</li>
+                                            <li>Recovery Code</li>
+                                        </ul>
+                                        <em>Enabling one of these before an independent factor is
+                                        effectively blocked by the dashboard.</em>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="chain-note">
+                                <strong>The mental model, once:</strong>
+                                independent = <code>primary</code> proof, dependent =
+                                <code>backup or alternative</code>. Independent authenticators
+                                are the foundation you build MFA on; dependent ones are the
+                                recovery and convenience net on top. Don't confuse this with
+                                factor type - a FIDO <em>security key</em> and a FIDO
+                                <em>device biometric</em> both reduce to Possession, yet one is
+                                independent and the other dependent. Independence is about
+                                whether you can start with it, not what factor category it sits in.
+                            </div>
+
+                            <h3>Why the split exists</h3>
+                            <p>
+                                Independent authenticators are real, standalone proof of
+                                possession - a key you carry, a code from an app, a push you
+                                approve. That's enough to stand as the second factor on its own.
+                                Dependent ones need an independent anchor first because they
+                                are, by themselves, too weak or too easily forged to be the
+                                primary proof: an email code can be intercepted, a recovery
+                                code is single-use and only exists if you enrolled something
+                                first, and device biometrics assume a device you already
+                                proved you have. Once an independent factor is on, the
+                                dependent ones become useful fallbacks.
+                            </p>
+
+                            <h3>Beyond the two-way split: the other ways to cut it</h3>
+                            <p>
+                                "Independent vs dependent" is one axis. Two more are worth
+                                keeping straight because they answer different questions.
+                            </p>
+
+                            <div class="reveal-group" id="axes">
+                                <h3>Other ways to categorise authenticators</h3>
+                                <div class="reveal-tabs" role="tablist">
+                                    <button class="reveal-tab active" data-group="axes" data-panel="x-factor" role="tab">By factor type</button>
+                                    <button class="reveal-tab" data-group="axes" data-panel="x-multifactor" role="tab">By multi-factor reach</button>
+                                    <button class="reveal-tab" data-group="axes" data-panel="x-aal" role="tab">By assurance / phishing</button>
+                                </div>
+                                <div class="reveal-panel active" id="x-factor" role="tabpanel">
+                                    <span class="level-tag">&gt; FACTOR TYPE - WHAT IT PROVES</span>
+                                    The classic three categories from the MFA cheat sheet:
+                                    <ul>
+                                        <li><strong>Knowledge</strong> (something you know): Password, Email code, security-question answer.</li>
+                                        <li><strong>Possession</strong> (something you have): OTP, Authenticator app (Guardian, Duo), Security key, Phone (SMS/Voice).</li>
+                                        <li><strong>Inherence</strong> (something you are): Fingerprint, facial recognition (Touch ID / Face ID / Windows Hello), voice.</li>
+                                    </ul>
+                                    Key gotcha from the course: <strong>SMS OTP counts as Possession</strong> (you hold the phone), and <strong>Email counts as Knowledge</strong> (even though it's delivered, not typed from memory).
+                                </div>
+                                <div class="reveal-panel" id="x-multifactor" role="tabpanel">
+                                    <span class="level-tag">&gt; MULTI-FACTOR REACH - HOW MANY IT CAN COVER</span>
+                                    Some authenticators are single-factor only; others can span two when configured with a device unlock:
+                                    <ul>
+                                        <li><strong>Single-factor only:</strong> Password, Phone (SMS/Voice), Email - each proves one factor type and stays there.</li>
+                                        <li><strong>Multi-factor capable:</strong> Auth0 Guardian (Possession, or + Knowledge/Inherence with a device passcode/biometric) and FIDO WebAuthn security keys or device biometrics (same pattern) - they can cover two categories at once.</li>
+                                        <li><strong>Passkeys</strong> only ever appear already combined (Possession + Knowledge or + Inherence) - they are never listed as a bare possession-only factor, because a passkey is inherently backed by a device unlock.</li>
+                                    </ul>
+                                </div>
+                                <div class="reveal-panel" id="x-aal" role="tabpanel">
+                                    <span class="level-tag">&gt; ASSURANCE / PHISHING RESISTANCE</span>
+                                    How high up the AAL ladder an authenticator can push you:
+                                    <ul>
+                                        <li><strong>Not phishing resistant:</strong> Password, Email, Phone (SMS/Voice). Single-factor, capped at AAL1 on their own.</li>
+                                        <li><strong>AAL2 reach:</strong> Auth0 Guardian push, synced passkey, WebAuthn device biometrics - two factors, approved crypto, no hardware-bound guarantee.</li>
+                                        <li><strong>AAL3 (<span class="phish">phishing resistant</span>):</strong> FIDO security keys and device-bound passkeys - a "hard" key that resists impersonation.</li>
+                                    </ul>
+                                    See the <a href="authenticator-assurance-levels.html">AAL page</a> for the full ladder.
+                                </div>
+                            </div>
+
+                            <h3>Gotchas worth drilling</h3>
+                            <ul>
+                                <li>
+                                    <strong>Independent/dependent is NOT the same as factor
+                                    type.</strong> WebAuthn security keys (independent) and
+                                    WebAuthn device biometrics (dependent) both sit in the
+                                    Possession camp, but only one can be a tenant's first
+                                    enabled factor. Dependency says "can this begin a setup?",
+                                    factor type says "what does it prove?"
+                                </li>
+                                <li>
+                                    <strong>WebAuthn is not a single category.</strong> The
+                                    security-key variant is independent; the device-biometrics
+                                    variant is dependent. Don't lump them together when you
+                                    read a dashboard or docs table.
+                                </li>
+                                <li>
+                                    <strong>Email and OTP are different.</strong> Email delivers
+                                    a one-time code to users who are <em>already</em> enrolled in
+                                    an independent factor (it's a dependent fallback). OTP is
+                                    the standalone authenticator-app TOTP code - an independent
+                                    factor in its own right.
+                                </li>
+                                <li>
+                                    <strong>At least one independent factor is the hard
+                                    requirement.</strong> Auth0 won't let you run MFA off
+                                    dependents alone - the tenant needs an independent anchor
+                                    before Recovery Code or Email can serve as your backstop.
+                                </li>
+                            </ul>
+
+                            <h3>Q&amp;A: Resetting MFA enrollment</h3>
+                            <p>
+                                A real one - the sort of thing that comes up in practice (it
+                                surfaced on a live engagement). Here's the knowledge-check
+                                asked about it, with the reset options broken down into the
+                                three that actually work.
+                            </p>
+
+                            <details class="qa-item">
+                                <summary>What are three ways to reset MFA enrollment?</summary>
+                                <div class="qa-answer">
+                                    <p>Options (from the quiz, verbatim):</p>
+                                    <ul class="qa-options">
+                                        <li>An admin can go to Dashboard &gt; Security &gt; Multi-factor Auth to reset MFA for end user. <em>No - that's where you configure tenant-wide factors and policies, not reset one person's enrollment.</em></li>
+                                        <li>An end user can use a biometric, such as Touch ID, to reset MFA. <em>No - biometrics authenticate; they aren't a reset path.</em></li>
+                                        <li>An admin can go to Dashboard &gt; Users Management &gt; Users. <strong>Yes - pick the user and reset their Multi-factor there.</strong></li>
+                                        <li>An end user can use a push notification to reset MFA. <em>No - pushing a notification verifies; it doesn't reset.</em></li>
+                                        <li>An admin can use the Management API to delete an end user's MFA enrollment. <strong>Yes - <code>DELETE /api/v2/users/{id}/authentication-methods</code>.</strong></li>
+                                        <li>An end user can use a recovery code to log in. <strong>Yes - a recovery code gets you back in without the factor.</strong></li>
+                                    </ul>
+                                    <p><strong>The three reset paths:</strong> the admin Dashboard (Users &gt; user &gt; Reset Multi-factor), the Management API delete endpoint, and the end user's own recovery code. The three <em>distractors</em> all mistake a verification step (biometric, push, policy page) for a reset mechanism.</p>
+                                </div>
+                            </details>
+
+                            <details class="qa-item">
+                                <summary>How do you actually reset a stuck factor in practice?</summary>
+                                <div class="qa-answer">
+                                    <p>When the customer is locked out of their MFA factor, the routes are:</p>
+                                    <ul class="qa-options">
+                                        <li><strong>Recovery code (self-service, fastest):</strong> if they enrolled one, they use it to get back in, then re-enroll. No admin involved.</li>
+                                        <li><strong>Admin dashboard:</strong> Users &gt; the user &gt; Reset Multi-factor. A routine helpdesk action under the <em>Users</em> section - not the MFA policy page.</li>
+                                        <li><strong>Management API:</strong> <code>DELETE /api/v2/users/{id}/authentication-methods</code> clears the enrolled factors so the user re-enrolls on next login.</li>
+                                    </ul>
+                                    <p><strong>Watch-out:</strong> a <em>password</em> reset does <strong>not</strong> clear the MFA factor. If the user forgot their password <em>and</em> lost their factor, you reset the password <em>and</em> reset MFA separately.</p>
+                                </div>
+                            </details>
+
+                            <p>
+                                Reading further:
+                                <a href="mfa-factors.html">MFA &amp; Authentication Factors</a>
+                                for the factor-type layer, and
+                                <a href="authenticator-assurance-levels.html">Authenticator
+                                Assurance Levels</a> for how all of this maps to a trust score.
+                            </p>
+                        </section>
+                    </div>
+                </main>
+
+                <site-footer></site-footer>
+            </div>
+        </font-loader>
+        <script>
+            // Reveal-tab switcher (vanilla, no build step, matches repo style)
+            document.querySelectorAll(".reveal-tab").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const group = document.getElementById(btn.dataset.group);
+                    group.querySelectorAll(".reveal-tab").forEach((b) => b.classList.remove("active"));
+                    group.querySelectorAll(".reveal-panel").forEach((p) => p.classList.remove("active"));
+                    btn.classList.add("active");
+                    document.getElementById(btn.dataset.panel).classList.add("active");
+                });
+            });
+        </script>
+    </body>
+</html>

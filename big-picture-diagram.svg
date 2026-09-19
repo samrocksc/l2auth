@@ -1,0 +1,160 @@
+<svg viewBox="0 0 1600 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram of the OIDC Authorization Code flow with PKCE: the User's Browser clicks Sign In, is authenticated by the Authorization Server, which redirects back to Your Backend to exchange the authorization code. The backend receives three tokens: an ID Token identifying the user (stays in the app), an Access Token for calling APIs (goes to your API), and a Refresh Token for getting new tokens (held securely by the backend)." style="max-width:100%;height:auto;" font-family="var(--font-sans)">
+  <style>
+    .heading { font-family: var(--font-primary); font-size: 15px; fill: var(--text-primary); }
+    .label { font-family: var(--font-sans); font-size: 15px; font-weight: 700; fill: var(--text-primary); }
+    .sublabel { font-family: var(--font-sans); font-size: 12.5px; fill: var(--text-secondary); }
+    .chip-title { font-family: var(--font-sans); font-size: 15px; font-weight: 700; }
+    .chip-desc { font-family: var(--font-sans); font-size: 12.5px; fill: var(--text-secondary); }
+    .step-num { font-family: var(--font-primary); font-size: 12px; fill: var(--bg-primary); }
+    .flow-line { stroke: var(--text-secondary); stroke-width: 2.5; fill: none; }
+    .box { fill: var(--bg-secondary); stroke: var(--text-primary); stroke-width: 2.5; }
+    @media (prefers-reduced-motion: reduce) {
+      .flow-dot { display: none !important; }
+      .step-circle, .chip-group { opacity: 1 !important; }
+    }
+  </style>
+  <defs>
+    <marker id="flow-arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto-start-reverse" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="var(--text-secondary)" />
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1600" height="900" fill="var(--bg-primary)" />
+
+  <!-- Title -->
+  <text x="60" y="55" class="heading">OIDC AUTH CODE + PKCE</text>
+  <text x="60" y="80" class="sublabel">the big picture, left to right</text>
+
+  <!-- ===================== MAIN ACTOR BOXES ===================== -->
+
+  <!-- 1. User / Browser -->
+  <rect x="60" y="380" width="260" height="140" rx="4" class="box" stroke="var(--accent-color)" />
+  <circle class="step-circle" cx="98" cy="410" r="14" fill="var(--accent-color)">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyTimes="0;0.1;0.2;1" values="1;0.5;1;1" />
+  </circle>
+  <text x="98" y="415" text-anchor="middle" class="step-num">1</text>
+  <text x="122" y="416" class="label">User / Browser</text>
+  <text x="80" y="450" class="sublabel">clicks &quot;Sign In&quot;</text>
+  <text x="80" y="470" class="sublabel">redirected to the</text>
+  <text x="80" y="488" class="sublabel">Authorization Server</text>
+
+  <!-- arrow 1 -> 2 -->
+  <path d="M320,450 H420" class="flow-line" marker-end="url(#flow-arrowhead)" />
+
+  <!-- 2. Authorization Server -->
+  <rect x="420" y="380" width="280" height="140" rx="4" class="box" stroke="var(--highlight)" />
+  <circle class="step-circle" cx="458" cy="410" r="14" fill="var(--highlight)">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyTimes="0;0.2;0.3;0.4;1" values="1;1;0.5;1;1" />
+  </circle>
+  <text x="458" y="415" text-anchor="middle" class="step-num">2</text>
+  <text x="482" y="416" class="label">Authorization Server</text>
+  <text x="440" y="450" class="sublabel">authenticates the user</text>
+  <text x="440" y="470" class="sublabel">(login, MFA, consent)</text>
+  <text x="440" y="488" class="sublabel">issues an authorization code</text>
+
+  <!-- arrow 2 -> 3 -->
+  <path d="M700,450 H800" class="flow-line" marker-end="url(#flow-arrowhead)" />
+
+  <!-- 3. Your Backend -->
+  <rect x="800" y="380" width="260" height="140" rx="4" class="box" stroke="var(--accent-color)" />
+  <circle class="step-circle" cx="838" cy="410" r="14" fill="var(--accent-color)">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyTimes="0;0.4;0.5;0.6;1" values="1;1;0.5;1;1" />
+  </circle>
+  <text x="838" y="415" text-anchor="middle" class="step-num">3</text>
+  <text x="862" y="416" class="label">Your Backend</text>
+  <text x="820" y="450" class="sublabel">exchanges the code</text>
+  <text x="820" y="470" class="sublabel">for tokens</text>
+  <text x="820" y="488" class="sublabel">(with PKCE verifier)</text>
+
+  <!-- ===================== TOKEN OUTCOMES ===================== -->
+
+  <!-- connector lines from backend to each chip -->
+  <path d="M1060,450 C1110,450 1110,180 1160,180" class="flow-line" marker-end="url(#flow-arrowhead)" />
+  <path d="M1060,450 H1160" class="flow-line" marker-end="url(#flow-arrowhead)" />
+  <path d="M1060,450 C1110,450 1110,720 1160,720" class="flow-line" marker-end="url(#flow-arrowhead)" />
+
+  <!-- ID Token chip -->
+  <g class="chip-group">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyTimes="0;0.4;0.5;0.6;1" values="1;1;0.6;1;1" />
+    <rect x="1160" y="120" width="380" height="120" rx="4" class="box" stroke="var(--accent-color)" />
+    <rect x="1160" y="120" width="10" height="120" fill="var(--accent-color)" />
+    <text x="1190" y="152" class="chip-title" fill="var(--accent-color)">ID TOKEN</text>
+    <text x="1190" y="178" class="chip-desc">who you are</text>
+    <text x="1190" y="198" class="chip-desc">stays in your app</text>
+    <text x="1490" y="152" text-anchor="end" class="sublabel">→ your app</text>
+  </g>
+
+  <!-- Access Token chip -->
+  <g class="chip-group">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyTimes="0;0.6;0.7;0.8;1" values="1;1;0.6;1;1" />
+    <rect x="1160" y="360" width="380" height="120" rx="4" class="box" stroke="var(--highlight)" />
+    <rect x="1160" y="360" width="10" height="120" fill="var(--highlight)" />
+    <text x="1190" y="392" class="chip-title" fill="var(--highlight)">ACCESS TOKEN</text>
+    <text x="1190" y="418" class="chip-desc">calls APIs</text>
+    <text x="1190" y="438" class="chip-desc">sent with requests to your API</text>
+    <text x="1490" y="392" text-anchor="end" class="sublabel">→ your API</text>
+  </g>
+
+  <!-- Refresh Token chip -->
+  <g class="chip-group">
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyTimes="0;0.8;0.9;1" values="1;1;0.6;1" />
+    <rect x="1160" y="660" width="380" height="120" rx="4" class="box" stroke="var(--text-secondary)" />
+    <rect x="1160" y="660" width="5" height="120" fill="var(--accent-color)" />
+    <rect x="1165" y="660" width="5" height="120" fill="var(--highlight)" />
+    <text x="1190" y="692" class="chip-title" fill="var(--text-primary)">REFRESH TOKEN</text>
+    <text x="1190" y="718" class="chip-desc">gets new tokens</text>
+    <text x="1190" y="738" class="chip-desc">held securely by your backend</text>
+    <text x="1490" y="692" text-anchor="end" class="sublabel">→ backend only</text>
+  </g>
+
+  <!-- legend -->
+  <text x="60" y="850" class="sublabel">solid boxes = actors in the flow · right-hand chips = the three tokens the backend receives, and where each one goes</text>
+
+  <!-- ===================== TRAVELLING FLOW DOTS ===================== -->
+  <!-- segment 1: user -> auth server, active 0.0-0.2 of the 8s cycle -->
+  <circle class="flow-dot" r="7" fill="var(--accent-color)" opacity="0">
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyPoints="0;0;1;1" keyTimes="0;0;0.2;1" path="M320,450 H420" />
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyTimes="0;0;0.19;0.2;1" values="1;1;1;0;0" />
+  </circle>
+
+  <!-- segment 2: auth server -> backend, active 0.2-0.4 -->
+  <circle class="flow-dot" r="7" fill="var(--highlight)" opacity="0">
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyPoints="0;0;1;1" keyTimes="0;0.2;0.4;1" path="M700,450 H800" />
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyTimes="0;0.199;0.2;0.39;0.4;1" values="0;0;1;1;0;0" />
+  </circle>
+
+  <!-- segment 3: backend -> ID token chip, active 0.4-0.6 -->
+  <circle class="flow-dot" r="7" fill="var(--accent-color)" opacity="0">
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyPoints="0;0;1;1" keyTimes="0;0.4;0.6;1" path="M1060,450 C1110,450 1110,180 1160,180" />
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyTimes="0;0.399;0.4;0.59;0.6;1" values="0;0;1;1;0;0" />
+  </circle>
+
+  <!-- segment 4: backend -> access token chip, active 0.6-0.8 -->
+  <circle class="flow-dot" r="7" fill="var(--highlight)" opacity="0">
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyPoints="0;0;1;1" keyTimes="0;0.6;0.8;1" path="M1060,450 H1160" />
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyTimes="0;0.599;0.6;0.79;0.8;1" values="0;0;1;1;0;0" />
+  </circle>
+
+  <!-- segment 5: backend -> refresh token chip, active 0.8-1.0 -->
+  <circle class="flow-dot" r="7" fill="var(--text-secondary)" opacity="0">
+    <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyPoints="0;0;1;1" keyTimes="0;0.8;1;1" path="M1060,450 C1110,450 1110,720 1160,720" />
+    <animate attributeName="opacity" dur="8s" repeatCount="indefinite" calcMode="linear"
+      keyTimes="0;0.799;0.8;1" values="0;0;1;1" />
+  </circle>
+</svg>

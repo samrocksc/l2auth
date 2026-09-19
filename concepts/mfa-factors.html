@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="../assets/pizza-icon.svg" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MFA & Authentication Factors - Learn to Auth!</title>
+        <link rel="stylesheet" href="../styles/main.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+            media="print" onload="this.media='all'"
+        />
+        <script type="module" src="../components/font-loader.js"></script>
+        <script>
+            // Apply theme immediately to prevent flicker
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        </script>
+        <script type="module" src="../components/theme-toggle.js"></script>
+        <script type="module" src="../components/tabs-component.js"></script>
+        <script type="module" src="../components/footer-component.js"></script>
+        <script type="module" src="../components/header-component.js"></script>
+        <style>
+            .reveal-group {
+                margin: 2rem 0;
+            }
+
+            .reveal-group h3 {
+                margin-bottom: 0.5rem;
+            }
+
+            .reveal-tabs {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .reveal-tab {
+                font-family: var(--font-primary);
+                font-size: 0.75rem;
+                background-color: var(--bg-primary);
+                color: var(--text-primary);
+                border: 2px solid var(--accent-color);
+                padding: 0.5rem 1rem;
+                cursor: pointer;
+                box-shadow: 4px 4px 0 var(--shadow-color);
+                transition: all 0.2s;
+            }
+
+            .reveal-tab:hover {
+                transform: translate(2px, 2px);
+                box-shadow: 2px 2px 0 var(--shadow-color);
+            }
+
+            .reveal-tab.active {
+                background-color: var(--accent-color);
+                color: var(--bg-primary);
+                box-shadow: inset 2px 2px 0 var(--shadow-color);
+            }
+
+            .reveal-panel {
+                display: none;
+                border: 2px solid var(--border-color);
+                background-color: var(--bg-secondary);
+                padding: 1.25rem;
+                font-family: var(--font-sans);
+            }
+
+            .reveal-panel.active {
+                display: block;
+            }
+
+            .reveal-panel .factor-tag {
+                font-family: var(--font-primary);
+                font-size: 0.7rem;
+                color: var(--highlight);
+                display: block;
+                margin-bottom: 0.75rem;
+            }
+
+            .reveal-panel ul {
+                margin: 0.75rem 0 0 1.25rem;
+                padding: 0;
+            }
+
+            .reveal-panel li {
+                margin-bottom: 0.35rem;
+            }
+
+            .cheat-sheet {
+                border: 2px solid var(--accent-color);
+                background-color: var(--bg-secondary);
+                padding: 1.25rem 1.5rem;
+                margin: 1.5rem 0 2rem;
+                font-family: var(--font-sans);
+            }
+
+            .cheat-sheet h3 {
+                margin-top: 0;
+            }
+
+            .cheat-sheet .pillars {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                margin: 0.75rem 0 1rem;
+            }
+
+            .cheat-sheet .pillar {
+                flex: 1 1 200px;
+                border: 1px solid var(--border-color);
+                padding: 0.75rem;
+            }
+
+            .cheat-sheet .pillar strong {
+                color: var(--accent-color);
+                font-family: var(--font-primary);
+                font-size: 0.7rem;
+                display: block;
+                margin-bottom: 0.35rem;
+            }
+
+            .chain-note {
+                border-left: 4px solid var(--accent-color);
+                background-color: var(--bg-secondary);
+                padding: 1rem 1.25rem;
+                margin: 2rem 0;
+                font-family: var(--font-sans);
+            }
+
+            .chain-note code {
+                color: var(--accent-color);
+            }
+
+            .phish {
+                color: var(--highlight);
+                font-weight: 600;
+            }
+        </style>
+        <!-- Google tag (gtag.js) -->
+    <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-R5HH1F5KDM"
+    ></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
+        gtag("config", "G-R5HH1F5KDM");
+    </script>
+    </head>
+    <body>
+        <font-loader>
+            <div class="main-wrapper">
+                <site-header></site-header>
+
+                <main>
+                    <div class="content-container">
+                        <section>
+                            <h2>MFA & Authentication Factors Cheat Sheet</h2>
+                            <p>
+                                Authentication rests on three pillars and is
+                                delivered through authenticators that hold
+                                credentials. This page is the one-stop reference:
+                                define the vocabulary, map every authenticator to
+                                its factor, and see at a glance which ones are
+                                phishing resistant.
+                            </p>
+
+                            <div class="cheat-sheet">
+                                <h3>The Cheat Sheet (one glance)</h3>
+                                <div class="pillars">
+                                    <div class="pillar">
+                                        <strong>KNOWLEDGE</strong>
+                                        Something you <em>know</em>: password,
+                                        security-question answer, challenge answer.
+                                    </div>
+                                    <div class="pillar">
+                                        <strong>POSSESSION</strong>
+                                        Something you <em>have</em>: phone (OTP),
+                                        authenticator app, security key.
+                                    </div>
+                                    <div class="pillar">
+                                        <strong>INHERENCE</strong>
+                                        Something you <em>are</em>: fingerprint,
+                                        face, voice, Windows Hello.
+                                    </div>
+                                </div>
+                                <p>
+                                    <strong>The strongest class is
+                                    <span class="phish">WebAuthn / FIDO</span>:</strong>
+                                    security keys, device biometrics, and passkeys.
+                                    They combine possession with an optional second
+                                    factor and are <em>phishing resistant</em>.
+                                    Passwords, email, and SMS/voice are single-factor
+                                    and not phishing resistant.
+                                </p>
+                                <p>
+                                    <strong>MFA rule:</strong> two login steps is not
+                                    automatically two factors. Phone-unlock-plus-app
+                                    stays one factor if both live in the same category.
+                                    True MFA needs two <em>different</em> factor types.
+                                </p>
+                            </div>
+
+                            <div class="reveal-group" id="glossary">
+                                <h3>The three layers</h3>
+                                <div class="reveal-tabs" role="tablist">
+                                    <button class="reveal-tab active" data-group="glossary" data-panel="g-credentials" role="tab">Login credentials</button>
+                                    <button class="reveal-tab" data-group="glossary" data-panel="g-authenticators" role="tab">Authenticators</button>
+                                    <button class="reveal-tab" data-group="glossary" data-panel="g-factors" role="tab">Authentication factors</button>
+                                </div>
+                                <div class="reveal-panel active" id="g-credentials" role="tabpanel">
+                                    <span class="factor-tag">&gt; LOGIN CREDENTIALS</span>
+                                    A set of attributes that uniquely identifies
+                                    a system user.
+                                </div>
+                                <div class="reveal-panel" id="g-authenticators" role="tabpanel">
+                                    <span class="factor-tag">&gt; AUTHENTICATORS</span>
+                                    The entities used to confirm the identity of
+                                    a user (for example, a password or a
+                                    security key). Authenticators hold
+                                    credentials.
+                                </div>
+                                <div class="reveal-panel" id="g-factors" role="tabpanel">
+                                    <span class="factor-tag">&gt; AUTHENTICATION FACTORS</span>
+                                    The categories that describe an
+                                    authenticator. Every authenticator has one
+                                    or more authentication factors. Commonly
+                                    referred to as factor types.
+                                </div>
+                            </div>
+
+                            <div class="chain-note">
+                                <strong>The chain, memorised once:</strong>
+                                credentials are <code>held by</code>
+                                authenticators; factors <code>describe</code>
+                                authenticators; and one authenticator can carry
+                                <code>one or more</code> factors. That last
+                                clause is why phone-unlock-plus-app is not
+                                automatically MFA: two steps in the same factor
+                                category is still one factor.
+                            </div>
+
+                            <div class="reveal-group" id="factortypes">
+                                <h3>The three factor types</h3>
+                                <p>
+                                    Authenticators, such as a password or SMS
+                                    notification, are broken into three types,
+                                    known as authentication factors. Select each
+                                    tab to see the category and the examples the
+                                    course files under it.
+                                </p>
+                                <div class="reveal-tabs" role="tablist">
+                                    <button class="reveal-tab active" data-group="factortypes" data-panel="f-knowledge" role="tab">Knowledge</button>
+                                    <button class="reveal-tab" data-group="factortypes" data-panel="f-possession" role="tab">Possession</button>
+                                    <button class="reveal-tab" data-group="factortypes" data-panel="f-inherence" role="tab">Inherence</button>
+                                </div>
+                                <div class="reveal-panel active" id="f-knowledge" role="tabpanel">
+                                    <span class="factor-tag">&gt; KNOWLEDGE = SOMETHING YOU KNOW</span>
+                                    Knowledge-based authentication is something
+                                    you know. This may include, but is not
+                                    limited to:
+                                    <ul>
+                                        <li>Password</li>
+                                        <li>Answer to security question</li>
+                                        <li>Answer to challenge question</li>
+                                    </ul>
+                                </div>
+                                <div class="reveal-panel" id="f-possession" role="tabpanel">
+                                    <span class="factor-tag">&gt; POSSESSION = SOMETHING YOU HAVE</span>
+                                    Possession-based authentication is something
+                                    you have. This may include, but is not
+                                    limited to:
+                                    <ul>
+                                        <li>Time-based one-time password (OTP) delivered over SMS</li>
+                                        <li>Authenticator app like Auth0 Guardian or Cisco Duo</li>
+                                        <li>Security key like a Yubikey</li>
+                                    </ul>
+                                </div>
+                                <div class="reveal-panel" id="f-inherence" role="tabpanel">
+                                    <span class="factor-tag">&gt; INHERENCE = SOMETHING YOU ARE</span>
+                                    Inherence-based authentication is something
+                                    that you inherently are. This may include,
+                                    but is not limited to:
+                                    <ul>
+                                        <li>Fingerprint (Touch ID, Windows Hello)</li>
+                                        <li>Facial recognition (Face ID, Windows Hello)</li>
+                                        <li>Voice recognition</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <h3>Authenticators &amp; their factors</h3>
+                            <p>
+                                The full comparison, straight from the Auth0
+                                factor table. An asterisk (
+                                <code> * </code>) marks a factor that is
+                                <em>optional</em> on top of the primary one: for
+                                example, an authenticator that proves possession
+                                but can be unlocked with a passcode (possession +
+                                knowledge) or a biometric (possession +
+                                inherence).
+                            </p>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Authenticator</th>
+                                        <th>Authentication Factor</th>
+                                        <th>Characteristics</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Auth0 Guardian</strong></td>
+                                        <td>Possession; Possession + Knowledge *; Possession + Inherence *</td>
+                                        <td>Device Bound; Hardware Protected. Auth0 Guardian is an iOS/Android mobile app that provides multi-factor authentication (MFA). Users can authenticate via a push notification or a one-time password (OTP) delivered to their registered device. The app supports passcode and biometric configuration for enhanced security.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>FIDO Auth with WebAuthn Security Keys</strong></td>
+                                        <td>Possession; Possession + Knowledge *; Possession + Inherence *</td>
+                                        <td><span class="phish">Phishing Resistant</span>; Device Bound or Syncable. Follows the FIDO Web Authentication (WebAuthn) standard.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>FIDO Auth with WebAuthn Device Biometrics</strong></td>
+                                        <td>Possession; Possession + Knowledge *; Possession + Inherence *</td>
+                                        <td><span class="phish">Phishing Resistant</span>; Device Bound. Follows the FIDO Web Authentication (WebAuthn) standard.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Phone</strong></td>
+                                        <td>Possession</td>
+                                        <td>SMS and Voice notification factors require a phone to authenticate from a text message or call that contains a code.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Email Notification</strong></td>
+                                        <td>Knowledge</td>
+                                        <td>The Email authenticator allows users to authenticate successfully with an OTP or a token (referred to as an Email Magic Link) that is sent to their primary email address.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Passkeys (as a primary authenticator)</strong></td>
+                                        <td>Possession + Knowledge *; Possession + Inherence *</td>
+                                        <td><span class="phish">Phishing Resistant</span>; Device Bound or Syncable. Follows the FIDO Web Authentication (WebAuthn) standard.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Password</strong></td>
+                                        <td>Knowledge</td>
+                                        <td>The Password authenticator consists of a string of characters that can be specified by users or set by an Admin.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h3>Gotchas worth drilling</h3>
+                            <ul>
+                                <li>
+                                    <strong>SMS OTP is Possession.</strong> The
+                                    course files a timed OTP delivered over SMS
+                                    under something you <em>have</em> (the
+                                    phone), not something you know.
+                                </li>
+                                <li>
+                                    <strong>Windows Hello sits under both
+                                    fingerprint and facial recognition.</strong>
+                                    It is an umbrella authenticator spanning two
+                                    inherence modalities, which is exactly the
+                                    "one authenticator, one or more factors"
+                                    rule in action.
+                                </li>
+                                <li>
+                                    <strong>A Yubikey splits.</strong> As a
+                                    security key it is textbook Possession; its
+                                    static-password mode is a knowledge-type
+                                    credential and is not a valid Auth0 MFA
+                                    factor.
+                                </li>
+                                <li>
+                                    <strong>Phishing Resistant is the top-tier
+                                    signal.</strong> Only the WebAuthn/FIDO rows
+                                    claim it. Security keys, device biometrics,
+                                    and passkeys cryptographically bind
+                                    authentication to the site, so a phished
+                                    credential cannot be replayed elsewhere.
+                                </li>
+                                <li>
+                                    <strong>Email and Phone are single
+                                    factor.</strong> A magic link or an SMS/voice
+                                    code proves one property each (knowledge /
+                                    possession) - they are second-factor
+                                    <em>delivery</em>, not multi-factor
+                                    authentication on their own.
+                                </li>
+                            </ul>
+
+                            <p>
+                                Related on this site:
+                                <a href="sca.html">Strong Customer
+                                Authentication</a>, which legally demands two of
+                                these same three categories for EEA payments.
+                            </p>
+                        </section>
+                    </div>
+                </main>
+
+                <site-footer></site-footer>
+            </div>
+        </font-loader>
+        <script>
+            // Reveal-tab switcher (vanilla, no build step, matches repo style)
+            document.querySelectorAll(".reveal-tab").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const group = document.getElementById(btn.dataset.group);
+                    group.querySelectorAll(".reveal-tab").forEach((b) => b.classList.remove("active"));
+                    group.querySelectorAll(".reveal-panel").forEach((p) => p.classList.remove("active"));
+                    btn.classList.add("active");
+                    document.getElementById(btn.dataset.panel).classList.add("active");
+                });
+            });
+        </script>
+    </body>
+</html>
