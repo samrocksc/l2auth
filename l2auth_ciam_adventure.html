@@ -403,19 +403,19 @@
 <body>
     <div class="container">
         <h1>CIAM Authentication Flow Adventure</h1>
-        <p class="subtitle">l2auth — Choose your path through PKCE, OAuth 2.0, and SAML 2.0</p>
+        <p class="subtitle">l2auth , Choose your path through PKCE, OAuth 2.0, and SAML 2.0</p>
 
         <div class="learning-objectives">
             <h3>How this works</h3>
-            <p>Pick an authentication flow below. At each step you'll see a swimlane diagram of exactly what's crossing the wire, the real HTTP request/response, and — at decision points — choices that branch the story. Some branches show you an attack scenario before rejoining the main path.</p>
+            <p>Pick an authentication flow below. At each step you'll see a swimlane diagram of exactly what's crossing the wire, the real HTTP request/response, and , at decision points , choices that branch the story. Some branches show you an attack scenario before rejoining the main path.</p>
         </div>
 
         <div class="flow-selector">
             <label>Choose your flow</label>
             <div class="flow-buttons">
-                <button class="flow-button" data-flow="pkce">PKCE — Public Clients</button>
-                <button class="flow-button" data-flow="oauth">OAuth 2.0 — Confidential Clients</button>
-                <button class="flow-button" data-flow="saml">SAML 2.0 — Enterprise SSO</button>
+                <button class="flow-button" data-flow="pkce">PKCE , Public Clients</button>
+                <button class="flow-button" data-flow="oauth">OAuth 2.0 , Confidential Clients</button>
+                <button class="flow-button" data-flow="saml">SAML 2.0 , Enterprise SSO</button>
             </div>
         </div>
 
@@ -521,19 +521,19 @@
 
         const flows = {
             pkce: {
-                name: 'PKCE — Authorization Code with Proof Key for Code Exchange',
-                purpose: 'For public clients — SPAs, mobile apps, desktop apps — that cannot hold a secret because their code is fully visible to the end user.',
+                name: 'PKCE , Authorization Code with Proof Key for Code Exchange',
+                purpose: 'For public clients , SPAs, mobile apps, desktop apps , that cannot hold a secret because their code is fully visible to the end user.',
                 startStep: 'p1',
                 steps: pkceSteps()
             },
             oauth: {
-                name: 'OAuth 2.0 — Confidential Client Authentication',
+                name: 'OAuth 2.0 , Confidential Client Authentication',
                 purpose: 'For clients that run on a server you control, where a secret or private key can be stored safely and never reaches the browser.',
                 startStep: 'o_start',
                 steps: oauthSteps()
             },
             saml: {
-                name: 'SAML 2.0 — Enterprise Single Sign-On',
+                name: 'SAML 2.0 , Enterprise Single Sign-On',
                 purpose: 'For enterprise SSO into a corporate Identity Provider, exchanging signed XML assertions instead of bearer tokens.',
                 startStep: 's1',
                 steps: samlSteps()
@@ -544,9 +544,9 @@
             return {
                 p1: {
                     main: true, title: 'User Clicks "Sign In"',
-                    desc: 'A single-page app has no server-side component that could keep a secret — anything shipped to the browser can be extracted from it. PKCE exists precisely for this case.',
+                    desc: 'A single-page app has no server-side component that could keep a secret , anything shipped to the browser can be extracted from it. PKCE exists precisely for this case.',
                     diagram: [{ from: 'browser', to: 'browser', label: 'App has no client_secret to keep' }],
-                    concept: { title: 'Why PKCE exists', text: 'A client_secret baked into JS or a mobile binary is not a secret — anyone can read it out. PKCE replaces "prove you know the secret" with "prove you are the same app that started this flow," using a one-time cryptographic value instead.' },
+                    concept: { title: 'Why PKCE exists', text: 'A client_secret baked into JS or a mobile binary is not a secret , anyone can read it out. PKCE replaces "prove you know the secret" with "prove you are the same app that started this flow," using a one-time cryptographic value instead.' },
                     choices: [{ id: 'p2', label: 'Begin the flow', desc: 'Generate the PKCE parameters' }]
                 },
                 p2: {
@@ -563,9 +563,9 @@ code_challenge_method = "S256"` },
                 },
                 p3: {
                     main: true, title: 'Redirect to /authorize with code_challenge',
-                    desc: 'The browser is redirected to the authorization server. Only the challenge (the hash) travels — never the verifier.',
+                    desc: 'The browser is redirected to the authorization server. Only the challenge (the hash) travels , never the verifier.',
                     diagram: [{ from: 'browser', to: 'idp', label: 'GET /authorize?code_challenge=...' }],
-                    request: { label: 'Request — Browser to Auth Server', text:
+                    request: { label: 'Request , Browser to Auth Server', text:
 `GET /authorize?
   response_type=code
   &client_id=spa-web-client
@@ -575,7 +575,7 @@ code_challenge_method = "S256"` },
   &code_challenge=E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM
   &code_challenge_method=S256 HTTP/1.1
 Host: auth.example.com` },
-                    concept: { title: 'state parameter', text: '"state" is an opaque, unguessable value the app checks on return, binding the response to the request it made — the primary CSRF defence for the redirect flow, independent of PKCE.' },
+                    concept: { title: 'state parameter', text: '"state" is an opaque, unguessable value the app checks on return, binding the response to the request it made , the primary CSRF defence for the redirect flow, independent of PKCE.' },
                     choices: [
                         { id: 'p4', label: 'Continue to login', desc: 'User authenticates at the Auth Server' },
                         { id: 'p3_attack', label: 'What if this URL is intercepted?', desc: 'See the attack scenario', danger: true }
@@ -585,27 +585,27 @@ Host: auth.example.com` },
                     main: false, title: 'Attack: Authorization Request Interception', attackMode: true,
                     desc: 'The full /authorize URL, including code_challenge and state, can appear in browser history, proxy logs, or a referrer header.',
                     diagram: [{ from: 'browser', to: 'idp', label: 'Leaked via history / logs / referrer', dashed: true, danger: true }],
-                    attack: { title: 'What could go wrong here', text: 'An attacker who reads this URL from logs learns the code_challenge, client_id and state — but that is harmless on its own: code_challenge is a public hash, and it commits to a code_verifier the attacker does not have.' },
-                    success: { title: 'Why it still fails for the attacker', text: 'Even if the attacker later obtains the resulting authorization code (step 6), the token exchange requires the original code_verifier — never transmitted, generated fresh in memory on the legitimate client.' },
+                    attack: { title: 'What could go wrong here', text: 'An attacker who reads this URL from logs learns the code_challenge, client_id and state , but that is harmless on its own: code_challenge is a public hash, and it commits to a code_verifier the attacker does not have.' },
+                    success: { title: 'Why it still fails for the attacker', text: 'Even if the attacker later obtains the resulting authorization code (step 6), the token exchange requires the original code_verifier , never transmitted, generated fresh in memory on the legitimate client.' },
                     choices: [{ id: 'p4', label: 'Continue to login', desc: 'Back to the main flow' }]
                 },
                 p4: {
                     main: true, title: 'User Authenticates at the Auth Server',
-                    desc: 'The auth server — not the app — renders the login form. The app never sees the user\'s password.',
+                    desc: 'The auth server , not the app , renders the login form. The app never sees the user\'s password.',
                     diagram: [{ from: 'idp', to: 'idp', label: 'Login form, MFA, consent screen' }],
-                    concept: { title: 'Credential isolation', text: 'Because authentication happens on the auth server\'s own origin, a compromised client app can never harvest raw credentials — it only ever receives a short-lived authorization code afterward.' },
+                    concept: { title: 'Credential isolation', text: 'Because authentication happens on the auth server\'s own origin, a compromised client app can never harvest raw credentials , it only ever receives a short-lived authorization code afterward.' },
                     choices: [{ id: 'p5', label: 'Continue', desc: 'Auth Server issues an authorization code' }]
                 },
                 p5: {
                     main: true, title: 'Auth Server Redirects Back with an Authorization Code',
                     desc: 'After login, the browser is redirected to the app\'s redirect_uri carrying a short-lived, single-use code and the original state.',
                     diagram: [{ from: 'idp', to: 'browser', label: '302 -> /callback?code=...&state=...' }],
-                    response: { label: 'Response — Auth Server to Browser', text:
+                    response: { label: 'Response , Auth Server to Browser', text:
 `HTTP/1.1 302 Found
 Location: https://app.example.com/callback?
   code=SplxlOBeZQQYbYS6WxSbIA
   &state=xK9f2mQ7z` },
-                    concept: { title: 'Code, not a token', text: 'The redirect carries only an authorization code — useless by itself. It must be exchanged at the token endpoint, and (with PKCE) that exchange requires the original code_verifier.' },
+                    concept: { title: 'Code, not a token', text: 'The redirect carries only an authorization code , useless by itself. It must be exchanged at the token endpoint, and (with PKCE) that exchange requires the original code_verifier.' },
                     choices: [
                         { id: 'p6', label: 'Continue', desc: 'Exchange the code for tokens' },
                         { id: 'p5_attack', label: 'What if the code is stolen here?', desc: 'See the attack scenario', danger: true }
@@ -616,14 +616,14 @@ Location: https://app.example.com/callback?
                     desc: 'A malicious app registered on the same mobile OS, or a network observer on a misconfigured redirect, captures the code from this redirect.',
                     diagram: [{ from: 'idp', to: 'browser', label: 'code stolen in transit / by rogue app', dashed: true, danger: true }],
                     attack: { title: 'What could go wrong here', text: 'Without PKCE, this is a real vulnerability: the attacker takes the intercepted code straight to /token and gets tokens issued in the victim\'s name.' },
-                    success: { title: 'Why PKCE stops it', text: 'The token endpoint will only trade this code for tokens if the caller also presents the matching code_verifier. The attacker has the code but never had the verifier — the exchange is rejected.' },
+                    success: { title: 'Why PKCE stops it', text: 'The token endpoint will only trade this code for tokens if the caller also presents the matching code_verifier. The attacker has the code but never had the verifier , the exchange is rejected.' },
                     choices: [{ id: 'p6', label: 'Continue', desc: 'Back to the main flow' }]
                 },
                 p6: {
                     main: true, title: 'App Exchanges Code + code_verifier for Tokens',
-                    desc: 'The app calls the token endpoint directly (not via browser redirect), presenting the code and the original code_verifier — no client_secret involved.',
+                    desc: 'The app calls the token endpoint directly (not via browser redirect), presenting the code and the original code_verifier , no client_secret involved.',
                     diagram: [{ from: 'browser', to: 'idp', label: 'POST /token (code + code_verifier)' }],
-                    request: { label: 'Request — App to Auth Server', text:
+                    request: { label: 'Request , App to Auth Server', text:
 `POST /token HTTP/1.1
 Host: auth.example.com
 Content-Type: application/x-www-form-urlencoded
@@ -639,14 +639,14 @@ grant_type=authorization_code
                     main: true, title: 'Auth Server Verifies code_verifier Against code_challenge',
                     desc: 'The server recomputes BASE64URL(SHA256(code_verifier)) and compares it to the code_challenge stored against this authorization code.',
                     diagram: [{ from: 'idp', to: 'idp', label: 'SHA256(verifier) ?= stored challenge' }],
-                    concept: { title: 'The whole point of PKCE', text: 'This single equality check is what makes a stolen authorization code worthless without also stealing the in-memory verifier — the mechanism is often summarized as "proof of possession."' },
+                    concept: { title: 'The whole point of PKCE', text: 'This single equality check is what makes a stolen authorization code worthless without also stealing the in-memory verifier , the mechanism is often summarized as "proof of possession."' },
                     choices: [{ id: 'p8', label: 'Continue', desc: 'Tokens are issued' }]
                 },
                 p8: {
                     main: true, title: 'Token Response',
-                    desc: 'The auth server issues an access token, an ID token (OpenID Connect), and — for public clients — usually a rotating refresh token.',
-                    diagram: [{ from: 'idp', to: 'browser', label: '200 OK — access_token, id_token, refresh_token' }],
-                    response: { label: 'Response — Auth Server to App', text:
+                    desc: 'The auth server issues an access token, an ID token (OpenID Connect), and , for public clients , usually a rotating refresh token.',
+                    diagram: [{ from: 'idp', to: 'browser', label: '200 OK , access_token, id_token, refresh_token' }],
+                    response: { label: 'Response , Auth Server to App', text:
 `HTTP/1.1 200 OK
 Content-Type: application/json
 
@@ -678,13 +678,13 @@ Content-Type: application/json
                 },
                 p10: {
                     main: true, title: 'App Calls the Resource API',
-                    desc: 'The access token is attached as a bearer credential on API calls — the ID token is for the app itself, never sent onward.',
-                    diagram: [{ from: 'browser', to: 'backend', label: 'GET /api/me — Authorization: Bearer <access_token>' }],
-                    request: { label: 'Request — App to Resource API', text:
+                    desc: 'The access token is attached as a bearer credential on API calls , the ID token is for the app itself, never sent onward.',
+                    diagram: [{ from: 'browser', to: 'backend', label: 'GET /api/me , Authorization: Bearer <access_token>' }],
+                    request: { label: 'Request , App to Resource API', text:
 `GET /api/me HTTP/1.1
 Host: api.example.com
 Authorization: Bearer eyJhbGciOiJSUzI1NiIs...` },
-                    concept: { title: 'PKCE vs. confidential clients', text: 'PKCE proves "this exchange came from the same app instance that started the flow." It does not authenticate the app itself the way a client_secret or private key does — that\'s exactly why confidential clients (next flow) add that extra layer.' },
+                    concept: { title: 'PKCE vs. confidential clients', text: 'PKCE proves "this exchange came from the same app instance that started the flow." It does not authenticate the app itself the way a client_secret or private key does , that\'s exactly why confidential clients (next flow) add that extra layer.' },
                     choices: [], end: true
                 }
             };
@@ -694,9 +694,9 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIs...` },
             const shared_authorize = (prefix, methodLabel) => ({
                 [`${prefix}1`]: {
                     main: true, title: 'Redirect to /authorize',
-                    desc: `Same authorization request shape as PKCE — the difference is entirely in how the backend later authenticates itself at the token endpoint (${methodLabel}).`,
+                    desc: `Same authorization request shape as PKCE , the difference is entirely in how the backend later authenticates itself at the token endpoint (${methodLabel}).`,
                     diagram: [{ from: 'browser', to: 'idp', label: 'GET /authorize?response_type=code...' }],
-                    request: { label: 'Request — Browser to Auth Server', text:
+                    request: { label: 'Request , Browser to Auth Server', text:
 `GET /authorize?
   response_type=code
   &client_id=backend-web-app
@@ -716,12 +716,12 @@ Host: auth.example.com` },
                     main: true, title: 'Auth Server Redirects Back with a Code',
                     desc: 'A short-lived authorization code lands on the registered redirect_uri, handled by your backend, not client-side JS.',
                     diagram: [{ from: 'idp', to: 'browser', label: '302 -> /callback?code=...&state=...' }],
-                    response: { label: 'Response — Auth Server to Browser', text:
+                    response: { label: 'Response , Auth Server to Browser', text:
 `HTTP/1.1 302 Found
 Location: https://app.example.com/callback?
   code=4/0AY0e-g7...
   &state=aZ7pQ2` },
-                    concept: { title: 'Confidential means server-handled', text: 'This redirect still lands in the browser, but the callback route is server-rendered — the code is handed to backend code immediately, never exposed to page JS.' },
+                    concept: { title: 'Confidential means server-handled', text: 'This redirect still lands in the browser, but the callback route is server-rendered , the code is handed to backend code immediately, never exposed to page JS.' },
                     choices: [{ id: `${prefix}4`, label: 'Continue', desc: 'Backend authenticates itself and exchanges the code' }]
                 }
             });
@@ -731,8 +731,8 @@ Location: https://app.example.com/callback?
                 os4: {
                     main: true, title: 'Backend Exchanges Code Using client_secret',
                     desc: 'The backend calls /token, authenticating with HTTP Basic auth built from client_id:client_secret.',
-                    diagram: [{ from: 'backend', to: 'idp', label: 'POST /token — Basic client_id:client_secret' }],
-                    request: { label: 'Request — Backend to Auth Server', text:
+                    diagram: [{ from: 'backend', to: 'idp', label: 'POST /token , Basic client_id:client_secret' }],
+                    request: { label: 'Request , Backend to Auth Server', text:
 `POST /token HTTP/1.1
 Host: auth.example.com
 Authorization: Basic YmFja2VuZC13ZWItYXBwOnMzY3IzdC0xMjM0
@@ -748,17 +748,17 @@ grant_type=authorization_code
                 },
                 os4_attack: {
                     main: false, title: 'Attack: Leaked client_secret', attackMode: true,
-                    desc: 'client_secret values regularly leak — committed to a public repo, baked into a mobile build, or logged by an over-eager proxy.',
+                    desc: 'client_secret values regularly leak , committed to a public repo, baked into a mobile build, or logged by an over-eager proxy.',
                     diagram: [{ from: 'backend', to: 'idp', label: 'client_secret found in git history / logs', dashed: true, danger: true }],
-                    attack: { title: 'What could go wrong here', text: 'Whoever holds the secret can impersonate your backend at the token endpoint indefinitely — mint tokens, impersonate the client in consent screens, or (if scopes allow) request tokens for any user who completes the redirect.' },
-                    success: { title: 'Containment', text: 'Because it\'s a bearer secret with no built-in expiry, the only remedy after a leak is immediate rotation at the auth server and redeploying every service that holds it — there is no "detect and reject" mechanism like PKCE\'s per-request verifier.' },
+                    attack: { title: 'What could go wrong here', text: 'Whoever holds the secret can impersonate your backend at the token endpoint indefinitely , mint tokens, impersonate the client in consent screens, or (if scopes allow) request tokens for any user who completes the redirect.' },
+                    success: { title: 'Containment', text: 'Because it\'s a bearer secret with no built-in expiry, the only remedy after a leak is immediate rotation at the auth server and redeploying every service that holds it , there is no "detect and reject" mechanism like PKCE\'s per-request verifier.' },
                     choices: [{ id: 'os5', label: 'Continue', desc: 'Back to the main flow' }]
                 },
                 os5: {
                     main: true, title: 'Token Response',
-                    desc: 'The auth server returns tokens directly to the backend over a server-to-server channel — never touching the browser.',
-                    diagram: [{ from: 'idp', to: 'backend', label: '200 OK — access_token, refresh_token' }],
-                    response: { label: 'Response — Auth Server to Backend', text:
+                    desc: 'The auth server returns tokens directly to the backend over a server-to-server channel , never touching the browser.',
+                    diagram: [{ from: 'idp', to: 'backend', label: '200 OK , access_token, refresh_token' }],
+                    response: { label: 'Response , Auth Server to Backend', text:
 `HTTP/1.1 200 OK
 Content-Type: application/json
 
@@ -772,7 +772,7 @@ Content-Type: application/json
                 },
                 os6: {
                     main: true, title: 'Storing the Secret Long-Term',
-                    desc: 'client_secret is a static, long-lived credential — it must sit in a secrets manager, not an env file checked into source control.',
+                    desc: 'client_secret is a static, long-lived credential , it must sit in a secrets manager, not an env file checked into source control.',
                     diagram: [{ from: 'backend', to: 'backend', label: 'client_secret held in vault / KMS' }],
                     concept: { title: 'Symmetric secret, single point of failure', text: 'One value authenticates the client forever until rotated. That simplicity is also its weakness: whoever reads it can act as your app, and there is no way to tell a legitimate call from an attacker\'s replay.' },
                     choices: [{ id: 'os7', label: 'Continue', desc: 'Rotation practice' }]
@@ -781,14 +781,14 @@ Content-Type: application/json
                     main: true, title: 'Rotation and Blast Radius',
                     desc: 'Mature deployments rotate client_secret on a schedule and support two active secrets during rollover, so rotation doesn\'t cause an outage.',
                     diagram: [{ from: 'backend', to: 'idp', label: 'Register secret v2, retire v1 after rollover' }],
-                    attack: { title: 'What could go wrong here', text: 'Without dual-secret support, teams avoid rotating at all — turning a compromised secret into a permanent liability rather than a contained incident.' },
+                    attack: { title: 'What could go wrong here', text: 'Without dual-secret support, teams avoid rotating at all , turning a compromised secret into a permanent liability rather than a contained incident.' },
                     choices: [{ id: 'os8', label: 'Continue', desc: 'Compare to Private Key JWT' }]
                 },
                 os8: {
                     main: true, title: 'Client Secret vs. Private Key JWT',
                     desc: 'Client Secret is simple and widely supported, but it is one shared bearer value that must be transmitted on every token request.',
                     diagram: [{ from: 'backend', to: 'idp', label: 'Symmetric secret sent on every request' }],
-                    concept: { title: 'Trade-off summary', text: 'Client Secret: easy to implement, but the credential itself crosses the wire on every call and grants full impersonation if stolen. Private Key JWT: the private key never leaves your backend — only short-lived, self-expiring signed assertions are sent — at the cost of more setup (key pairs, JWKS hosting).' },
+                    concept: { title: 'Trade-off summary', text: 'Client Secret: easy to implement, but the credential itself crosses the wire on every call and grants full impersonation if stolen. Private Key JWT: the private key never leaves your backend , only short-lived, self-expiring signed assertions are sent , at the cost of more setup (key pairs, JWKS hosting).' },
                     choices: [], end: true
                 }
             };
@@ -799,7 +799,7 @@ Content-Type: application/json
                     main: true, title: 'Backend Builds a Signed client_assertion JWT',
                     desc: 'Instead of sending a shared secret, the backend signs a short-lived JWT with its own private key, asserting its own identity.',
                     diagram: [{ from: 'backend', to: 'backend', label: 'Build + sign JWT with private key (RS256)' }],
-                    request: { label: 'client_assertion JWT — Header + Payload', text:
+                    request: { label: 'client_assertion JWT , Header + Payload', text:
 `{ "alg": "RS256", "typ": "JWT", "kid": "key-2026-a" }
 .
 {
@@ -815,9 +815,9 @@ Content-Type: application/json
                 },
                 oj5: {
                     main: true, title: 'POST /token with client_assertion',
-                    desc: 'No client_secret is transmitted at all — the signed JWT itself is the proof of identity.',
-                    diagram: [{ from: 'backend', to: 'idp', label: 'POST /token — client_assertion=<JWT>' }],
-                    request: { label: 'Request — Backend to Auth Server', text:
+                    desc: 'No client_secret is transmitted at all , the signed JWT itself is the proof of identity.',
+                    diagram: [{ from: 'backend', to: 'idp', label: 'POST /token , client_assertion=<JWT>' }],
+                    request: { label: 'Request , Backend to Auth Server', text:
 `POST /token HTTP/1.1
 Host: auth.example.com
 Content-Type: application/x-www-form-urlencoded
@@ -837,7 +837,7 @@ grant_type=authorization_code
                     desc: 'An attacker who captures this exact request in transit (e.g. on a misconfigured internal proxy) tries to resend it later.',
                     diagram: [{ from: 'backend', to: 'idp', label: 'Same JWT resent minutes later', dashed: true, danger: true }],
                     attack: { title: 'What could go wrong here', text: 'If the auth server didn\'t check anything beyond the signature, the same assertion could be reused to obtain a fresh token exchange indefinitely.' },
-                    success: { title: 'Why it fails', text: 'The server rejects it on two grounds: "exp" has typically passed within minutes, and even within that window "jti" has already been recorded as used — a second use of the same jti is refused outright.' },
+                    success: { title: 'Why it fails', text: 'The server rejects it on two grounds: "exp" has typically passed within minutes, and even within that window "jti" has already been recorded as used , a second use of the same jti is refused outright.' },
                     choices: [{ id: 'oj6', label: 'Continue', desc: 'Back to the main flow' }]
                 },
                 oj6: {
@@ -851,14 +851,14 @@ grant_type=authorization_code
 4. Check aud == token endpoint URL
 5. Check exp has not passed
 6. Check jti has not been seen before` },
-                    concept: { title: 'Asymmetric = no shared secret', text: 'Only the backend ever holds the private key. The auth server only ever needs the public half — leaking the public key gives an attacker nothing usable.' },
+                    concept: { title: 'Asymmetric = no shared secret', text: 'Only the backend ever holds the private key. The auth server only ever needs the public half , leaking the public key gives an attacker nothing usable.' },
                     choices: [{ id: 'oj7', label: 'Continue', desc: 'Tokens are issued' }]
                 },
                 oj7: {
                     main: true, title: 'Token Response',
                     desc: 'With identity proven, the auth server issues tokens exactly as it would for the client_secret method.',
-                    diagram: [{ from: 'idp', to: 'backend', label: '200 OK — access_token, refresh_token' }],
-                    response: { label: 'Response — Auth Server to Backend', text:
+                    diagram: [{ from: 'idp', to: 'backend', label: '200 OK , access_token, refresh_token' }],
+                    response: { label: 'Response , Auth Server to Backend', text:
 `HTTP/1.1 200 OK
 Content-Type: application/json
 
@@ -868,12 +868,12 @@ Content-Type: application/json
   "token_type": "Bearer",
   "expires_in": 3600
 }` },
-                    concept: { title: 'Why regulated environments prefer this', text: 'Standards like FAPI (Financial-grade API) mandate private_key_jwt or mTLS specifically because no long-lived bearer secret ever crosses the network — compromise requires stealing a private key off disk, not intercepting one HTTP call.' },
+                    concept: { title: 'Why regulated environments prefer this', text: 'Standards like FAPI (Financial-grade API) mandate private_key_jwt or mTLS specifically because no long-lived bearer secret ever crosses the network , compromise requires stealing a private key off disk, not intercepting one HTTP call.' },
                     choices: [{ id: 'oj8', label: 'Continue', desc: 'Compare to Client Secret' }]
                 },
                 oj8: {
                     main: true, title: 'Private Key JWT vs. Client Secret',
-                    desc: 'More moving parts to operate — key pairs, rotation, a hosted JWKS endpoint — in exchange for meaningfully stronger guarantees.',
+                    desc: 'More moving parts to operate , key pairs, rotation, a hosted JWKS endpoint , in exchange for meaningfully stronger guarantees.',
                     diagram: [{ from: 'backend', to: 'backend', label: 'Private key never leaves this box' }],
                     concept: { title: 'Trade-off summary', text: 'Private Key JWT: nothing secret ever transmitted, each assertion is single-use and short-lived, ideal for regulated/high-assurance clients. Client Secret: simpler to stand up, but one leaked value grants full, undetectable impersonation until manually rotated.' },
                     choices: [], end: true
@@ -885,10 +885,10 @@ Content-Type: application/json
                     main: true, title: 'Choose the Backend Authentication Method',
                     desc: 'Your backend can authenticate itself to the token endpoint two ways: a shared client_secret, or a signed private_key_jwt assertion.',
                     diagram: [{ from: 'backend', to: 'idp', label: 'Two ways to prove backend identity' }],
-                    concept: { title: 'Confidential client', text: 'Both methods assume your redirect_uri lands on a route only your backend controls — that\'s what makes the client "confidential" and lets it hold long-lived credentials safely, unlike PKCE\'s public client.' },
+                    concept: { title: 'Confidential client', text: 'Both methods assume your redirect_uri lands on a route only your backend controls , that\'s what makes the client "confidential" and lets it hold long-lived credentials safely, unlike PKCE\'s public client.' },
                     choices: [
-                        { id: 'os1', label: 'Client Secret', desc: 'Symmetric — a shared secret string' },
-                        { id: 'oj1', label: 'Private Key JWT', desc: 'Asymmetric — a signed JWT assertion' }
+                        { id: 'os1', label: 'Client Secret', desc: 'Symmetric , a shared secret string' },
+                        { id: 'oj1', label: 'Private Key JWT', desc: 'Asymmetric , a signed JWT assertion' }
                     ]
                 },
                 ...clientSecret,
@@ -900,9 +900,9 @@ Content-Type: application/json
             return {
                 s1: {
                     main: true, title: 'User Clicks "Sign In" at the Service Provider',
-                    desc: 'The Service Provider (SP) — your app — needs to authenticate the user via the enterprise\'s Identity Provider (IdP), e.g. Okta or Entra ID.',
+                    desc: 'The Service Provider (SP) , your app , needs to authenticate the user via the enterprise\'s Identity Provider (IdP), e.g. Okta or Entra ID.',
                     diagram: [{ from: 'browser', to: 'browser', label: 'SP has no local credential for this user' }],
-                    concept: { title: 'Assertions, not tokens', text: 'SAML predates OAuth/OIDC. Instead of bearer tokens, the IdP issues a digitally-signed XML "assertion" — a document, not a token — vouching for who the user is.' },
+                    concept: { title: 'Assertions, not tokens', text: 'SAML predates OAuth/OIDC. Instead of bearer tokens, the IdP issues a digitally-signed XML "assertion" , a document, not a token , vouching for who the user is.' },
                     choices: [{ id: 's2', label: 'Begin SSO', desc: 'SP builds an AuthnRequest' }]
                 },
                 s2: {
@@ -922,19 +922,19 @@ Content-Type: application/json
                 },
                 s3: {
                     main: true, title: 'SP Redirects Browser to the IdP (HTTP-Redirect Binding)',
-                    desc: 'The encoded AuthnRequest travels as a query parameter — this is the "HTTP-Redirect binding," one of two standard SAML transports.',
+                    desc: 'The encoded AuthnRequest travels as a query parameter , this is the "HTTP-Redirect binding," one of two standard SAML transports.',
                     diagram: [{ from: 'browser', to: 'idp', label: 'GET /sso?SAMLRequest=<deflated+b64>&RelayState=...' }],
-                    request: { label: 'Request — Browser to IdP', text:
+                    request: { label: 'Request , Browser to IdP', text:
 `GET /sso?
   SAMLRequest=fVLLbtswELz3KwjeJfEhO7YFy0EaI6iBpDBspIdeaAptEaBIlaTs%2Bu9L2S6QQ3va2Z2Z3RmMz1c%3D
   &RelayState=%2Fdashboard HTTP/1.1
 Host: idp.corp.com` },
-                    concept: { title: 'RelayState', text: 'RelayState carries the "where was the user headed" context (e.g. /dashboard) through the round trip to the IdP and back — SAML\'s equivalent of OAuth\'s state, though not primarily a CSRF defence here.' },
+                    concept: { title: 'RelayState', text: 'RelayState carries the "where was the user headed" context (e.g. /dashboard) through the round trip to the IdP and back , SAML\'s equivalent of OAuth\'s state, though not primarily a CSRF defence here.' },
                     choices: [{ id: 's4', label: 'Continue to login', desc: 'User authenticates at the IdP' }]
                 },
                 s4: {
                     main: true, title: 'User Authenticates at the IdP',
-                    desc: 'The corporate IdP handles login — username/password, MFA, whatever policy the enterprise enforces — entirely on its own origin.',
+                    desc: 'The corporate IdP handles login , username/password, MFA, whatever policy the enterprise enforces , entirely on its own origin.',
                     diagram: [{ from: 'idp', to: 'idp', label: 'Corporate login + MFA policy' }],
                     choices: [
                         { id: 's5', label: 'Continue', desc: 'IdP builds a signed assertion' },
@@ -945,8 +945,8 @@ Host: idp.corp.com` },
                     main: false, title: 'Attack: IdP Phishing', attackMode: true,
                     desc: 'An attacker stands up a look-alike login page and lures the user there instead of the real IdP domain.',
                     diagram: [{ from: 'browser', to: 'idp', label: 'User redirected to attacker-controlled clone', dashed: true, danger: true }],
-                    attack: { title: 'What could go wrong here', text: 'SAML itself does not verify the user typed their password into the genuine IdP — that\'s a property of TLS, domain literacy, and phishing-resistant MFA (e.g. WebAuthn), not the SAML protocol.' },
-                    success: { title: 'Mitigation layer', text: 'This is why enterprises pair SAML SSO with phishing-resistant authenticators at the IdP — SAML\'s job starts only after the IdP is confident about who the user is.' },
+                    attack: { title: 'What could go wrong here', text: 'SAML itself does not verify the user typed their password into the genuine IdP , that\'s a property of TLS, domain literacy, and phishing-resistant MFA (e.g. WebAuthn), not the SAML protocol.' },
+                    success: { title: 'Mitigation layer', text: 'This is why enterprises pair SAML SSO with phishing-resistant authenticators at the IdP , SAML\'s job starts only after the IdP is confident about who the user is.' },
                     choices: [{ id: 's5', label: 'Continue', desc: 'Back to the main flow' }]
                 },
                 s5: {
@@ -970,7 +970,7 @@ Host: idp.corp.com` },
     <saml:Attribute Name="department"><saml:AttributeValue>Engineering</saml:AttributeValue></saml:Attribute>
   </saml:AttributeStatement>
 </saml:Assertion>` },
-                    concept: { title: 'NotBefore / NotOnOrAfter / Audience', text: 'These three constraints are SAML\'s equivalent of a JWT\'s iat/exp/aud — a tight validity window and a named recipient, so a captured assertion can\'t be replayed later or against a different SP.' },
+                    concept: { title: 'NotBefore / NotOnOrAfter / Audience', text: 'These three constraints are SAML\'s equivalent of a JWT\'s iat/exp/aud , a tight validity window and a named recipient, so a captured assertion can\'t be replayed later or against a different SP.' },
                     choices: [{ id: 's6', label: 'Continue', desc: 'Post the assertion back to the SP' }]
                 },
                 s6: {
@@ -983,7 +983,7 @@ Host: idp.corp.com` },
   <input type="hidden" name="RelayState" value="/dashboard" />
 </form>
 <script>document.forms[0].submit()<\/script>` },
-                    concept: { title: 'Why POST, not redirect', text: 'A full signed assertion is far larger than fits comfortably in a URL, and unlike a GET redirect it won\'t get cached or logged in server access logs by default — hence the HTTP-POST binding for the response leg.' },
+                    concept: { title: 'Why POST, not redirect', text: 'A full signed assertion is far larger than fits comfortably in a URL, and unlike a GET redirect it won\'t get cached or logged in server access logs by default , hence the HTTP-POST binding for the response leg.' },
                     choices: [{ id: 's7', label: 'Continue', desc: 'SP validates the assertion' }]
                 },
                 s7: {
@@ -1006,31 +1006,31 @@ Host: idp.corp.com` },
                     desc: 'An attacker takes a genuinely signed assertion and restructures the surrounding XML so the *parser* reads a forged, attacker-controlled assertion while the *signature check* still validates the original, unmoved element.',
                     diagram: [{ from: 'browser', to: 'backend', label: 'Duplicated/nested XML nodes confuse the parser', dashed: true, danger: true }],
                     attack: { title: 'What could go wrong here', text: 'A naive validator that finds "a validly signed assertion exists somewhere in this document" and separately "reads whichever assertion node appears first" can be tricked into trusting attacker-supplied claims (e.g. a different NameID or elevated attributes).' },
-                    success: { title: 'Mitigation', text: 'Correct implementations resolve the signed element by its Reference URI inside the signature itself — not by document order — so validation and interpretation always point at the exact same node. This is why hand-rolled SAML parsing is strongly discouraged in favour of vetted libraries.' },
+                    success: { title: 'Mitigation', text: 'Correct implementations resolve the signed element by its Reference URI inside the signature itself , not by document order , so validation and interpretation always point at the exact same node. This is why hand-rolled SAML parsing is strongly discouraged in favour of vetted libraries.' },
                     choices: [{ id: 's8', label: 'Continue', desc: 'Back to the main flow' }]
                 },
                 s8: {
                     main: true, title: 'SP Creates a Local Session',
-                    desc: 'With the assertion validated, the SP extracts the NameID and attributes, then sets its own session cookie for the app — SAML\'s job ends here.',
+                    desc: 'With the assertion validated, the SP extracts the NameID and attributes, then sets its own session cookie for the app , SAML\'s job ends here.',
                     diagram: [{ from: 'backend', to: 'browser', label: 'Set-Cookie: sp_session=... (SP-issued)' }],
-                    response: { label: 'Response — SP to Browser', text:
+                    response: { label: 'Response , SP to Browser', text:
 `HTTP/1.1 302 Found
 Location: /dashboard
 Set-Cookie: sp_session=8f3a2c1e...; HttpOnly; Secure; SameSite=Lax` },
                     choices: [{ id: 's9', label: 'Continue', desc: 'No refresh token in SAML' }]
                 },
                 s9: {
-                    main: true, title: 'Session Lifetime — No Refresh Token in SAML',
+                    main: true, title: 'Session Lifetime , No Refresh Token in SAML',
                     desc: 'SAML has no equivalent of an OAuth refresh token. Session longevity is entirely a property of the SP\'s own cookie and, separately, the IdP\'s own SSO session.',
                     diagram: [{ from: 'backend', to: 'backend', label: 'SP session lifetime set independently of IdP' }],
-                    concept: { title: 'Two independent session clocks', text: 'When the SP session expires, the user is sent back through steps 1-8 — if the IdP still has an active SSO session, this is often invisible (silent re-auth); if not, the user sees a fresh login prompt.' },
+                    concept: { title: 'Two independent session clocks', text: 'When the SP session expires, the user is sent back through steps 1-8 , if the IdP still has an active SSO session, this is often invisible (silent re-auth); if not, the user sees a fresh login prompt.' },
                     choices: [{ id: 's10', label: 'Continue', desc: 'Compare SAML to OAuth/OIDC' }]
                 },
                 s10: {
                     main: true, title: 'SAML vs. OAuth 2.0 / OIDC',
-                    desc: 'Both solve "trust an external party\'s claim about a user\'s identity" — the mechanics differ substantially.',
+                    desc: 'Both solve "trust an external party\'s claim about a user\'s identity" , the mechanics differ substantially.',
                     diagram: [{ from: 'idp', to: 'backend', label: 'XML + XML-DSig vs. JSON + JWS' }],
-                    concept: { title: 'Trade-off summary', text: 'SAML: XML-based, enterprise-entrenched, no built-in token refresh, heavier payloads, strong for browser-based enterprise SSO. OAuth/OIDC: JSON-based, built for APIs and mobile as much as browsers, has a native refresh-token model, and is the default choice for anything greenfield today — SAML mainly persists because large enterprises already standardized on it.' },
+                    concept: { title: 'Trade-off summary', text: 'SAML: XML-based, enterprise-entrenched, no built-in token refresh, heavier payloads, strong for browser-based enterprise SSO. OAuth/OIDC: JSON-based, built for APIs and mobile as much as browsers, has a native refresh-token model, and is the default choice for anything greenfield today , SAML mainly persists because large enterprises already standardized on it.' },
                     choices: [], end: true
                 }
             };
@@ -1088,9 +1088,9 @@ Set-Cookie: sp_session=8f3a2c1e...; HttpOnly; Secure; SameSite=Lax` },
 
             if (step.request) html += block('request', step.request.label, step.request.text);
             if (step.response) html += block('response', step.response.label, step.response.text);
-            if (step.concept) html += `<div class="key-concept"><h4>Key concept — ${step.concept.title}</h4><p>${step.concept.text}</p></div>`;
-            if (step.attack) html += `<div class="attack-scenario"><h4>Attack scenario — ${step.attack.title}</h4><p>${step.attack.text}</p></div>`;
-            if (step.success) html += `<div class="success-scenario"><h4>Why it doesn't work — ${step.success.title}</h4><p>${step.success.text}</p></div>`;
+            if (step.concept) html += `<div class="key-concept"><h4>Key concept , ${step.concept.title}</h4><p>${step.concept.text}</p></div>`;
+            if (step.attack) html += `<div class="attack-scenario"><h4>Attack scenario , ${step.attack.title}</h4><p>${step.attack.text}</p></div>`;
+            if (step.success) html += `<div class="success-scenario"><h4>Why it doesn't work , ${step.success.title}</h4><p>${step.success.text}</p></div>`;
 
             if (step.choices && step.choices.length > 0) {
                 html += `<div class="choices-label">What happens next?</div><div class="choices">`;
@@ -1102,7 +1102,7 @@ Set-Cookie: sp_session=8f3a2c1e...; HttpOnly; Secure; SameSite=Lax` },
                 });
                 html += `</div>`;
             } else if (step.end) {
-                html += `<div class="end-badge">End of flow — well done</div>`;
+                html += `<div class="end-badge">End of flow , well done</div>`;
             }
 
             html += `</div>`;
