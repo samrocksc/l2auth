@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+    <head>
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="../assets/pizza-icon.svg" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Auth Security Parameters - Learn to Auth!</title>
+        <link rel="stylesheet" href="../styles/main.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link
+            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+            rel="stylesheet"
+            media="print" onload="this.media='all'"
+        />
+        <script type="module" src="../components/font-loader.js"></script>
+        <script>
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        </script>
+        <script type="module" src="../components/theme-toggle.js"></script>
+        <script type="module" src="../components/tabs-component.js"></script>
+        <script type="module" src="../components/footer-component.js"></script>
+        <script type="module" src="../components/header-component.js"></script>
+        <style>
+            .reveal-group {
+                margin: 2rem 0;
+            }
+            .reveal-group h3 {
+                margin-bottom: 0.5rem;
+            }
+            .reveal-tabs {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-bottom: 1rem;
+            }
+            .reveal-tab {
+                font-family: var(--font-primary);
+                font-size: 0.75rem;
+                background-color: var(--bg-primary);
+                color: var(--text-primary);
+                border: 2px solid var(--accent-color);
+                padding: 0.5rem 1rem;
+                cursor: pointer;
+                box-shadow: 4px 4px 0 var(--shadow-color);
+                transition: all 0.2s;
+            }
+            .reveal-tab:hover {
+                transform: translate(2px, 2px);
+                box-shadow: 2px 2px 0 var(--shadow-color);
+            }
+            .reveal-tab.active {
+                background-color: var(--accent-color);
+                color: var(--bg-primary);
+                box-shadow: inset 2px 2px 0 var(--shadow-color);
+            }
+            .reveal-panel {
+                display: none;
+                border: 2px solid var(--border-color);
+                background-color: var(--bg-secondary);
+                padding: 1.25rem;
+                font-family: var(--font-sans);
+            }
+            .reveal-panel.active {
+                display: block;
+            }
+            .reveal-panel .param-tag {
+                font-family: var(--font-primary);
+                font-size: 0.7rem;
+                color: var(--highlight);
+                display: block;
+                margin-bottom: 0.75rem;
+            }
+            .reveal-panel ul {
+                margin: 0.75rem 0 0 1.25rem;
+                padding: 0;
+            }
+            .reveal-panel li {
+                margin-bottom: 0.35rem;
+            }
+            .cheat-sheet {
+                border: 2px solid var(--accent-color);
+                background-color: var(--bg-secondary);
+                padding: 1.25rem 1.5rem;
+                margin: 1.5rem 0 2rem;
+                font-family: var(--font-sans);
+            }
+            .cheat-sheet h3 {
+                margin-top: 0;
+            }
+            .chain-note {
+                border-left: 4px solid var(--accent-color);
+                background-color: var(--bg-secondary);
+                padding: 1rem 1.25rem;
+                margin: 2rem 0;
+                font-family: var(--font-sans);
+            }
+            .chain-note code {
+                color: var(--accent-color);
+            }
+            .threat {
+                color: var(--highlight);
+                font-weight: 600;
+            }
+        </style>
+    </head>
+    <body>
+        <font-loader>
+            <div class="main-wrapper">
+                <site-header></site-header>
+
+                <main>
+                    <div class="content-container">
+                        <section>
+                            <h2>Auth Security Parameters Cheat Sheet</h2>
+                            <p>
+                                Modern authentication flows (OAuth 2.0 and OIDC) don't just send usernames and passwords. 
+                                They use specific parameters to prove that the request is legitimate and that the 
+                                response hasn't been tampered with. This page maps these technical parameters to the 
+                                security threats they are designed to mitigate.
+                            </p>
+
+                            <div class="cheat-sheet">
+                                <h3>The Mapping (one glance)</h3>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Threat Mitigated</th>
+                                            <th>Applicable Flow</th>
+                                            <th>Core Concept</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>nonce</strong></td>
+                                            <td><span class="threat">Token Replay</span></td>
+                                            <td>Implicit Flow</td>
+                                            <td>Session Binding</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>state</strong></td>
+                                            <td><span class="threat">CSRF</span></td>
+                                            <td>General OAuth 2.0</td>
+                                            <td>Request Validation</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>code_challenge</strong></td>
+                                            <td><span class="threat">Code Interception</span></td>
+                                            <td>Auth Code Flow</td>
+                                            <td>PKCE (Public Clients)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>code_verifier</strong></td>
+                                            <td><span class="threat">Code Interception</span></td>
+                                            <td>Auth Code Flow</td>
+                                            <td>PKCE (Secret Proof)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="reveal-group" id="parameter-details">
+                                <h3>Deep Dive: How they work</h3>
+                                <div class="reveal-tabs" role="tablist">
+                                    <button class="reveal-tab active" data-group="parameter-details" data-panel="p-nonce" role="tab">nonce</button>
+                                    <button class="reveal-tab" data-group="parameter-details" data-panel="p-state" role="tab">state</button>
+                                    <button class="reveal-tab" data-group="parameter-details" data-panel="p-pkce" role="tab">PKCE</button>
+                                </div>
+                                <div class="reveal-panel active" id="p-nonce" role="tabpanel">
+                                    <span class="param-tag">&gt; NONCE (Number used once)</span>
+                                    The client generates a random string and sends it in the request. The auth server embeds this 
+                                    exact string in the resulting ID Token. 
+                                    <ul>
+                                        <li><strong>The Win:</strong> If an attacker intercepts a token and tries to "replay" it later, 
+                                        the client checks the nonce. If it doesn't match the current session's nonce, the token is rejected.</li>
+                                        <li><strong>Flow:</strong> Primary for the <em>Implicit Flow</em>.</li>
+                                    </ul>
+                                </div>
+                                <div class="reveal-panel" id="p-state" role="tabpanel">
+                                    <span class="param-tag">&gt; STATE</span>
+                                    A unique string generated by the client and sent to the auth server, which must be 
+                                    returned exactly as-is in the redirect response.
+                                    <ul>
+                                        <li><strong>The Win:</strong> Prevents <span class="threat">Cross-Site Request Forgery (CSRF)</span>. 
+                                        It ensures the response coming back to the callback URL was actually initiated 
+                                        by the user in the current session, not an attacker injecting a pre-captured response.</li>
+                                        <li><strong>Flow:</strong> Standard across all OAuth 2.0 flows.</li>
+                                    </ul>
+                                </div>
+                                <div class="reveal-panel" id="p-pkce" role="tabpanel">
+                                    <span class="param-tag">&gt; PKCE (Proof Key for Code Exchange)</span>
+                                    PKCE replaces the need for a Client Secret in public clients (like SPAs or Mobile Apps) 
+                                    where a secret cannot be safely stored.
+                                    <ul>
+                                        <li><strong>The Win:</strong> Prevents <span class="threat">Authorization Code Interception</span>. 
+                                        Even if an attacker steals the <code>code</code> from the URL, they cannot exchange it 
+                                        for a token because they lack the original secret used to create the challenge.</li>
+                                        <li><strong>Flow:</strong> The gold standard for <em>Authorization Code Flow</em>.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="chain-note">
+                                <strong>The PKCE Chain:</strong>
+                                The client creates a secret <code>code_verifier</code>, hashes it into a 
+                                <code>code_challenge</code>, and sends the challenge first. Later, it sends the 
+                                original verifier. The server hashes the verifier and checks if it matches the original challenge.
+                            </div>
+
+                        </section>
+                    </div>
+                </main>
+
+                <site-footer></site-footer>
+            </div>
+        </font-loader>
+        <script>
+            document.querySelectorAll(".reveal-tab").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const group = document.getElementById(btn.dataset.group);
+                    group.querySelectorAll(".reveal-tab").forEach((b) => b.classList.remove("active"));
+                    group.querySelectorAll(".reveal-panel").forEach((p) => p.classList.remove("active"));
+                    btn.classList.add("active");
+                    document.getElementById(btn.dataset.panel).classList.add("active");
+                });
+            });
+        </script>
+    </body>
+</html>
