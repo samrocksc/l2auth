@@ -1,54 +1,153 @@
-const CACHE_NAME = "l2auth-v2";
-const STATIC_CACHE = "l2auth-static-v2";
+const CACHE_VERSION = "v9";
+const SHELL_CACHE = `l2auth-shell-${CACHE_VERSION}`;
+const RUNTIME_CACHE = `l2auth-runtime-${CACHE_VERSION}`;
 
-const STATIC_ASSETS = [
-  "/styles/main.css",
-  "/scripts/main.js",
-  "/manifest.json",
-  "/assets/pizza-icon.svg",
+const PRECACHE = [
+  "./",
+  "./index.html",
+  "./basic-auth.html",
+  "./jwt.html",
+  "./oauth2.html",
+  "./oidc.html",
+  "./demystifying-tokens.html",
+  "./concepts/index.html",
+  "./concepts/auth-n-z.html",
+  "./concepts/sca.html",
+  "./concepts/bcrypt-password-matching.html",
+  "./concepts/glossary.html",
+  "./concepts/claims-reference.html",
+  "./concepts/id-token-vs-access-token.html",
+  "./concepts/well-known.html",
+  "./concepts/jwks.html",
+  "./offline.html",
+  "./404.html",
+  "./styles/main.css",
+  "./scripts/theme-init.js",
+  "./scripts/site.js",
+  "./scripts/site-config.js",
+  "./scripts/header-fallback.js",
+  "./components/lazy-wc-markdown.js",
+  "./components/vendor/wc-markdown.js",
+  "./manifest.json",
+  "./assets/pizza-icon.svg",
+  "./assets/diagrams/oauth2-authorization-code.svg",
+  "./assets/diagrams/oidc-token-flow.svg",
+  "./assets/diagrams/refresh-token-flow.svg",
+  "./assets/diagrams/jwt-authentication-flow.svg",
+  "./assets/diagrams/discovery-bootstrapping.svg",
+  "./assets/diagrams/id-token-vs-access-token.svg",
+  "./content/index.md",
+  "./content/basic-auth.md",
+  "./content/jwt.md",
+  "./content/oauth2.md",
+  "./content/oidc.md",
+  "./content/demystifying-tokens.md",
+  "./content/concepts/index.md",
+  "./content/concepts/auth-n-z.md",
+  "./content/concepts/sca.md",
+  "./content/concepts/bcrypt-password-matching.md",
+  "./content/concepts/glossary.md",
+  "./content/concepts/claims-reference.md",
+  "./content/concepts/id-token-vs-access-token.md",
+  "./content/concepts/well-known.md",
+  "./content/concepts/jwks.md",
 ];
 
-// Install: cache static assets only (not HTML)
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(STATIC_CACHE).then((cache) => cache.addAll(STATIC_ASSETS))
+    caches.open(SHELL_CACHE).then((cache) => cache.addAll(PRECACHE)),
   );
   self.skipWaiting();
 });
 
-// Activate: clean old caches, take control immediately
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    Promise.all([
-      caches.keys().then((keys) =>
-        Promise.all(keys.filter((k) => k !== CACHE_NAME && k !== STATIC_CACHE).map((k) => caches.delete(k)))
-      ),
-      self.clients.claim(),
-    ])
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) => key !== SHELL_CACHE && key !== RUNTIME_CACHE)
+            .map((key) => caches.delete(key)),
+        ),
+      )
+      .then(() => self.clients.claim()),
   );
 });
 
-// Fetch: network-first for HTML, cache-first for static assets
-self.addEventListener("fetch", (event) => {
-  const url = new URL(event.request.url);
-  const isHTML = url.pathname === "/" || url.pathname.endsWith(".html");
+function isCacheableResponse(response) {
+  return response?.ok && response.type !== "opaque";
+}
 
-  if (isHTML) {
-    // Network-first: always try the server, fall back to cache
-    event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-          return response;
-        })
-        .catch(() => caches.match(event.request))
-    );
-  } else if (STATIC_ASSETS.includes(url.pathname)) {
-    // Cache-first for known static assets
-    event.respondWith(
-      caches.match(event.request).then((cached) => cached || fetch(event.request))
-    );
+async function networkFirst(request) {
+  try {
+    const response = await fetch(request);
+    if (isCacheableResponse(response)) {
+      const cache = await caches.open(SHELL_CACHE);
+      cache.put(request, response.clone());
+    }
+    return response;
+  } catch {
+    const cached = await caches.match(request);
+    if (cached) {
+      return cached;
+    }
+    return caches.match("./offline.html");
   }
-  // Everything else: pass through (fonts, unpkg CDN, etc.)
+}
+
+async function cacheFirst(request) {
+  const cached = await caches.match(request);
+  if (cached) {
+    return cached;
+  }
+
+  const response = await fetch(request);
+  if (isCacheableResponse(response)) {
+    const cache = await caches.open(SHELL_CACHE);
+    cache.put(request, response.clone());
+  }
+  return response;
+}
+
+async function staleWhileRevalidate(request) {
+  const cache = await caches.open(RUNTIME_CACHE);
+  const cached = await cache.match(request);
+
+  const network = fetch(request)
+    .then((response) => {
+      if (isCacheableResponse(response)) {
+        cache.put(request, response.clone());
+      }
+      return response;
+    })
+    .catch(() => cached);
+
+  return cached || network;
+}
+
+self.addEventListener("fetch", (event) => {
+  const { request } = event;
+
+  if (request.method !== "GET") {
+    return;
+  }
+
+  const url = new URL(request.url);
+
+  if (request.mode === "navigate") {
+    event.respondWith(networkFirst(request));
+    return;
+  }
+
+  if (url.origin === self.location.origin) {
+    event.respondWith(cacheFirst(request));
+    return;
+  }
+
+  if (url.hostname === "www.googletagmanager.com") {
+    return;
+  }
+
+  event.respondWith(staleWhileRevalidate(request));
 });

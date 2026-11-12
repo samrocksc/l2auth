@@ -1,63 +1,52 @@
-# Makefile for Auth Systems Primer Development
+# Development commands for Learn to Auth!
 
-# Default target
-.PHONY: serve help format lint check-format check-lint
-
-# Port for development server
 PORT ?= 8080
+BIN := ./node_modules/.bin
 
-# Help command
+.PHONY: help install serve format lint check check-html check-links check-all diagrams
+
 help:
-	@echo "Auth Systems Primer - Development Commands"
+	@echo "Learn to Auth! - Development Commands"
 	@echo ""
-	@echo "make serve         - Start development server on port 8080"
+	@echo "make install       - Install development dependencies"
+	@echo "make serve         - Serve the site on port $(PORT)"
 	@echo "make format        - Format code with Biome"
 	@echo "make lint          - Lint code with Biome"
-	@echo "make check-format  - Check if code is formatted with Biome"
-	@echo "make check-lint    - Check for linting issues with Biome"
-	@echo "make help          - Show this help message"
+	@echo "make check         - Run Biome checks"
+	@echo "make check-html    - Validate HTML"
+	@echo "make check-links   - Check local links and service-worker paths"
+	@echo "make check-all     - Run every check"
+	@echo "make diagrams      - Render diagrams/*.excalidraw to assets/diagrams/*.svg"
 
-# Serve files for development using Python
+install:
+	npm install
+
 serve:
-	@echo "Starting development server on http://localhost:$(PORT)"
-	@echo "Press Ctrl+C to stop"
-	@python3 -m http.server $(PORT) || echo "Python3 not available. Try make serve-node"
+	@echo "Serving on http://localhost:$(PORT)"
+	@python3 -m http.server $(PORT)
 
-# Alternative serve option using Node.js
-serve-node:
-	@echo "Starting development server on http://localhost:$(PORT)"
-	@echo "Press Ctrl+C to stop"
-	@if ! command -v npx &> /dev/null; then \
-		echo "npx not found. Please install Node.js"; \
+format: require-node-modules
+	@$(BIN)/biome format --write .
+
+lint: require-node-modules
+	@$(BIN)/biome lint .
+
+check: require-node-modules
+	@$(BIN)/biome check .
+
+check-html: require-node-modules
+	@$(BIN)/html-validate "**/*.html"
+
+check-links:
+	@node scripts/check-links.mjs
+
+check-all: check check-html check-links
+
+diagrams: require-node-modules
+	@node scripts/render-diagrams.mjs
+
+require-node-modules:
+	@if [ ! -x "$(BIN)/biome" ]; then \
+		echo "Development dependencies are missing. Run: make install"; \
 		exit 1; \
 	fi
-	@npx http-server -p $(PORT) || echo "http-server not available. Install with: npm install -g http-server"
-
-# Biome commands
-format:
-	@if ! command -v npx &> /dev/null; then \
-		echo "npx not found. Please install Node.js"; \
-		exit 1; \
-	fi
-	@npx @biomejs/biome format --write .
-
-lint:
-	@if ! command -v npx &> /dev/null; then \
-		echo "npx not found. Please install Node.js"; \
-		exit 1; \
-	fi
-	@npx @biomejs/biome lint .
-
-check-format:
-	@if ! command -v npx &> /dev/null; then \
-		echo "npx not found. Please install Node.js"; \
-		exit 1; \
-	fi
-	@npx @biomejs/biome format --check .
-
-check-lint:
-	@if ! command -v npx &> /dev/null; then \
-		echo "npx not found. Please install Node.js"; \
-		exit 1; \
-	fi
-	@npx @biomejs/biome lint --diagnostic-level=warn .

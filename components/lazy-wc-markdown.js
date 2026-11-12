@@ -1,82 +1,79 @@
-import { WCMarkdown } from "./wc-markdown.js";
+import { WCMarkdown } from "./vendor/wc-markdown.js";
 
 /**
- * lazy-wc-markdown
+ * Renders markdown either from an inline body or from a `src` attribute.
  *
- * Prevents FOUC when loading markdown content.
- *
- * Usage - put raw markdown inside the element:
+ * Inline:
  *   <lazy-wc-markdown>
- *   ## Hello World
- *   Some **markdown** here.
+ *   ## Hello
  *   </lazy-wc-markdown>
  *
- * Renders markdown → HTML using the same marked library as wc-markdown,
- * polls until content is rendered, then sets [rendered] attribute →
- * CSS reveals with animation.
+ * External:
+ *   <lazy-wc-markdown src="../content/example.md"></lazy-wc-markdown>
+ *
+ * The rendered HTML is placed in light DOM so the site theme applies to it.
  */
 class LazyWcMarkdown extends HTMLElement {
+  static get observedAttributes() {
+    return ["src"];
+  }
+
   constructor() {
     super();
-    this._revealed = false;
-    this._pollInterval = null;
+    this._rendered = false;
   }
 
   connectedCallback() {
-    this._startPolling();
+    if (this._rendered) {
+      return;
+    }
+    this._render();
   }
 
-  disconnectedCallback() {
-    this._stopPolling();
-  }
-
-  _startPolling() {
-    const MAX_TRIES = 200; // 200 * 50ms = 10s
-    let tries = 0;
-
-    this._pollInterval = setInterval(() => {
-      tries++;
-
-      const raw = this.textContent;
-      if (raw.trim().length > 0) {
-        const dedented = WCMarkdown.dedentText(raw);
-        const prepared = WCMarkdown.prepare(dedented);
-        const html = WCMarkdown.toHtml(prepared);
-        if (html.trim().length > 0) {
-          this._reveal(html);
-          return;
-        }
-
-        if (tries >= MAX_TRIES) {
-          console.warn(
-            "lazy-wc-markdown: rendering timed out, showing raw content"
-          );
-          this._reveal(this.textContent);
-        }
-      }
-    }, 50);
-  }
-
-  _stopPolling() {
-    if (this._pollInterval) {
-      clearInterval(this._pollInterval);
-      this._pollInterval = null;
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (
+      name === "src" &&
+      oldValue !== newValue &&
+      this.isConnected &&
+      oldValue
+    ) {
+      this._rendered = false;
+      this._render();
     }
   }
 
-  _reveal(html) {
-    if (this._revealed) return;
-    this._revealed = true;
-    this._stopPolling();
+  async _render() {
+    this.setAttribute("aria-busy", "true");
 
-    // Render to light DOM (not shadow DOM) to avoid theme conflicts
-    this.innerHTML = html;
+    const src = this.getAttribute("src");
+    let markdown = this.textContent;
 
-    // Apply syntax highlighting via Prism
+    if (src) {
+      try {
+        const response = await fetch(new URL(src, document.baseURI));
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        markdown = await response.text();
+      } catch (error) {
+        console.error(`lazy-wc-markdown: failed to load ${src}`, error);
+        const root = document.documentElement.dataset.root || "./";
+        this.innerHTML =
+          "<p>Sorry, this page could not be loaded. Try refreshing or " +
+          `<a href="${root}index.html">returning home</a>.</p>`;
+        this.removeAttribute("aria-busy");
+        this.setAttribute("rendered", "");
+        return;
+      }
+    }
+
+    const dedented = WCMarkdown.dedentText(markdown);
+    const prepared = WCMarkdown.prepare(dedented);
+    this.innerHTML = WCMarkdown.toHtml(prepared);
     WCMarkdown.highlight(this);
-
-    // Mark as rendered for CSS transitions
+    this.removeAttribute("aria-busy");
     this.setAttribute("rendered", "");
+    this._rendered = true;
   }
 }
 

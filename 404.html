@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page Not Found - Learn to Auth!</title>
+    <meta name="description" content="The requested page could not be found." />
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        font-family: "IBM Plex Mono", monospace;
+        background: #ffffff;
+        color: #000000;
+        padding: 2rem;
+      }
+      main {
+        max-width: 32rem;
+        border: 1px solid #cccccc;
+        padding: 2rem;
+        background: #f0f0f0;
+      }
+      h1 {
+        font-family: "Press Start 2P", cursive;
+        color: #ff00ff;
+        font-size: 1.1rem;
+        line-height: 1.5;
+      }
+      a {
+        color: #ff00ff;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #111111;
+          color: #ffffff;
+        }
+        main {
+          background: #222222;
+          border-color: #444444;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Page not found</h1>
+      <p>The page you requested does not exist.</p>
+      <p><a class="home-link" href="./">Go to the homepage</a></p>
+    </main>
+    <script>
+      const match = window.location.pathname.match(/^(.*?\/l2auth\/)/);
+      const fallback = match ? match[1] : "/";
+      navigator.serviceWorker
+        ?.getRegistration()
+        .then((registration) => {
+          document.querySelector(".home-link").href = registration
+            ? registration.scope
+            : fallback;
+        })
+        .catch(() => {
+          document.querySelector(".home-link").href = fallback;
+        });
+    </script>
+  </body>
+</html>

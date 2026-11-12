@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://samrocksc.github.io/l2auth/sitemap.xml

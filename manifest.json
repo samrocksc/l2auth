@@ -1,18 +1,32 @@
 {
+  "id": "./",
   "name": "Learn to Auth!",
   "short_name": "L2Auth",
-  "description": "A personal knowledge site for learning CIAM (Customer Identity and Access Management) principles through interactive guides.",
-  "start_url": "/",
+  "description": "A beginner-friendly guide to authentication and Customer Identity and Access Management (CIAM).",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ff00ff",
   "icons": [
     {
-      "src": "/assets/pizza-icon.svg",
+      "src": "./assets/pizza-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["education", "reference"]
+  "categories": ["education", "reference"],
+  "shortcuts": [
+    {
+      "name": "Concepts",
+      "url": "./concepts/index.html"
+    },
+    {
+      "name": "OpenID Connect",
+      "url": "./oidc.html"
+    }
+  ]
 }

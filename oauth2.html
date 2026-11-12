@@ -1,275 +1,46 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-root="./">
   <head>
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="icon" type="image/svg+xml" href="/assets/pizza-icon.svg" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>OAuth 2.0 - Learn to Auth!</title>
+    <meta
+      name="description"
+      content="OAuth 2.0 roles, the authorization code flow with PKCE, grant types, and token usage."
+    />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="assets/pizza-icon.svg" />
     <link rel="stylesheet" href="styles/main.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="preload"
-      href="https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK0nS.ttf"
-      as="font"
-      type="font/ttf"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-      as="style"
-      onload="
-        this.onload = null;
-        this.rel = 'stylesheet';
-      "
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Press+Start+2P&display=swap"
       rel="stylesheet"
-      media="print"
-      onload="this.media = 'all'"
     />
-    <script>
-      // GTM - must be as early as possible in <head>
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-MDJ26VZ');
-    </script>
-
-    <script type="module" src="components/font-loader.js"></script>
-        <script type="module" src="components/lazy-wc-markdown.js"></script>
-    <script>
-      // Apply theme immediately to prevent flicker
-      const savedTheme = localStorage.getItem("theme") || "light";
-      document.documentElement.setAttribute("data-theme", savedTheme);
-    </script>
-    <script type="module" src="components/theme-toggle.js"></script>
-    <script type="module" src="components/tabs-component.js"></script>
-    <script type="module" src="components/footer-component.js"></script>
-    <script type="module" src="components/header-component.js"></script>
-</head>
+    <script src="scripts/site-config.js"></script>
+    <script src="scripts/theme-init.js"></script>
+    <script type="module" src="scripts/site.js"></script>
+  </head>
   <body>
-        <noscript>
-            <iframe
-                src="https://www.googletagmanager.com/ns.html?id=GTM-MDJ26VZ"
-                height="0"
-                width="0"
-                style="display:none;visibility:hidden"
-            ></iframe>
-        </noscript>
-    <font-loader>
-      <div class="main-wrapper">
-        <site-header></site-header>
-
-        <main>
-          <div class="content-container">
-            <section>
-              <h2>OAuth 2.0</h2>
-              <p>
-                OAuth 2.0 is an authorization framework that allows third-party
-                applications to obtain limited access to HTTP services. At it's
-                core it's a linear system that ensure s that two systems are
-                validating access to resources in a secure way. It defines a
-                process for resource owners to authorize third-party access to
-                their server resources without sharing their credentials. OAuth
-                2.0 is widely used for securing APIs and enabling single sign-on
-                (SSO) across different applications.
-              </p>
-
-              <h3>Key Roles</h3>
-              <ul>
-                <li>
-                  <strong>Resource Owner</strong>: User who authorizes access
-                </li>
-                <li><strong>Client</strong>: Application requesting access</li>
-                <li>
-                  <strong>Resource Server</strong>: API server hosting protected
-                  resources
-                </li>
-                <li>
-                  <strong>Authorization Server</strong>: Server that
-                  authenticates resource owner and issues tokens
-                </li>
-              </ul>
-
-              <h3>Authorization Code Flow</h3>
-              <div class="diagram">
-                Browser → Client App → Authorization Server → Browser → Client
-                App → Resource Server
-              </div>
-
-              <ol>
-                <li>User accesses client application</li>
-                <li>Client redirects to authorization server</li>
-                <li>User authenticates and grants permission</li>
-                <li>Authorization server returns authorization code</li>
-                <li>Client exchanges code for access token</li>
-                <li>Client accesses protected resources using access token</li>
-              </ol>
-
-              <h3>Access Token Example</h3>
-              <div class="code-block">
-                Authorization: Bearer MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3
-              </div>
-
-              <h3>Grant Types</h3>
-              <ul>
-                <li>
-                  <strong>Authorization Code</strong>: Standard flow for web
-                  apps
-                </li>
-                <li>
-                  <strong>Implicit</strong>: Simplified flow for SPAs
-                  (deprecated)
-                </li>
-                <li>
-                  <strong>Client Credentials</strong>: Machine-to-machine
-                  communication
-                </li>
-                <li>
-                  <strong>Resource Owner Password</strong>: Direct credential
-                  exchange
-                </li>
-              </ul>
-
-              <h3>Discovery Document (.well-known/openid-configuration)</h3>
-              <p>
-                  OAuth 2.0 doesn't define a standard way for clients to discover a server's
-                  endpoints. OpenID Connect fills this gap with the Discovery Document - a
-                  JSON file at a standard URL that tells clients where the
-                  <code>authorization_endpoint</code>, <code>token_endpoint</code>, and other
-                  endpoints live.
-              </p>
-              <p>
-                  <a href="concepts/well-known.html" class="concept-link"
-                      >→ Full deep-dive on the Discovery Document</a
-                  >
-              </p>
-
-              <h4>Authorization Endpoint</h4>
-              <!-- biome-ignore format -->
-              <lazy-wc-markdown># OIDC Authorization Endpoint
-
-The Authorization Endpoint is used to interact with the resource owner and obtain an authorization grant. It's used for the Authorization Code flow and Implicit flow.
-
-## Endpoint URL
-```
-GET /authorize
-```
-
-## Parameters
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `response_type` | Yes | Determines the flow - "code" for Authorization Code flow, "token" for Implicit flow, "id_token" for Hybrid flow |
-| `client_id` | Yes | The client identifier registered with the provider |
-| `redirect_uri` | Recommended | Where to redirect the user after authorization |
-| `scope` | Recommended | Space-separated list of scopes (openid is required for OIDC) |
-| `state` | Recommended | Random value used to prevent CSRF attacks |
-| `nonce` | Required for Implicit/ Hybrid | Random value used to mitigate replay attacks |
-
-## Example Request
-
-```
-GET /authorize?
-  response_type=code&amp;
-  client_id=s6BhdRkqt3&amp;
-  redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&amp;
-  scope=openid%20profile%20email&amp;
-  state=af0ifjsldkj&amp;
-  nonce=n-0S6_WzA2Mj
-```
-
-## Response
-
-The authorization server redirects the user-agent back to the client with either:
-- An authorization code (in the Authorization Code flow)
-- Access token and/or ID token (in the Implicit flow)</lazy-wc-markdown>
-
-              <h4>Token Endpoint</h4>
-              <!-- biome-ignore format -->
-              <lazy-wc-markdown># OIDC Token Endpoint
-
-The Token Endpoint is used by the client to obtain an access token, ID token, and refresh token by presenting its authorization grant or refresh token.
-
-## Endpoint URL
-```
-POST /token
-```
-
-## Parameters (Authorization Code Flow)
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `grant_type` | Yes | Must be set to "authorization_code" |
-| `code` | Yes | The authorization code received from the authorization endpoint |
-| `redirect_uri` | Yes | Must match the redirect_uri used in the authorization request |
-| `client_id` | Yes | The client identifier |
-| `client_secret` | Yes | The client secret (for confidential clients) |
-
-## Example Request
-
-```
-POST /token HTTP/1.1
-Host: server.example.com
-Content-Type: application/x-www-form-urlencoded
-
-grant_type=authorization_code&amp;
-code=SplxlOBeZQQYbYS6WxSbIA&amp;
-redirect_uri=https%3A%2F%2Fclient.example.org%2Fcb&amp;
-client_id=s6BhdRkqt3&amp;
-client_secret=7Fjfp0ZBr1KtDRbnfVdmIw
-```
-
-## Example Response
-
-```
-HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8
-Cache-Control: no-store
-Pragma: no-cache
-
-{
-  "access_token": "SlAV32hkKG",
-  "token_type": "Bearer",
-  "refresh_token": "8xLOxBtZp8",
-  "expires_in": 3600,
-  "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ..."
-}
-```
-
-## Refresh Token Request
-
-```
-POST /token HTTP/1.1
-Host: server.example.com
-Content-Type: application/x-www-form-urlencoded
-
-grant_type=refresh_token&amp;
-refresh_token=8xLOxBtZp8&amp;
-client_id=s6BhdRkqt3&amp;
-client_secret=7Fjfp0ZBr1KtDRbnfVdmIw</lazy-wc-markdown>
-
-              <h3>Pros &amp; Cons</h3>
-              <ul>
-                <li>✅ Standardized protocol</li>
-                <li>✅ Delegated access without sharing passwords</li>
-                <li>✅ Multiple grant types for different use cases</li>
-                <li>❌ Complex implementation</li>
-                <li>❌ Redirect-based flows vulnerable to interception</li>
-              </ul>
-            </section>
-          </div>
-        </main>
-
-        <site-footer></site-footer>
-      </div>
-
-    </font-loader>
-    <script src="scripts/main.js"></script>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="main-wrapper">
+      <site-header></site-header>
+      <script src="scripts/header-fallback.js"></script>
+      <main id="main">
+        <div class="content-container">
+          <lazy-wc-markdown src="content/oauth2.md"></lazy-wc-markdown>
+        </div>
+      </main>
+      <footer class="site-footer">
+        <p>
+          <a
+            href="https://github.com/samrocksc/l2auth"
+            target="_blank"
+            rel="noopener noreferrer"
+            >L2Auth on GitHub</a
+          >
+        </p>
+      </footer>
+    </div>
   </body>
 </html>

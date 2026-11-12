@@ -1,0 +1,57 @@
+# Page Template
+
+Use this shell for a new root-level page. For a page in `concepts/`, change `data-root` to `../` and prefix every local path with `../`.
+
+```html
+<!doctype html>
+<html lang="en" data-root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page Title - Learn to Auth!</title>
+    <meta name="description" content="One-sentence page description." />
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="assets/pizza-icon.svg" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <script src="scripts/site-config.js"></script>
+    <script src="scripts/theme-init.js"></script>
+    <script type="module" src="scripts/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="main-wrapper">
+      <site-header></site-header>
+      <script src="scripts/header-fallback.js"></script>
+      <main id="main">
+        <div class="content-container">
+          <lazy-wc-markdown src="content/page-title.md"></lazy-wc-markdown>
+        </div>
+      </main>
+      <footer class="site-footer">
+        <p>
+          <a
+            href="https://github.com/samrocksc/l2auth"
+            target="_blank"
+            rel="noopener noreferrer"
+            >L2Auth on GitHub</a
+          >
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
+```
+
+After creating the page:
+
+1. Add the Markdown file under `content/`.
+2. Add the page to `scripts/site-config.js` if it belongs in the primary nav.
+3. Add it to `content/concepts/index.md` if it is a concept.
+4. Add it to `sw.js` precache and `sitemap.xml`.
+5. Run `make check-all`.

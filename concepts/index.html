@@ -1,111 +1,46 @@
 <!doctype html>
-<html lang="en">
-    <head>
+<html lang="en" data-root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Concepts - Learn to Auth!</title>
+    <meta
+      name="description"
+      content="Index of authentication and security concepts: AuthN vs AuthZ, SCA, bcrypt, scopes, claims, discovery, and JWKS."
+    />
     <link rel="manifest" href="../manifest.json" />
     <link rel="icon" type="image/svg+xml" href="../assets/pizza-icon.svg" />
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Concepts - Learn to Auth!</title>
-        <link rel="stylesheet" href="../styles/main.css" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-        <link
-            href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
-            rel="stylesheet"
-            media="print" onload="this.media='all'"
-        />
-        <script type="module" src="../components/font-loader.js"></script>
-        <script>
-            // Apply theme immediately to prevent flicker
-            const savedTheme = localStorage.getItem("theme") || "light";
-            document.documentElement.setAttribute("data-theme", savedTheme);
-        </script>
-        <script type="module" src="../components/theme-toggle.js"></script>
-        <script type="module" src="../components/tabs-component.js"></script>
-        <script type="module" src="../components/footer-component.js"></script>
-        <script type="module" src="../components/header-component.js"></script>
-    </head>
-    <body>
-        <noscript>
-            <iframe
-                src="https://www.googletagmanager.com/ns.html?id=GTM-MDJ26VZ"
-                height="0"
-                width="0"
-                style="display:none;visibility:hidden"
-            ></iframe>
-        </noscript>
-        <font-loader>
-            <div class="main-wrapper">
-                <site-header></site-header>
-
-                <main>
-                    <div class="content-container">
-                        <section>
-                            <h2>Authentication Concepts</h2>
-                            <p>
-                                This section covers important concepts and
-                                principles related to authentication and security.
-                            </p>
-
-                            <h3>Available Concepts:</h3>
-                            <ul>
-                                <li>
-                                    <a href="sca.html"
-                                        >Strong Customer Authentication (SCA)</a
-                                    >
-                                    - Regulatory requirements for secure
-                                    authentication
-                                </li>
-                                <li>
-                                    <a href="bcrypt-password-matching.html"
-                                        >Understanding Password Matching with bcrypt and Salts</a
-                                    >
-                                    - How bcrypt stores passwords, how salts kill rainbow tables, and why slow hashing matters
-                                </li>
-                                <li>
-                                    <a href="auth-n-z.html"
-                                        >Authentication vs Authorization</a
-                                    >
-                                    - Understanding AuthN and AuthZ concepts
-                                </li>
-                                <li>
-                                    <a href="scopes-vs-claims.html"
-                                        >Scopes vs. Claims</a
-                                    >
-                                    - What scopes request and what claims return
-                                </li>
-                                <li>
-                                    <a href="claims-reference.html"
-                                        >Standard Claims Reference</a
-                                    >
-                                    - Complete guide to OIDC claims and how they interact
-                                </li>
-                                <li>
-                                    <a href="../demystifying-tokens.html"
-                                        >Demystifying the Tokens</a
-                                    >
-                                    - What each token does in the pipeline
-                                </li>
-                                <li>
-                                    <a href="well-known.html"
-                                        >OpenID Connect Discovery Document</a
-                                    >
-                                    - What .well-known/openid-configuration is and how clients use it
-                                </li>
-                                <li>
-                                    <a href="id-token-vs-access-token.html"
-                                        >ID Token vs. Access Token</a
-                                    >
-                                    - What each token is for and how to use them
-                                </li>
-                            </ul>
-                        </section>
-                    </div>
-                </main>
-
-                <site-footer></site-footer>
-            </div>
-        </font-loader>
-    </body>
+    <link rel="stylesheet" href="../styles/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <script src="../scripts/site-config.js"></script>
+    <script src="../scripts/theme-init.js"></script>
+    <script type="module" src="../scripts/site.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="main-wrapper">
+      <site-header></site-header>
+      <script src="../scripts/header-fallback.js"></script>
+      <main id="main">
+        <div class="content-container">
+          <lazy-wc-markdown src="../content/concepts/index.md"></lazy-wc-markdown>
+        </div>
+      </main>
+      <footer class="site-footer">
+        <p>
+          <a
+            href="https://github.com/samrocksc/l2auth"
+            target="_blank"
+            rel="noopener noreferrer"
+            >L2Auth on GitHub</a
+          >
+        </p>
+      </footer>
+    </div>
+  </body>
 </html>
