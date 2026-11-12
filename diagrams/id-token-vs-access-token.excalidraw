@@ -33,7 +33,7 @@
           "id": "idp-text"
         }
       ],
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false
     },
@@ -60,7 +60,7 @@
       "versionNonce": 1034,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "Identity Provider",
@@ -102,7 +102,7 @@
           "id": "client-text"
         }
       ],
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false
     },
@@ -129,7 +129,7 @@
       "versionNonce": 1038,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "Client App",
@@ -171,7 +171,7 @@
           "id": "api-text"
         }
       ],
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false
     },
@@ -198,7 +198,7 @@
       "versionNonce": 1042,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "API",
@@ -235,7 +235,7 @@
       "versionNonce": 1044,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "points": [
@@ -285,7 +285,7 @@
       "versionNonce": 1046,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "ID token (who)",
@@ -322,7 +322,7 @@
       "versionNonce": 1048,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "points": [
@@ -372,7 +372,7 @@
       "versionNonce": 1050,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "Access token (what)",
@@ -407,7 +407,7 @@
       "versionNonce": 1052,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "ID token: your app uses it to identify the user.",
@@ -442,7 +442,7 @@
       "versionNonce": 1054,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "Access token: the API uses it to authorize the request.",

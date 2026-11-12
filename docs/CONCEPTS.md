@@ -23,11 +23,18 @@ Concept page shells use `data-root="../"` so shared assets resolve correctly fro
 
 ## Current Concepts
 
+- CIAM Flow Adventure (interactive)
+- Auth security parameters
 - Authentication vs. Authorization
 - Strong Customer Authentication (SCA)
+- MFA factors
+- Authenticators: independent vs. dependent
+- Authenticator Assurance Levels (AAL)
 - Password matching with bcrypt and salts
 - Glossary of terms
 - Standard claims reference
+- Custom attributes to token claims
 - OpenID Connect Discovery Document
 - JWKS endpoint
 - ID Token vs. Access Token
+- JWT

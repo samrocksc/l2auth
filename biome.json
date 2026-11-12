@@ -1,7 +1,12 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.6.7/schema.json",
   "files": {
-    "includes": ["**", "!**/components/vendor", "!**/node_modules"]
+    "includes": [
+      "**",
+      "!**/components/vendor",
+      "!**/node_modules",
+      "!l2auth_ciam_adventure.html"
+    ]
   },
   "formatter": {
     "enabled": true,

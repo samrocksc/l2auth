@@ -11,8 +11,16 @@
   const inConcepts = path.includes("/concepts/");
 
   function isActive(item) {
+    if (path.endsWith(`/${item.href}`)) {
+      return true;
+    }
+
+    const anotherTabMatches = config.nav.some(
+      (other) => !other.section && path.endsWith(`/${other.href}`),
+    );
+
     if (item.section === "concepts") {
-      return inConcepts;
+      return inConcepts && !anotherTabMatches;
     }
     if (inConcepts) {
       return false;
@@ -20,7 +28,7 @@
     if (item.href === "index.html") {
       return path.endsWith("/") || path.endsWith("/index.html");
     }
-    return path.endsWith(`/${item.href}`);
+    return false;
   }
 
   const links = config.nav

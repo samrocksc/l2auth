@@ -38,8 +38,8 @@
 - Source: <https://github.com/qiaolei1973/excalirender>
 - Notes: Development-only renderer used by `scripts/render-diagrams.mjs`. Not shipped to the browser.
 
-## Google Tag Manager
+## Google Analytics 4
 
-- Service: Google Tag Manager
-- Container: `GTM-MDJ26VZ`
-- Notes: Loaded at runtime by `scripts/site.js`. Remove the ID from `scripts/site-config.js` to disable it.
+- Service: Google Analytics 4
+- Measurement ID: `G-R5HH1F5KDM`
+- Notes: Loaded at runtime by `scripts/site.js`. Remove `ga4Id` from `scripts/site-config.js` to disable it.

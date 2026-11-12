@@ -1,18 +1,22 @@
 import "../components/lazy-wc-markdown.js";
 
-const SITE = window.SITE_CONFIG ?? { gtmId: "" };
+const SITE = window.SITE_CONFIG ?? { ga4Id: "" };
 
-function loadGoogleTagManager() {
-  if (!SITE.gtmId || window.dataLayer) {
+function loadAnalytics() {
+  if (!SITE.ga4Id || window.dataLayer) {
     return;
   }
 
   window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({ "gtm.start": Date.now(), event: "gtm.js" });
+  window.gtag = (...args) => {
+    window.dataLayer.push(args);
+  };
+  window.gtag("js", new Date());
+  window.gtag("config", SITE.ga4Id);
 
   const script = document.createElement("script");
   script.async = true;
-  script.src = `https://www.googletagmanager.com/gtm.js?id=${SITE.gtmId}`;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${SITE.ga4Id}`;
   document.head.appendChild(script);
 }
 
@@ -29,5 +33,5 @@ function registerServiceWorker() {
   });
 }
 
-loadGoogleTagManager();
+loadAnalytics();
 registerServiceWorker();

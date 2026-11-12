@@ -40,7 +40,7 @@ A published set of public keys that clients use to verify token signatures. It e
 
 ## JWT
 
-A JSON Web Token: a compact, URL-safe token with a header, payload, and signature. The payload is encoded, not encrypted. See [JWT](../jwt.html).
+A JSON Web Token: a compact, URL-safe token with a header, payload, and signature. The payload is encoded, not encrypted. See [JWT](jwt.html).
 
 ## Nonce
 

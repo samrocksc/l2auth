@@ -2,17 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://samrocksc.github.io/l2auth/</loc></url>
   <url><loc>https://samrocksc.github.io/l2auth/basic-auth.html</loc></url>
-  <url><loc>https://samrocksc.github.io/l2auth/jwt.html</loc></url>
+  <url><loc>https://samrocksc.github.io/l2auth/concepts/jwt.html</loc></url>
   <url><loc>https://samrocksc.github.io/l2auth/oauth2.html</loc></url>
   <url><loc>https://samrocksc.github.io/l2auth/oidc.html</loc></url>
   <url><loc>https://samrocksc.github.io/l2auth/demystifying-tokens.html</loc></url>
   <url><loc>https://samrocksc.github.io/l2auth/concepts/</loc></url>
+  <url><loc>https://samrocksc.github.io/l2auth/concepts/auth-security-parameters.html</loc></url>
   <url><loc>https://samrocksc.github.io/l2auth/concepts/auth-n-z.html</loc></url>
+  <url><loc>https://samrocksc.github.io/l2auth/concepts/mfa-factors.html</loc></url>
+  <url><loc>https://samrocksc.github.io/l2auth/concepts/authenticators.html</loc></url>
+  <url><loc>https://samrocksc.github.io/l2auth/concepts/authenticator-assurance-levels.html</loc></url>
   <url><loc>https://samrocksc.github.io/l2auth/concepts/sca.html</loc></url>
   <url><loc>https://samrocksc.github.io/l2auth/concepts/bcrypt-password-matching.html</loc></url>
   <url><loc>https://samrocksc.github.io/l2auth/concepts/glossary.html</loc></url>
   <url><loc>https://samrocksc.github.io/l2auth/concepts/claims-reference.html</loc></url>
+  <url><loc>https://samrocksc.github.io/l2auth/concepts/custom-attributes.html</loc></url>
   <url><loc>https://samrocksc.github.io/l2auth/concepts/id-token-vs-access-token.html</loc></url>
   <url><loc>https://samrocksc.github.io/l2auth/concepts/well-known.html</loc></url>
   <url><loc>https://samrocksc.github.io/l2auth/concepts/jwks.html</loc></url>
+  <url><loc>https://samrocksc.github.io/l2auth/l2auth_ciam_adventure.html</loc></url>
 </urlset>

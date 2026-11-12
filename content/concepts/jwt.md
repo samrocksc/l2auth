@@ -24,7 +24,7 @@ The payload is **encoded, not encrypted**. Never put secrets or sensitive person
 
 ## Authentication Flow
 
-![JWT authentication flow](assets/diagrams/jwt-authentication-flow.svg)
+![JWT authentication flow](../assets/diagrams/jwt-authentication-flow.svg)
 
 1. The user authenticates with a username and password, or through an identity provider.
 2. The server creates and signs a JWT.

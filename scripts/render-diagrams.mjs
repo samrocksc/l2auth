@@ -16,6 +16,7 @@ const titles = {
   "jwt-authentication-flow": "JWT authentication flow",
   "discovery-bootstrapping": "OIDC discovery bootstrapping",
   "id-token-vs-access-token": "ID token vs access token",
+  "custom-attributes-lineage": "Custom attributes lineage",
 };
 
 const scenes = (await readdir(sourceDir)).filter((file) =>

@@ -33,7 +33,7 @@
           "id": "issuer-text"
         }
       ],
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false
     },
@@ -60,7 +60,7 @@
       "versionNonce": 1004,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "Issuer URL",
@@ -102,7 +102,7 @@
           "id": "doc-text"
         }
       ],
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false
     },
@@ -129,7 +129,7 @@
       "versionNonce": 1008,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "Discovery document",
@@ -171,7 +171,7 @@
           "id": "meta-text"
         }
       ],
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false
     },
@@ -198,7 +198,7 @@
       "versionNonce": 1012,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "Endpoints + JWKS",
@@ -240,7 +240,7 @@
           "id": "client-text"
         }
       ],
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false
     },
@@ -267,7 +267,7 @@
       "versionNonce": 1016,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "OIDC client",
@@ -304,7 +304,7 @@
       "versionNonce": 1018,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "points": [
@@ -354,7 +354,7 @@
       "versionNonce": 1020,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "1. Append path",
@@ -391,7 +391,7 @@
       "versionNonce": 1022,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "points": [
@@ -441,7 +441,7 @@
       "versionNonce": 1024,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "2. Read fields",
@@ -478,7 +478,7 @@
       "versionNonce": 1026,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "points": [
@@ -528,7 +528,7 @@
       "versionNonce": 1028,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "3. Configure",
@@ -563,7 +563,7 @@
       "versionNonce": 1030,
       "isDeleted": false,
       "boundElements": null,
-      "updated": 1794480921374,
+      "updated": 1794482861432,
       "link": null,
       "locked": false,
       "text": "One issuer URL is all the configuration you need.",

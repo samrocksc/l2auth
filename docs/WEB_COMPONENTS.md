@@ -16,7 +16,7 @@ Every page loads a small set of scripts:
 
 - `site-config.js` exposes the nav and site metadata as `window.SITE_CONFIG` so classic scripts share one source.
 - `theme-init.js` is a tiny classic script. It applies the saved theme before first paint.
-- `site.js` registers `lazy-wc-markdown`, injects Google Tag Manager when configured, and registers the service worker.
+- `site.js` registers `lazy-wc-markdown`, loads Google Analytics 4 when configured, and registers the service worker.
 
 Immediately after `<site-header>`, each page also loads:
 
