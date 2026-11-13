@@ -106,9 +106,15 @@ CI runs the same checks on every pull request.
 
 ## Deployment
 
+The site is deployed to GitHub Pages by `.github/workflows/pages.yml`.
+
+- Every push to `main` builds a clean `_site/` directory and deploys it.
+- You can also run the workflow manually from the Actions tab.
+- The build is only a file copy: HTML pages, `content/`, `concepts/`, `components/`, `assets/`, `styles/`, and the four runtime scripts. There is no bundler or build step.
+
 The site is designed to work at a domain root or under a subpath. All asset paths are relative and the manifest uses a relative `start_url` and `scope`.
 
-Update the domain in `robots.txt` and `sitemap.xml` if the site moves. On GitHub Pages, serve from the repository root.
+Update the domain in `robots.txt` and `sitemap.xml` if the site moves. GitHub Pages must be configured with **Source: GitHub Actions** (the workflow switches this automatically when merged).
 
 ## Third-Party Code
 
