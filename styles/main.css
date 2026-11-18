@@ -281,9 +281,9 @@ th {
   font-weight: 500;
 }
 
-/* Static header fallback -------------------------------------------------
-   Rendered before Lit upgrades <site-header>. The shadow DOM replaces it,
-   so it only exists for the first paint. */
+/* Static header fallback
+   header-fallback.js injects this markup into <site-header>; it is the only
+   header implementation. */
 
 site-header {
   display: block;

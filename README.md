@@ -102,7 +102,9 @@ CI runs the same checks on every pull request.
 
 ## PWA and Offline
 
-`sw.js` precaches every page, content file, component, and core asset. Navigation requests use network-first with an offline fallback; static assets use cache-first; fonts use stale-while-revalidate. The service worker is registered from `scripts/site.js`.
+`sw.js` precaches every page, content file, component, and core asset. Navigation requests and same-origin assets are network-first with a cache fallback, so deploys take effect on the next visit; cross-origin fonts use stale-while-revalidate. The service worker is registered from `scripts/site.js`.
+
+Bump `CACHE_VERSION` in `sw.js` when the update strategy changes so existing clients drop old caches on activation.
 
 ## Deployment
 

@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v10";
+const CACHE_VERSION = "v11";
 const SHELL_CACHE = `l2auth-shell-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `l2auth-runtime-${CACHE_VERSION}`;
 
@@ -101,22 +101,13 @@ async function networkFirst(request) {
     if (cached) {
       return cached;
     }
-    return caches.match("./offline.html");
+    if (request.mode === "navigate") {
+      return caches.match("./offline.html");
+    }
+    throw new Error(
+      `${request.url} is not cached and offline fallback only applies to navigations`,
+    );
   }
-}
-
-async function cacheFirst(request) {
-  const cached = await caches.match(request);
-  if (cached) {
-    return cached;
-  }
-
-  const response = await fetch(request);
-  if (isCacheableResponse(response)) {
-    const cache = await caches.open(SHELL_CACHE);
-    cache.put(request, response.clone());
-  }
-  return response;
 }
 
 async function staleWhileRevalidate(request) {
@@ -135,6 +126,8 @@ async function staleWhileRevalidate(request) {
   return cached || network;
 }
 
+/* Same-origin assets are network-first so deploys take effect on the next
+   visit; the cache only fills in when the network is unavailable. */
 self.addEventListener("fetch", (event) => {
   const { request } = event;
 
@@ -144,13 +137,8 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
 
-  if (request.mode === "navigate") {
+  if (request.mode === "navigate" || url.origin === self.location.origin) {
     event.respondWith(networkFirst(request));
-    return;
-  }
-
-  if (url.origin === self.location.origin) {
-    event.respondWith(cacheFirst(request));
     return;
   }
 
